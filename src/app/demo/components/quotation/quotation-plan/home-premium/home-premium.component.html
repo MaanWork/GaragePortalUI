@@ -1,0 +1,181 @@
+<div class="grid justify-content-end p-3">
+    <div class="mb-2 ">&nbsp;<p-button label="Add Location" icon="pi pi-plus" (click)="visible=true" />&nbsp;</div>
+</div>
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: 'w-6' }" [draggable]="false">
+    <div class="grid ">
+        <div class="col-12 lg:col-6 xl:col-6">
+            <label for="Address">Address</label>
+            <input class="w-full p-button-outlined" placeholder="Enter Address" styleClass="w-full"  pInputText type="text" 
+            />
+        </div>
+        <div class="col-12 lg:col-6 xl:col-6">
+            <label for="Location">Location</label>
+            <input class="w-full p-button-outlined" placeholder="Location" styleClass="w-full"  pInputText type="text" />
+        </div>
+    </div>
+    <div class="flex justify-content-center gap-2">
+        <p-button label="Cancel" styleClass="p-button-outlined"  (onClick)="visible = false" />
+        <p-button label="Save" (onClick)="visible = false" />
+    </div>
+</p-dialog>
+<ng-container >
+    <p-tabView>
+        <ng-container *ngFor="let item of LocationName">
+            <p-tabPanel [header]="item">
+                <div class="grid ">
+                    <div class="col-12 lg:col-1 md:col-1"></div>
+                    <div class="col-12 lg:col-6 md:col-6">
+                        <div class="card ">
+                            <div class="grid justify-content-start">
+                                <div class="mb-1 "> 
+                                    <b>Building Details</b>
+                                </div>
+                            
+                            </div>
+                            <div class="grid ">
+                                <div class="col-12 lg:col-6 md:col-6">
+                                    <label for="BuildingType">Construction Type</label>
+                                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Construction Type"
+                                        appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                </div>
+                                <div class="col-12 lg:col-6 md:col-6">
+                                    <label for="SumInsured">SumInsured</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                               
+                                <!-- <div class="col-12 lg:col-6 md:col-6">
+                                    <label for="BuildingType">Construction (Roof)</label>
+                                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Roof Type"
+                                        appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 lg:col-4 md:col-4">
+                        <div class="card ">
+                            <div class="grid justify-content-start">
+                                <div class="mb-1 "> 
+                                    <b>Content SumInsured</b>
+                                </div>
+                            
+                            </div>
+                            <div class="grid justify-content-center">
+                                <div class="col-12 lg:col-8 md:col-8">
+                                    <label for="SumInsured">SumInsured</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                                <!-- <div class="col-12 lg:col-6 md:col-6">
+                                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Building Type"
+                                        appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                </div> -->
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-12 lg:col-1 md:col-1"></div>
+                    <div class="col-12 lg:col-6 md:col-6">
+                    <div class="card ">
+                        <div class="grid justify-content-start">
+                            <div class="mb-1 "> 
+                                <b>Personal Accident</b>
+                            </div>
+                        
+                        </div>
+                        <div class="grid ">
+                            <div class="col-12 lg:col-6 md:col-6">
+                                <label for="BuildingType">Relationship</label>
+                                <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Relationship"
+                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                            </div>
+                            <div class="col-12 lg:col-6 md:col-6">
+                                <label for="SumInsured">Death SI</label>
+                                <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                />
+                            </div>
+                        
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-12 lg:col-4 md:col-4">
+                        <div class="card ">
+                            <div class="grid justify-content-start">
+                                <div class="mb-1 "> 
+                                    <b>All Risk</b>
+                                </div>
+                            
+                            </div>
+                            <div class="grid justify-content-center">
+                                <div class="col-12 lg:col-8 md:col-8">
+                                    <label for="SumInsured">SumInsured</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-12 lg:col-1 md:col-1"></div>
+                    <div class="col-12 lg:col-6 md:col-6">
+                        <div class="card ">
+                            <div class="grid justify-content-start">
+                                <div class="mb-2 "> 
+                                    <b>Domestic Servant</b>
+                                </div>
+                            
+                            </div>
+                            <div class="grid justify-content-between">
+                                <div class="col-12 lg:col-4 md:col-4">
+                                    <label for="Servant">Servant</label>
+                                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Servant"
+                                        appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <label for="SumInsured">Employee Count</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter Count" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4">
+                                    <label for="SumInsured">SumInsured</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 lg:col-4 md:col-4">
+                        <div class="card ">
+                            <div class="grid justify-content-start">
+                                <div class="m-2"> 
+                                    <b>personal Liability</b>
+                                </div>
+                            
+                            </div>
+                            <div class="grid justify-content-center">
+                                <div class="col-12 lg:col-8 md:col-8">
+                                    <label for="SumInsured">SumInsured</label>
+                                    <input class="w-full p-button-outlined" placeholder="Enter SumInsured" styleClass="w-full"  pInputText type="text" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    
+                   
+                </div>
+                
+                <div class="flex justify-content-center gap-2 mt-1">
+                    <p-button label="Cancel" styleClass="p-button-outlined"  />
+                    <p-button label="Save" />
+                    <p-button label="Proceed" />
+                </div>
+            </p-tabPanel>
+        </ng-container>
+    </p-tabView>
+</ng-container>
+    

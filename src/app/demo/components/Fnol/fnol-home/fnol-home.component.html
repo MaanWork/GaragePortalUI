@@ -1,0 +1,66 @@
+<div class="card">
+    <div class="grid justify-content-between">
+      <div class="col-12 sm:col-6 md:col-4">
+        <h3 class="mr-3">FNOL</h3>
+        <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+      </div>
+      <div>
+        <button pButton pRipple label="Create Fnol" [routerLink]="['/fnol/createfnol']" routerLinkActive="router-link-active" ></button>
+      </div>
+    </div>
+    
+      <p-divider></p-divider>
+  <p-tabView [(activeIndex)]="tabIndex"  >
+    <p-tabPanel header="Created Fonl">
+      
+          <ng-container>
+            <!-- <div class="flex justify-content-end mb-4">
+              <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+              <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+            </div> -->
+            <p-table #dtEmployeeExist [value]="fnolList" 
+            [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+            [globalFilterFields]="['ClaimNo','VehicleMake','VehicleModel','ChassisNo','VehicleRegno','InsuredName','Type']" [rows]="5">
+              <ng-template pTemplate="caption">
+                <div class="flex flex wrap justify-content-end">
+                  <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                    </span>
+                </div>
+                </div>
+                
+            </ng-template>
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-fnol let-i="rowIndex">
+                <tr>
+                  <td>{{ i+1 }}</td>
+                  <td>{{ fnol.FnolNo }}</td>
+                  <td>{{ fnol.PolicyNo }}</td>
+                  <td>{{ fnol.LossDate }}</td>
+                  <td>{{ fnol.IntimatedDate }}</td>
+                  <td>{{ fnol.LossLocation }}</td>
+                  <td>{{ fnol.PoliceStation }}</td>
+                  <td>
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="getfnolEdit(fnol)" ></button>
+                  </td>
+                  <td>
+                    <button pButton pRipple icon="pi pi-list" class="p-button-outlined" ></button>
+                  </td>
+                </tr>
+              </ng-template>
+              <!-- <ng-container>
+                  <div class="text-center" *ngIf="fnolList.length == 0">
+                        {{ 'HOME.NoVehiclesAvailable' | translate}}
+                  </div>
+              </ng-container> -->
+            </p-table>
+          </ng-container>
+    </p-tabPanel>
+  </p-tabView>
+  </div>

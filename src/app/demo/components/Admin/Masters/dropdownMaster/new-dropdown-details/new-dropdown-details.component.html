@@ -1,0 +1,227 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-9 md:col-9">
+          <h3 class="mr-3">Dropdown Details</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div>   [(ngModel)]="exchangeDetails.CurrencyId" [items]="currencyList" -->
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div class="grid mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Description*</label><br>
+            <input pInputText 
+            [(ngModel)]="DropDownDetails.ItemValue"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Description"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="DropDownDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="DropDownDetails.ItemCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Code"/>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">Type*</label>
+            <p-dropdown inputId="TypeList" 
+                class="w-full" 
+                (onChange)="tableName()"
+                [disabled]="true"
+                styleClass="w-full" 
+                [options]="TypeList" 
+                [(ngModel)]="ItemValue" 
+                optionLabel="CodeDesc" 
+                optionValue="CodeDesc" 
+                placeholder="">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core App Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="DropDownDetails.CoreAppCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">RegulatoryCode*</label><br>
+            <input pInputText 
+            [(ngModel)]="DropDownDetails.RegulatoryCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full" 
+            [(ngModel)]="DropDownDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="DropDownDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="DropDownDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="DropDownDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="P" [(ngModel)]="DropDownDetails.Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="DropDownDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+       
+</div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()" ></p-button>
+    </div>
+</div>
+
+<!-- <div class="vision-grid-item">
+    <div class="card">
+        <div class="card-header">Dropdown Details</div>
+        <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 col-lg-6 col-xl-6">
+                <div class="input-control-container">
+                    <label class="input-form-label">Description<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                      <input type="text" 
+                      class="input-form-control without-icon"
+                       [(ngModel)]="DropDownDetails.ItemValue" maxlength="100">
+                  </div>
+                </div>
+            </div>
+
+                <div class="col-md-4 col-lg-6 col-xl-6">
+                  <div class="input-control-container">
+                      <label class="input-form-label">Code<span class="text-required" style="color:red">*</span></label>
+                      <div class="input-form-box">
+                        <input type="text" 
+                        class="input-form-control without-icon"
+                         [(ngModel)]="DropDownDetails.ItemCode" maxlength="100">
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-4 col-lg-6 col-xl-6">
+                <div class="input-control-container">
+                    <label class="input-form-label">Type<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" appendTo="body"
+                     disabled [items]="TypeList" [(ngModel)]="ItemValue"
+                      bindValue="CodeDesc"
+                        bindLabel="CodeDesc" (change)="tableName()">
+                    </ng-select>
+                </div>
+            </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Core App Code<span class="text-required" style="color:red">*</span></label>
+                        <div class="input-form-box">
+                          <input type="text" 
+                          class="input-form-control without-icon" 
+                          [(ngModel)]="DropDownDetails.CoreAppCode" maxlength="100">
+                      </div> -->
+                        <!--<div class="input-form-box">
+                            <textarea type="text" cols="60" ros="3" [(ngModel)]="Industrydetails.CoreAppCode" class="input-form-select"></textarea>
+                        </div>-->
+                    <!-- </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                  <div class="input-control-container">
+                      <label class="input-form-label">RegulatoryCode <span class="text-required" style="color:red">*</span></label>
+                      <div class="input-form-box">
+                          <input type="text" 
+                          class="input-form-control without-icon" 
+                          [(ngModel)]="DropDownDetails.RegulatoryCode" maxlength="100">
+                      </div>
+                  </div>
+              </div>
+
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Effective Date<span class="text-required" style="color:red">*</span></label>
+                        <mat-form-field appearance="fill">
+                            <input matInput [matDatepicker]="picker" 
+                            [min]="minDate" [(ngModel)]="DropDownDetails.EffectiveDateStart">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Status<span class="text-required">*</span></label>
+                        <div class="input-form-radio-box">
+                            <div class="radio-toolbar">
+                                <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouseone" [(ngModel)]="DropDownDetails.Status" value="Y">
+                                <label for="orginwarehouse_Yes">Active</label>
+                                <input type="radio" id="orginwarehouse_No" name="originatingWarehouseone" [(ngModel)]="DropDownDetails.Status" value="N">
+                                <label for="orginwarehouse_No">DeActive</label>
+                                <input type="radio" id="orginwarehouse_Referral" name="originatingWarehouseone" [(ngModel)]="DropDownDetails.Status" value="R">
+                                <label for="orginwarehouse_Referral">Referral</label>
+                                <input type="radio" id="orginwarehouse_Pending" name="originatingWarehouseone" [(ngModel)]="DropDownDetails.Status" value="P">
+                                <label for="orginwarehouse_Pending">Pending</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Remarks<span class="text-required" style="color:red">*</span></label>
+                        <div class="input-form-box">
+                          <textarea type="text" cols="60" ros="3" [(ngModel)]="DropDownDetails.Remarks" class="input-form-select"></textarea>
+                      </div> -->
+                        <!--<div class="input-form-box">
+                            <input type="text" class="input-form-control without-icon" [(ngModel)]="DropDownDetails.Remarks" maxlength="100">
+                        </div>-->
+                    <!-- </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="text-center mt-2">
+                <button class="btn btn-danger" (click)="ongetBack()">Back</button>
+                <button class="btn btn-success ml-2" (click)="onProceed()">Submit</button></div>
+        </div>
+</div>
+</div> -->

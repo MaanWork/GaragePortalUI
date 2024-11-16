@@ -1,0 +1,391 @@
+<div class="card">
+  <div class="grid">
+    <div class="col-12 sm:col-6 md:col-4">
+      <h3 class="mr-3">{{ 'HOME.Customer' | translate}}</h3>
+      <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+    </div>
+    <div class="col-12 sm:col-6 md:col-8">
+      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+        <!-- <span class="p-input-icon-right mr-3 mb-3">
+          <i class="pi pi-search"></i>
+          <input type="text" placeholder="Search" pInputText/>
+        </span> -->
+        <!-- <p-button styleClass="p-button-outlined" icon="pi pi-cloud-download" label="Export" class="mr-3" size="small"></p-button> -->
+        <p-button icon="pi pi-plus" [label]="'PREMIUM.AddNew' | translate" severity="warning" size="small" (click)="onAddCustomer(null)"></p-button>
+      </div>
+    </div>
+  </div>
+  
+  <p-divider></p-divider>
+  
+  <p-tabView>
+    <p-tabPanel [header]="'HOME.All' | translate">
+      <ng-container *ngIf="customers.length!=0">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <p-table #dtEmployeeExist *ngIf="tableView=='table' else cardTableView" [value]="customers" 
+        [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+        [globalFilterFields]="['CustomerReferenceNo','ClientName','PolicyHolderTypeDesc','IdNumber','MobileNo1']" [rows]="5">
+          <ng-template pTemplate="caption">
+            <div class="flex flex wrap justify-content-end">
+              <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                </span>
+            </div>
+            </div>
+            
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td>{{customer?.CustomerReferenceNo}}</td>
+              <td>{{customer?.ClientName}}</td>
+              <td >
+                <ng-container *ngIf="customer?.PolicyHolderType==1">{{ 'HOME.Individual' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.PolicyHolderType==2">{{ 'HOME.Corporate' | translate}}</ng-container>
+              </td>
+              <td>{{ customer?.IdNumber }}</td>
+              <td>{{ customer.MobileCode1 }}&nbsp;{{customer?.MobileNo1}}</td>
+              <td>
+                <ng-container *ngIf="customer?.IsTaxExempted=='N'">{{ 'PREMIUM.No' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.IsTaxExempted!='N'">{{ 'PREMIUM.Yes' | translate}} ({{customer?.TaxExemptedId}})</ng-container>
+              </td>
+              <td>{{ customer.CreatedBy }}</td>
+              <td>
+                <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+              </td>
+              <td>
+                <span class="p-buttonset">
+                  <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                  <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card w-25rem mr-4" *ngFor="let customer of customers">
+              <table>
+                <tr>
+                  <td><p-chip [label]="customer?.PolicyHolderTypeDesc" styleClass="bg-orange-500 text-white"></p-chip></td>
+                  <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span>
+                    <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5>{{customer.ClientName}}</h5></td>
+                </tr>
+                <tr>
+                  <td><b>{{ 'QUOTEGRID.ReferenceNo' | translate}}</b></td>
+                  <td class="text-right"><b>{{ 'QUOTEGRID.IDNumber' | translate}}</b></td>
+                </tr>
+                <tr>
+                  <td>{{customer.CustomerReferenceNo}}</td>
+                  <td class="text-right">{{customer?.IdNumber}}</td>
+                </tr>
+                <tr>
+                  <td><span class="pi pi-phone mr-2"></span>{{customer.MobileCode1}}&nbsp;{{customer?.MobileNo1}}</td>
+                  <td class="text-right"><span class="pi pi-envelope mr-2" *ngIf="customer.Email1!=''"></span>{{customer?.Email1}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="p-buttonset">
+                      <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                      <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                    </span>
+                  </td>
+                </tr>
+                
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="customers.length==0">
+          <div class="text-center">
+                  {{ 'HOME.NoCustomerAvailable' | translate}}
+          </div>
+      </ng-container>
+    </p-tabPanel>
+    <p-tabPanel [header]="'HOME.Active' | translate">
+      <ng-container *ngIf="activeCustomers.length!=0">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <p-table *ngIf="tableView=='table' else cardTableView" [value]="activeCustomers" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td>{{customer?.CustomerReferenceNo}}</td>
+              <td>{{customer?.ClientName}}</td>
+              <td>{{customer?.PolicyHolderTypeDesc }}</td>
+              <td>{{ customer?.IdNumber }}</td>
+              <td>{{ customer.MobileCode1 }}&nbsp;{{customer?.MobileNo1}}</td>
+              <td>
+                <ng-container *ngIf="customer?.IsTaxExempted=='N'">{{ 'PREMIUM.No' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.IsTaxExempted!='N'">{{ 'PREMIUM.Yes' | translate}} ({{customer?.TaxExemptedId}})</ng-container>
+              </td>
+              <td>{{ customer.CreatedBy }}</td>
+              <td>
+                <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+              </td>
+              <td>
+                <span class="p-buttonset">
+                  <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                  <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card w-25rem mr-4" *ngFor="let customer of activeCustomers">
+              <table>
+                <tr>
+                  <td><p-chip [label]="customer?.PolicyHolderTypeDesc" styleClass="bg-orange-500 text-white"></p-chip></td>
+                  <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span>
+                    <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5>{{customer.ClientName}}</h5></td>
+                </tr>
+                <tr>
+                  <td><b>{{ 'QUOTEGRID.ReferenceNo' | translate}}</b></td>
+                  <td class="text-right"><b>{{ 'QUOTEGRID.IDNumber' | translate}}</b></td>
+                </tr>
+                <tr>
+                  <td>{{customer.CustomerReferenceNo}}</td>
+                  <td class="text-right">{{customer?.IdNumber}}</td>
+                </tr>
+                <tr>
+                  <td><span class="pi pi-phone mr-2"></span>{{customer.MobileCode1}}&nbsp;{{customer?.MobileNo1}}</td>
+                  <td class="text-right"><span class="pi pi-envelope mr-2" *ngIf="customer.Email1!=''"></span>{{customer?.Email1}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="p-buttonset">
+                      <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                      <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="activeCustomers.length==0">
+            <div class="text-center">
+              {{ 'HOME.NoCustomerAvailable' | translate}}
+            </div>
+      </ng-container>
+    </p-tabPanel>
+    <p-tabPanel [header]="'HOME.DeActive' | translate">
+      <ng-container *ngIf="deActiveCustomers.length!=0">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <p-table *ngIf="tableView=='table' else cardTableView" [value]="deActiveCustomers" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td>{{customer?.CustomerReferenceNo}}</td>
+              <td>{{customer?.ClientName}}</td>
+              <td>{{customer?.PolicyHolderTypeDesc }}</td>
+              <td>{{ customer?.IdNumber }}</td>
+              <td>{{ customer.MobileCode1 }}&nbsp;{{customer?.MobileNo1}}</td>
+              <td>
+                <ng-container *ngIf="customer?.IsTaxExempted=='N'">{{ 'PREMIUM.No' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.IsTaxExempted!='N'">{{ 'PREMIUM.Yes' | translate}} ({{customer?.TaxExemptedId}})</ng-container>
+              </td>
+              <td>{{ customer.CreatedBy }}</td>
+              <td>
+                <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+              </td>
+              <td>
+                <span class="p-buttonset">
+                  <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                  <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card w-25rem mr-4" *ngFor="let customer of deActiveCustomers">
+              <table>
+                <tr>
+                  <td><p-chip [label]="customer?.PolicyHolderTypeDesc" styleClass="bg-orange-500 text-white"></p-chip></td>
+                  <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span>
+                    <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5>{{customer.ClientName}}</h5></td>
+                </tr>
+                <tr>
+                  <td><b>{{ 'QUOTEGRID.ReferenceNo' | translate}}</b></td>
+                  <td class="text-right"><b>{{ 'QUOTEGRID.IDNumber' | translate}}</b></td>
+                </tr>
+                <tr>
+                  <td>{{customer.CustomerReferenceNo}}</td>
+                  <td class="text-right">{{customer?.IdNumber}}</td>
+                </tr>
+                <tr>
+                  <td><span class="pi pi-phone mr-2"></span>{{customer.MobileCode1}}&nbsp;{{customer?.MobileNo1}}</td>
+                  <td class="text-right"><span class="pi pi-envelope mr-2" *ngIf="customer.Email1!=''"></span>{{customer?.Email1}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="p-buttonset">
+                      <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                      <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="deActiveCustomers.length==0">
+        <div class="text-center">
+          {{ 'HOME.NoCustomerAvailable' | translate}}
+        </div>
+      </ng-container>
+    </p-tabPanel>
+    <p-tabPanel [header]="'HOME.Pending' | translate">
+      <ng-container *ngIf="pendingCustomers.length!=0">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <p-table *ngIf="tableView=='table' else cardTableView" [value]="pendingCustomers" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td>{{customer?.CustomerReferenceNo}}</td>
+              <td>{{customer?.ClientName}}</td>
+              <td>{{customer?.PolicyHolderTypeDesc }}</td>
+              <td>{{ customer?.IdNumber }}</td>
+              <td>{{ customer.MobileCode1 }}&nbsp;{{customer?.MobileNo1}}</td>
+              <td>
+                <ng-container *ngIf="customer?.IsTaxExempted=='N'">{{ 'PREMIUM.No' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.IsTaxExempted!='N'">{{ 'PREMIUM.Yes' | translate}} ({{customer?.TaxExemptedId}})</ng-container>
+              </td>
+              <td>{{ customer.CreatedBy }}</td>
+              <td>
+                <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+              </td>
+              <td>
+                <span class="p-buttonset">
+                  <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                  <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                  <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card w-25rem mr-4" *ngFor="let customer of pendingCustomers">
+              <table>
+                <tr>
+                  <td><p-chip [label]="customer?.PolicyHolderTypeDesc" styleClass="bg-orange-500 text-white"></p-chip></td>
+                  <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span>
+                    <ng-container *ngIf="customer?.Status=='N'">{{ 'HOME.DeActive' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='Y'">{{ 'HOME.Active' | translate}}</ng-container>
+                    <ng-container *ngIf="customer?.Status=='P'">{{ 'HOME.Pending' | translate}}</ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5>{{customer.ClientName}}</h5></td>
+                </tr>
+                <tr>
+                  <td><b>{{ 'QUOTEGRID.ReferenceNo' | translate}}</b></td>
+                  <td class="text-right"><b>{{ 'QUOTEGRID.IDNumber' | translate}}</b></td>
+                </tr>
+                <tr>
+                  <td>{{customer.CustomerReferenceNo}}</td>
+                  <td class="text-right">{{customer?.IdNumber}}</td>
+                </tr>
+                <tr>
+                  <td><span class="pi pi-phone mr-2"></span>{{customer.MobileCode1}}&nbsp;{{customer?.MobileNo1}}</td>
+                  <td class="text-right"><span class="pi pi-envelope mr-2" *ngIf="customer.Email1!=''"></span>{{customer?.Email1}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="p-buttonset">
+                      <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"></button> -->
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button>
+                      <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="pendingCustomers.length==0">
+        <div class="text-center">
+          {{ 'HOME.NoCustomerAvailable' | translate}}
+        </div>
+      </ng-container>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+
+

@@ -1,0 +1,271 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 sm:col-6 md:col-4">
+        <h3 class="mr-3">Referral Management</h3>
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-12 sm:col-6 md:col-8">
+        <!-- <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+          <span class="p-input-icon-right mr-3 mb-3">
+            <i class="pi pi-search"></i>
+            <p-dropdown [options]="branches" [(ngModel)]="selectedBranch" optionLabel="label" placeholder="Select a Branch"></p-dropdown>
+          </span>
+          <p-selectButton [options]="quoteOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+        </div> -->
+      </div>
+    </div>
+    
+    <p-divider></p-divider>
+    <p-tabView>
+      <!-- <p-tabPanel header="All">
+      </p-tabPanel> -->
+      <p-tabPanel header="Pending">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div>
+        <ng-container *ngIf="quoteData.length!=0">
+          <p-table #dtEmployeePending [value]="quoteData" *ngIf="tableView == 'table' else cardTableView1" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5" class="mt-2">
+            <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="dtEmployeePending.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                    </span>
+                </div>
+              </div>
+          </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+              <tr>
+                <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                <td>{{ customer.RequestReferenceNo}}</td>
+                <td>{{ customer.ClientName }}</td>
+                <td>{{ customer.PolicyStartDate }}</td>
+                <td>{{ customer.PolicyEndDate }}</td>
+               
+                <td>
+                  <span class="p-buttonset">
+                   
+                    <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                    
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <ng-template #cardTableView1>
+            <div class="grid mt-2">
+              <div class="card  mr-4" *ngFor="let quote of quoteData">
+                <table>
+                  <tr>
+                    <td><h5>{{quote.ClientName}}</h5></td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    
+                      <td><b>Reference No</b>
+                        <p> {{ quote.RequestReferenceNo }}</p>
+                      </td>
+                      <td *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p> {{ quote.QuoteNo }}</p>
+                      </td>
+                  </tr>
+                  <tr class="justify-content-between">
+                    <td><b>Start Date</b>
+                    <p>{{quote.PolicyStartDate}}</p>
+                    </td>
+                    <td class=""><b>End Date</b>
+                    <p>{{quote.PolicyEndDate}}</p></td>
+                  </tr>               
+                  <tr *ngIf="quote.OverallPremiumLc">
+                    <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <span class="p-buttonset">
+                       
+                        <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(quote)" title="Edit" class="p-button-outlined"></button>
+                        
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+        <ng-container *ngIf="quoteData.length==0">
+          <div class="text-center mt-2">
+            No Data Available
+          </div>
+        </ng-container>
+       
+      </p-tabPanel>
+      <p-tabPanel header="Approved">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="ApproverbrokerCode"  [options]="ApproveredList" (onChange)="getApprovedQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div>
+        <p-table  #dtEmployeeApproved *ngIf="tableView == 'table' else cardTableView2" [value]="ApprovedquoteData" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+        [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [rows]="5">
+        <ng-template pTemplate="caption">
+            <div class="flex flex wrap justify-content-end">
+              <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeApproved.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                  </span>
+              </div>
+            </div>
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columnss">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+             
+              <td>{{ customer.RequestReferenceNo}}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+             
+              <!-- <td>
+                <span class="p-buttonset">
+                 
+                  <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                  
+                </span>
+              </td> -->
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView2>
+          <div class="grid mt-2">
+            <div class="card  mr-4" *ngFor="let quote of ApprovedquoteData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                <tr class="justify-content-between">
+                  <td *ngIf="quote.QuoteNo"><b>Quote No</b>
+                    <p> {{ quote.QuoteNo }}</p>
+                  </td>
+                    <td><b>Reference No</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                </tr>
+                <tr class="justify-content-between" >
+                  
+                  
+              </tr>
+                <tr class="justify-content-between">
+                  <td><b>Start Date</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>End Date</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr *ngIf="quote.OverallPremiumLc">
+                  <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+      <p-tabPanel header="Cancelled">
+        <div class="flex justify-content-end mb-4">
+          <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+          <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+        </div>
+        <div class="grid">
+          <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Broker</label><span class="text-danger">*</span>
+            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="Rejecedbrokercode"  [options]="RejectedList" (onChange)="getRejectedQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+            </p-dropdown>
+          </div>
+        </div>
+        <p-table #dtEmployeeCancelled *ngIf="tableView == 'table' else cardTableView3" [value]="RejectedquoteData" [tableStyle]="{'min-width':'50rem'}" 
+        [globalFilterFields]="['RequestReferenceNo','ClientName','PolicyStartDate','PolicyEndDate']" [paginator]="true" [rows]="5">
+          <ng-template pTemplate="caption">
+            <div class="flex flex wrap justify-content-end">
+              <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeCancelled.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                  </span>
+              </div>
+            </div>
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columnss">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td>{{ customer.RequestReferenceNo}}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView3>
+          <div class="grid mt-2">
+            <div class="card  mr-4" *ngFor="let quote of RejectedquoteData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                
+                <tr class="justify-content-between">
+                    <td *ngIf="quote.QuoteNo"><b>Quote No</b>
+                      <p> {{ quote.QuoteNo }}</p>
+                    </td>
+                    <td><b>Reference No</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                </tr>
+                <tr class="justify-content-between">
+                  <td><b>Start Date</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>End Date</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr *ngIf="quote.OverallPremiumLc">
+                  <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </p-tabPanel>
+    </p-tabView>
+  </div>  

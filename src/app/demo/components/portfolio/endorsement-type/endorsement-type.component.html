@@ -1,0 +1,160 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 sm:col-6 md:col-4">
+        <h3 class="mr-3">Endorsement Type</h3>
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-12 sm:col-6 md:col-8">
+        <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+          <h5>Policy NO ~ {{policyNo}}</h5>
+        </div>
+      </div>
+    </div>
+
+<div class="card "> 
+<p-accordion>
+<p-accordionTab header="Financial" *ngIf="financialList.length!=0">
+    <ng-container *ngIf="financialList.length!=0">
+        <ng-container *ngIf="financialCoversSection">
+            <div class="grid customHeader mt-2 p-2">
+                <div class="spancommon span_font_size" style="color: #fff;font-weight:600;">
+                    Cover Based Endorsement
+                 </div>
+            </div>
+            <div class="grid mt-2 mb-2" style="margin-left: 10px;margin-right: 10px;">
+                <ng-container *ngFor="let element of financialList;let i=index">
+                    <ng-container *ngIf="element.EndtShortCode=='852' || element.EndtShortCode=='851' || element.EndtTypeDesc=='Add AddOn Covers'">
+                        <p-selectButton name="financialCoverEndt" [options]="getOptions(element)" [(ngModel)]="endorsementId"  [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" optionLabel="EndorsementDesc" optionValue="EndtType" 
+                            class="fill-w-w" styleClass="fill-w-w" />&nbsp;&nbsp;
+                        <!-- <div class="custom-control custom-radio custom-control-inline p-2" style="cursor: pointer !important;">
+                            <input type="radio" class="input-form-control" id="customRadio{{element.EndtType.toString()}}" name="example" [value]="element.EndtType" [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" />&nbsp;
+                            <label class="input-form-label spancommon span_font_size mt-2" for="customRadio{{element.EndtType.toString()}}">{{ element.EndorsementDesc }}</label>
+                        </div> -->
+                    </ng-container>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="financialSISection">
+            <div class="grid customHeader p-2 mt-2">
+                <div class="spancommon span_font_size" style="color: #fff;font-weight:600;">
+                    SumInsured Based Endorsement
+                 </div>
+            </div>
+            <div class="grid mt-2" style="margin-left: 10px;margin-right: 10px;">
+                <ng-container *ngFor="let element of financialList;let i=index">
+                    <div class="col-12 md:col-2 lg:col-2 xl:col-2 p-1" *ngIf="element.EndtShortCode=='850'">
+                        <p-selectButton name="financialCoverEndt" [options]="getOptions(element)" [(ngModel)]="endorsementId"  [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" optionLabel="EndorsementDesc" optionValue="EndtType" 
+                            class="fill-w-w" styleClass="fill-w-w" />&nbsp;&nbsp;
+                        <!-- <div class="custom-control custom-radio custom-control-inline p-2" style="cursor: pointer !important;">
+                            <input type="radio" class="input-form-control" id="customRadio{{element.EndtType.toString()}}" name="example" [value]="element.EndtType" [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" />&nbsp;
+                            <label class="input-form-label spancommon span_font_size mt-2" for="customRadio{{element.EndtType.toString()}}">{{ element.EndorsementDesc }}</label>
+                        </div> -->
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <div class="grid customHeader p-2">
+            <div class="spancommon span_font_size" style="color: #fff;font-weight:600;">
+                Other Endorsement
+             </div>
+        </div>
+        <div class="grid mt-2"  style="margin-left: 10px;margin-right: 10px;">
+            <ng-container *ngFor="let element of financialList;let i=index">
+                <div class="col-12 md:col-2 lg:col-2 xl:col-2 p-1" *ngIf="element.EndtShortCode!='42' && element.EndtShortCode!='842' && element.EndtShortCode!='852' && element.EndtShortCode!='851' && element.EndtShortCode!='850' && element.EndtTypeDesc!='Add AddOn Covers'">
+                    <ng-container *ngIf="element.EndtShortCode!='42' && element.EndtShortCode!='842'">
+                        <p-selectButton name="financialCoverEndt" [options]="getOptions(element)" [(ngModel)]="endorsementId"  [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" optionLabel="EndorsementDesc" optionValue="EndtType" 
+                            class="fill-w-w" styleClass="fill-w-w" />&nbsp;&nbsp;
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</p-accordionTab>
+<p-accordionTab header="Non-Financial" >
+    <div class="grid mt-2" style="margin-left: 10px;margin-right: 10px;">
+        <ng-container *ngIf="nonFinancialList.length!=0">
+            <ng-container *ngFor="let element of nonFinancialList">
+                <div class="col-12 md:col-2 lg:col-2 xl:col-2 p-1"  *ngIf="element.EndtShortCode!='42' && element.EndtShortCode!='842'">
+                    <ng-container *ngIf="element.EndtShortCode!='42' && element.EndtShortCode!='842'">
+                        <p-selectButton name="NonfinancialCoverEndt" [options]="getOptions(element)" [(ngModel)]="endorsementId"  [checked]="checkEndorseSelection(element)" (onChange)="onChangeEndorsement(element)" optionLabel="EndorsementDesc" optionValue="EndtType" 
+                            class="fill-w-w" styleClass="fill-w-w" />&nbsp;&nbsp;
+                    </ng-container>
+                </div>
+                <!-- <div class="col-md-6 col-lg-6 col-xl-6">
+                    <div class="input-control-container">
+                        <div class="input-form-radio-box">
+                            <div class="radio-toolbar">
+                                <input id="nonFinancialCustom{{element.EndtType.toString()}}" type="radio" name="example" (onChange)="onChangeEndorsement(element)" [(ngModel)]="endorsementId" [value]="element.EndtType">
+                                <label for="nonFinancialCustom{{element.EndtType.toString()}}" class="yes">{{
+                                    element.EndorsementDesc}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="nonFinancialList.length==0">
+            <div class="text-center">
+                <span>No Endorsement Available</span>
+            </div>
+        </ng-container>
+    
+    </div>
+</p-accordionTab>
+<p-accordionTab header="Cancellation Of Policy" *ngIf="checkCancellation()">
+        <p-radioButton 
+        name="Yes" 
+        value="Y" 
+        (change)="onChangeCancelYN()" [(ngModel)]="cancelYN"
+        inputId="ingredient1"  />
+    <label for="ingredient1" class="ml-2">
+       Yes
+    </label>
+    <p-radioButton 
+    name="No" 
+    value="N" 
+    (change)="onChangeCancelYN()" [(ngModel)]="cancelYN"
+    inputId="ingredient2" />
+<label for="ingredient2" class="ml-2">
+    No
+</label>
+</p-accordionTab>
+</p-accordion>
+
+<div class="grid mt-1" *ngIf="cancelYN=='Y' || selectedEndorsement">
+    <div class="lg:col-6 md:col-6 col-12">
+        <label for="username">Effective Date</label>
+        <p-calendar class="w-full " styleClass="w-full"  [minDate]="minDate" [(ngModel)]="effectiveDate"
+            dateFormat="dd/mm/yy" placeholder="Select Effective Date">
+        </p-calendar>
+        <div class="input-form-error" *ngIf="effectiveError">
+            <div class="error-text  text-danger">
+                <span class="spancommon span_font_size">Please Enter Effective Date</span>
+            </div>
+        </div>
+        <div class="input-form-error" *ngIf="effectivePassError">
+            <div class="error-text  text-danger">
+                <span class="spancommon span_font_size">Future Date Only Allowed</span>
+            </div>
+        </div>
+    </div>
+    
+        <div class="lg:col-6 md:col-6 col-12">
+            <label for="textarea">Remarks</label>
+            <textarea  id="textarea" [(ngModel)]="remarks"
+            rows="2"  cols="8"  pInputTextarea class="w-full" maxlength="500"></textarea> 
+            <div class="input-form-error" *ngIf="remarksError">
+                <div class="error-text  text-danger">
+                    <span class="spancommon span_font_size">Please Enter Remarks</span>
+                </div>
+            </div>
+        </div>
+    
+</div>
+
+<div class="flex justify-content-center mt-3" >
+    <p-button  styleClass="p-button-outlined" label="<<Back"
+        size="small" (click)="ongetBack()" routerLinkActive="router-link-active" ></p-button>&nbsp;
+    <p-button label="Proceed" *ngIf="selectedEndorsement || cancelYN=='Y'" (click)="onProceed()" size="small" ></p-button>
+</div>
+</div>

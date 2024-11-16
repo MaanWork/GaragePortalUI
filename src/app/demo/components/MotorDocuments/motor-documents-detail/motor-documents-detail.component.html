@@ -1,0 +1,865 @@
+<div class="card"> 
+    <div class="card justify-content-center">
+    <div class="grid ">
+        <div class="col-12 sm:col-3 md:col-3 ">
+            <h5>Policy No</h5>
+            {{PolicyNo}}
+        </div>
+        <div class="col-12 sm:col-3 md:col-3 ">
+            <h5>Customer Name</h5>
+            {{CustomerName}}
+        </div>
+        <div class="col-12 sm:col-3 md:col-3 ">
+            <h5>Product Name</h5>
+            {{ProductName}}
+        </div>
+        <div class="col-12 sm:col-3 md:col-3 ">
+            <h5>Quote No</h5>
+            {{quoteNo}}
+        </div>
+    </div>
+</div>
+<p-accordion [activeIndex]="0">
+    <p-accordionTab header="CustomerInfo" *ngFor="let Cus of customerInfo">
+        <p-tabView>
+            <p-tabPanel header="Personal Details">
+                    <div class="grid">
+                        <div class="col-12 sm:col-3 md:col-3">
+                            <h5>Mobile Code</h5>
+                        <b class="moto-text"> {{Cus.MobileCode1}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Mobile No</h5>
+                            <b class="moto-text">   {{Cus.MobileNo1}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>City</h5>
+                            <b class="moto-text">   {{Cus.CityName}}</b>
+                        </div>
+        
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Gender</h5>
+                            <b class="moto-text">  {{Cus.Gender}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3">
+                            <h5>Occupation</h5>
+                            <b class="moto-text">  {{Cus.Occupation}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Nationality</h5>
+                            <b class="moto-text">  {{Cus.Nationality}}</b>
+                        </div>
+        
+                        <div class="col-12 sm:col-3 md:col-3">
+                            <h5>Date Of Birth</h5>
+                            <b class="moto-text"> {{Cus.DobOrRegDate}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>WhatsApp Code</h5>
+                            <b class="moto-text">  {{Cus.WhatsappcodeDesc}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>WhatsApp No</h5>
+                            <b class="moto-text">  {{Cus.WhatsappNo}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>{{Cus.IdTypeDesc}}</h5>
+                            <b class="moto-text">   {{Cus.IdNumber}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Prefered Notification</h5>
+                            <b class="moto-text">  {{Cus.PreferredNotification}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Policy HolderType</h5>
+                            <b class="moto-text">  {{Cus.PolicyHolderTypeDesc}}</b> 
+                        </div>
+                    </div>
+            </p-tabPanel>
+            <p-tabPanel header="Additional Information">
+                <div class="grid">
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>LoginId</h5>
+                        <b class="moto-text"> {{Cus.LoginId}}    </b>    
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>ApplicationId</h5>
+                        <b class="moto-text"> {{Cus.ApplicationId}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Source Type</h5>
+                        <b class="moto-text">  {{Cus.SourceType}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Customer Code</h5>
+                        <b class="moto-text"> {{Cus.CustomerCode}}  </b>     
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>CustomerCodeName</h5>
+                        <b class="moto-text">  {{Cus?.CustomerCodeName}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Division</h5>
+                        <b class="moto-text">  {{Cus.Division}}</b>
+                    </div>
+                    <div class="col-12 ">
+                        <h5>Email</h5>
+                        <b class="moto-text"> {{Cus.Email}} </b> 
+                    </div>
+                </div>
+            </p-tabPanel>
+           
+        </p-tabView> 
+    </p-accordionTab>
+    <p-accordionTab header="Quote Info">
+        <p-tabView *ngIf="productId != '4'">
+            <p-tabPanel header="Customer Details">
+               <div class="grid">
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Customer Code</h5>
+                        <b class="moto-text">{{ViewRisk?.CustomerCode}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Customer Name</h5>
+                        <b class="moto-text">{{ViewRisk?.CustomerCodeName}}</b>
+                    </div>
+               </div>
+            </p-tabPanel>
+            <p-tabPanel header="Broker Details">
+                <div class="grid">
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Login Id</h5>
+                         <b class="moto-text">{{ViewRisk?.Loginid}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Quote No </h5>
+                         <b class="moto-text">{{quoteNo}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Reference No</h5>
+                        <b class="moto-text">{{ReferenceNo}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Exchange Rate  </h5>
+                        <b class="moto-text">{{ViewRisk?.ExchangeRate}}</b>
+                    </div>
+                </div>
+             </p-tabPanel>
+             <p-tabPanel header="Integration">
+                <p-tabView>
+                <p-tabPanel *ngIf="productId=='5'" header="Tira Integration">
+                    <div class="grid">
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Status</h5>
+                            <b class="moto-text">{{ViewRisk?.TirraIntegrationStatus}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Sticker No</h5>
+                            <b class="moto-text">{{ViewRisk?.StrickerNo}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                           <h5>CoverNote No </h5>
+                           <b class="moto-text">{{ViewRisk?.CoverNoteNo}}</b>
+                       </div>
+                   </div>
+                 </p-tabPanel>
+                 <p-tabPanel header="Premia Integration">
+                    <div class="grid">
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Status</h5>
+                            <b class="moto-text">{{ViewRisk?.PremiaIntegrationStatus}}</b>
+                        </div>
+                   </div>
+                 </p-tabPanel>
+                </p-tabView>
+             </p-tabPanel>
+             <p-tabPanel header="Payment Details">
+                <div class="grid">
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Payment Status</h5>
+                         <b class="moto-text">{{ViewRisk?.PaymentStatus}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Payment Mode</h5>
+                         <b class="moto-text">{{ViewRisk?.PaymentMode}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Credit No </h5>
+                        <b class="moto-text">{{ViewRisk?.CreditNo}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Debit No </h5>
+                        <b class="moto-text">{{ViewRisk?.DebitNoteNo}}</b>
+                    </div>
+                </div>
+             </p-tabPanel>
+             <p-tabPanel header="Policy Details">
+                <div class="grid">
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Policy No</h5>
+                         <b class="moto-text">{{ViewRisk?.PolicyNo}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Entry Date</h5>
+                         <b class="moto-text">{{ViewRisk?.InceptionDate}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Expiry Date</h5>
+                        <b class="moto-text">{{ViewRisk?.ExpiryDate}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Debit No</h5>
+                        <b class="moto-text">{{ViewRisk?.DebitNoteNo}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Created Date</h5>
+                        <b class="moto-text">{{ViewRisk?.QuoteCreatedDate}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Policy Period</h5>
+                        <b class="moto-text">{{ViewRisk?.PolicyPeriod}}</b>
+                    </div>
+                </div>
+             </p-tabPanel>
+             <p-tabPanel header="Commission Details">
+                <div class="grid">
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>PremiumLc</h5>
+                         <b class="moto-text">{{ViewRisk?.OverallPremiumLc}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                         <h5>Commission Percentage</h5>
+                         <b class="moto-text">{{ViewRisk?.CommissionPercentage}}</b>
+                     </div>
+                     <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Commission</h5>
+                        <b class="moto-text">{{ViewRisk?.Commission}}</b>
+                    </div>
+                    <div class="col-12 sm:col-3 md:col-3 ">
+                        <h5>Vat Commission </h5>
+                        <b class="moto-text">{{ViewRisk?.VatCommission}}</b>
+                    </div>
+                </div>
+             </p-tabPanel>
+        <p-tabPanel header="Referral Details">
+            <div class="grid">
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                     <h5>Referral Status</h5>
+                     <b class="moto-text">{{ViewRisk?.ReferralStatus}}</b>
+                 </div>
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                     <h5>Referral Remarks</h5>
+                     <b class="moto-text">{{ViewRisk?.ReferralRemarks}}</b>
+                 </div>
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Admin Remarks</h5>
+                    <b class="moto-text">{{ViewRisk?.AdminRemarks}}</b>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Enodorsement Details">
+            <div class="grid">
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                     <h5>Endt Type</h5>
+                     <b class="moto-text">{{ViewRisk?.EndtType}}</b>
+                 </div>
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                     <h5>Endt TypeDesc</h5>
+                     <b class="moto-text">{{ViewRisk?.EndtTypeDesc}}</b>
+                 </div>
+                 <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>EndtPremium</h5>
+                    <b class="moto-text">{{ViewRisk?.EndtPremium}}</b>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    </p-accordionTab>
+    <p-accordionTab  header="Risk Details">
+        <div class="grid">
+            <div class="col-12 lg:col-4 md:col-4" *ngIf="productId=='14'">
+                    <p-card header="Employee Liability">
+                        <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                <b>Occupation</b>
+                                </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                    {{riskDetails.OccupationTypeDesc}}
+                                </p>
+                            </div>
+                            </div>
+                            <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                <b>Sum Insured</b>
+                                </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                    {{riskDetails.EmpLiabilitySi}}
+                                </p>
+                            </div>
+                            </div>
+                        
+                    </p-card>
+            </div>
+            <div class="col-12 lg:col-4 md:col-4" *ngIf="productId=='1'">
+                <p-card header="Burglary">
+                    <div class="grid justify-content-between ">
+                        <div class="col-12 lg:col-2 md:col-2"></div>
+                        <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                            <b>SumInsured</b>
+                            </p>
+                        </div>
+                        <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                                {{riskDetails.BurglarySi}}
+                            </p>
+                        </div>
+                        </div>
+                    </p-card>
+                </div> 
+            </div>
+       
+    </p-accordionTab>
+    <p-accordionTab *ngIf="productId=='5'" header="Vehicle Info">
+        <p-tabView>
+            <p-tabPanel header="Vehicle Information">
+                <p-table [value]="RopVechileDetails" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Registration No</th>
+                            <th>Chassis Number</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Engine Number</th>
+                            <th>Vehicle Type</th>
+                            <th>Motor Desc</th>
+                            <th>Motor Category</th>
+                            <th>Policy Type</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-VehicleInfo>
+                        <tr>
+                            <td>{{ VehicleInfo.RegistrationNo }}</td>
+                            <td>{{ VehicleInfo.ChassisNumber }}</td>
+                            <td>{{ VehicleInfo.Make }}</td>
+                            <td>{{ VehicleInfo.Model }}</td>
+                            <td>{{ VehicleInfo.EngineNumber }}</td>
+                            <td>{{ VehicleInfo.VehicleType }}</td>
+                            <td>{{ VehicleInfo.MotorDesc }}</td>
+                            <td>{{ VehicleInfo.MotorCategory }}</td>
+                            <td>{{ VehicleInfo.PolicyType }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+            <p-tabPanel header="Additional Information">
+                <p-table [value]="RopVechileDetails" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Registration No</th>
+                            <th>Fuel Type</th>
+                            <th>Vehicle Usage</th>
+                            <th>Color</th>
+                            <th>Manufacture Year</th>
+                            <th>Seating Capacity</th>
+                            <th>Gross Weight</th>
+                            <th>Tare Weigh</th>
+                            <th>Sum Insured</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-VehicleAddInfo>
+                        <tr>
+                            <td>{{ VehicleAddInfo.RegistrationNo }}</td>
+                            <td>{{ VehicleAddInfo.FuelType }}</td>
+                            <td>{{ VehicleAddInfo.VehicleUsage }}</td>
+                            <td>{{ VehicleAddInfo.Color }}</td>
+                            <td>{{ VehicleAddInfo.YearOfManufacture }}</td>
+                            <td>{{ VehicleAddInfo.SeatingCapacity }}</td>
+                            <td>{{ VehicleAddInfo.GrossWeight }}</td>
+                            <td>{{ VehicleAddInfo.TareWeight }}</td>
+                            <td>{{ VehicleAddInfo.SumInsured | commaseparator }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+        </p-tabView>
+    </p-accordionTab>
+
+    <p-accordionTab *ngIf="productId=='59'" header="Domestic Details">
+        <div class="grid">
+            <!-- <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="Building Details">
+                        <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                               <b>All Risk</b>
+                            </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                                {{AllRiskSumInsured}}
+                            </p>
+                        </div>
+                        </div>
+                    </p-card>
+            </div> -->
+            <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="Contents Risk">
+                        <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                               <b>Contents Risk</b>
+                            </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                                {{ContentSumInsured}}
+                            </p>
+                        </div>
+                        </div>
+                    </p-card>
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="All Risk">
+                        <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                               <b>All Risk</b>
+                            </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                            <p>
+                                {{AllRiskSumInsured}}
+                            </p>
+                        </div>
+                        </div>
+                    </p-card>
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="Personal Liability">
+                        <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                <b>Occupation</b>
+                                </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                    {{PersonalLiability.OccupationTypeDesc}}
+                                </p>
+                            </div>
+                            </div>
+                            <div class="grid justify-content-between ">
+                            <div class="col-12 lg:col-2 md:col-2"></div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                <b>Sum Insured</b>
+                                </p>
+                            </div>
+                            <div class="col-12 lg:col-4 md:col-4">
+                                <p>
+                                    {{PersonalLiability.SumInsured}}
+                                </p>
+                            </div>
+                            </div>
+                        
+                    </p-card>
+            </div>
+            <!-- <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="Electronic Equipment">
+                        <p class="m-0">
+                        </p>
+                        </p-card>
+              
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+                    <p-card header="Personal Accident">
+                        <p class="m-0">
+                        </p>
+                    </p-card>
+            </div> -->
+        </div>
+       
+    </p-accordionTab>
+    <p-accordionTab header="Payment">
+        <p-tabView>
+            <p-tabPanel header="Payment Details">
+                <p-table [value]="PaymentInfo" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Net Premium ({{Currency}})</th>
+                            <th>Payment Status</th>
+                            <th>Merchant RefNo</th>
+                            <th>Date And Time</th>
+                            <th>Amount</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-PayInfo>
+                        <tr>
+                            <td>{{ PayInfo.Premium }}</td>
+                            <td>{{ PayInfo.PaymentStatus }}</td>
+                            <td>{{ PayInfo.MerchantReference }}</td>
+                            <td>{{ PayInfo.EntryDate }}</td>
+                            <td>{{ PayInfo.PremiumLc|commaseparator }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+            <p-tabPanel [header]="tittlepay[0]?.tittle + ' Details'">
+                <p-table [value]="PaymentInfo" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Payment Id</th>
+                            <th>Payee name</th>
+                            <th>Amount</th>
+                            <div *ngIf="PaymentInfo.PaymentTypedesc=='Cheque'">
+                            <ng-container *ngIf="PaymentInfo.PaymentChequeRes.length!=0">
+                            <th>Payment Id</th>
+                            <th>Cheque Date</th>
+                            <th>Bank Name</th>
+                            <th>Cheque No</th>
+                            <th>Micr No</th>
+                            </ng-container>
+                            </div>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-PayInfoDetails>
+                        <tr>
+                            <td>{{ PayInfoDetails.PaymentId }}</td>
+                            <td>{{ PayInfoDetails.PayeeName }}</td>
+                            <td>{{ PayInfoDetails.PremiumLc|commaseparator }}</td>
+                            <div *ngIf="PaymentInfo.PaymentTypedesc=='Cheque'">
+                            <ng-container *ngIf="PaymentInfo.PaymentChequeRes.length!=0">
+                            <td>{{ PayInfoDetails.PaymentId }}</td>
+                            <td>{{ PayInfoDetails.PaymentChequeRes.ChequeDate }}</td>
+                            <td>{{ PayInfoDetails.PaymentChequeRes.BankName }}</td>
+                            <td>{{ PayInfoDetails.PaymentChequeRes.ChequeNo }}</td>
+                            <td>{{ PayInfoDetails.PaymentChequeRes.MicrNo }}</td>
+                            </ng-container>
+                            </div>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+        </p-tabView>
+    </p-accordionTab>
+    <p-accordionTab header="Cover Details">
+        <p-tabView>
+            <p-tabPanel header="Opted Cover">
+                <ng-container *ngFor="let cuss of PremiumInfo">
+                    <h4>Section Name:{{cuss.SectionName}}</h4>
+                <p-table [value]="PremiumInfoList" [tableStyle]="{ 'min-width': '50rem' }">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>CoverName</th>
+                            <th>SumInsured</th>
+                            <th>IncludedTax</th>
+                            <th>Before</th>
+                            <th>AfterDiscount</th>
+                            <th>Excess</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-CoverInfo >
+                        <tr *ngIf="CoverInfo.UserOpt=='N'">
+                            <td>{{CoverInfo.CoverName}}</td>
+                            <td *ngIf="CoverInfo.SumInsured!=0">{{ CoverInfo.SumInsured |commaseparator }}</td>
+                             <td *ngIf="CoverInfo.SumInsured==0">0</td>
+                            <td>{{ CoverInfo.PremiumIncludedTax|commaseparator }}</td>
+                            <td *ngIf="CoverInfo.PremiumBeforeDiscount!=0">{{ CoverInfo.PremiumBeforeDiscount|commaseparator }}</td>
+                            <td *ngIf="CoverInfo.PremiumBeforeDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                            <td *ngIf="CoverInfo.PremiumAfterDiscount!=0">{{ CoverInfo.PremiumAfterDiscount|commaseparator }}</td>
+                            <td *ngIf="CoverInfo.PremiumAfterDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                           <td>{{CoverInfo.ExcessAmount}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-container>
+            </p-tabPanel>
+                <p-tabPanel header="NonOpted Covers">
+                    <ng-container *ngFor="let cuss of PremiumInfo">
+                        <h4>Section Name:{{cuss.SectionName}}</h4>
+                    <p-table [value]="PremiumInfoList" [tableStyle]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>CoverName</th>
+                                <th>SumInsured</th>
+                                <th>IncludedTax</th>
+                                <th>Before</th>
+                                <th>AfterDiscount</th>
+                                <th>Excess</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-CoverInfo >
+                            <tr *ngIf="CoverInfo.UserOpt=='N'">
+                                <td>{{CoverInfo.CoverName}}</td>
+                                <td *ngIf="CoverInfo.SumInsured!=0">{{ CoverInfo.SumInsured |commaseparator }}</td>
+                                 <td *ngIf="CoverInfo.SumInsured==0">0</td>
+                                <td>{{ CoverInfo.PremiumIncludedTax|commaseparator }}</td>
+                                <td *ngIf="CoverInfo.PremiumBeforeDiscount!=0">{{ CoverInfo.PremiumBeforeDiscount|commaseparator }}</td>
+                                <td *ngIf="CoverInfo.PremiumBeforeDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                                <td *ngIf="CoverInfo.PremiumAfterDiscount!=0">{{ CoverInfo.PremiumAfterDiscount|commaseparator }}</td>
+                                <td *ngIf="CoverInfo.PremiumAfterDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                               <td>{{CoverInfo.ExcessAmount}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
+                </p-tabPanel>
+            </p-tabView>
+    </p-accordionTab>
+    <p-accordionTab *ngIf="insuranceId=='100004' && productId=='5'" header="Tira Details">
+        <ng-container *ngIf="tiradetails.length!=0">
+            <p-tabView>
+                <p-tabPanel header="Tira Details">
+                    
+                        <div class="grid" *ngFor="let pay of tiradetails">
+                            <div class="col-12 sm:col-3 md:col-3">
+                                <h5>Request Id</h5>
+                            <b class="moto-text">  {{pay?.RequestId}}</b>
+                            </div>
+                            <div class="col-12 sm:col-3 md:col-3 ">
+                                <h5>Response Id</h5>
+                                <b class="moto-text"> {{pay?.ResponseId}}</b>
+                            </div>
+                            <div class="col-12 sm:col-3 md:col-3 ">
+                                <h5>Entry Date</h5>
+                                <b class="moto-text"> {{pay?.EntryDate}}</b>
+                            </div>
+                        </div>
+                </p-tabPanel>
+                <p-tabPanel header="History">
+                    <div class="grid">
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Status</h5>
+                            <b class="moto-text">{{pay.StatusDesc}}</b>    
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>Status Code</h5>
+                            <b class="moto-text">{{pay.StatusCode}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>AcknowledgementId</h5>
+                            <b class="moto-text">{{pay?.AcknowledgementId}}</b>
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>RequestFilePath</h5>
+                            <b class="moto-text"><a 
+                                style="text-decoration:underline;color: rgb(18, 174, 236);cursor: pointer;" 
+                                (click)="onDownload(pay?.RequestFilePath)">{{pay?.RequestFilePath}}</a></b>         
+                        </div>
+                        <div class="col-12 sm:col-3 md:col-3 ">
+                            <h5>ResponseFilePath</h5>
+                            <b><a style="text-decoration:underline;color: rgb(18, 174, 236);cursor: pointer;" 
+                            (click)="onDownload(pay?.ResponseFilePath)">{{pay?.ResponseFilePath}}</a></b>
+                        </div>
+                    </div>
+                </p-tabPanel>
+               
+            </p-tabView> 
+        </ng-container>
+            <ng-container *ngIf="tiradetails.length==0">
+                No Data Found 
+          </ng-container>
+    </p-accordionTab>
+    
+    <p-accordionTab header="Document">
+        <p-tabView>
+            <p-tabPanel header="Common Documents">
+                <ng-container *ngIf="DocumentInfo && CommonDoc.length > 0">
+                    <p-table [value]="CommonDoc" [style]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>S.No</th>
+                                <th>FileName</th>
+                                <th>Document Type</th>
+                                <th>View</th>
+                                <th>Download</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-Common let-i="rowIndex">
+                            <tr>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ Common.DocumentFile }}</td>
+                                <td>{{ Common.DocumentDescription }}</td>
+                                <td><a class="mx-1" data-toggle="tooltip" data-placement="top" title="View" (click)="onViewCommonDocument(Common)"><i class="fas fa-eye mx-1"></i></a></td>
+                                <td><a class="mx-1" data-toggle="tooltip" data-placement="top" title="Download" (click)="onCommonDocumentDownload(Common)"><i class="fas fa-download mx-1"></i></a></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-container *ngIf="!CommonDoc || CommonDoc.length === 0">
+                    No Data Found
+                </ng-container>
+            </p-tabPanel>
+    
+            <p-tabPanel [header]="vehicleDocuments()">
+                <ng-container *ngIf="DocumentInfo.length!=0">
+                    <p-table [value]="DocumentInfo" [style]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>S.No</th>
+                                <th>FileName</th>
+                                <th>Location</th>
+                                <th>Section</th>
+                                <th>Chassis Number</th>
+                                <th>Document Type</th>
+                                <th>View</th>
+                                <th>Download</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-Common let-i="rowIndex">
+                            <tr>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ Common.DocumentFile }}</td>
+                                <td>{{ Common.LocationName }}</td>
+                                <td>{{ Common.SectionName }}</td>
+                                <td>{{ Common.Id }}</td>
+                                <td>{{ Common.DocumentTypeDesc }}</td>
+                                <td><a class="mx-1" data-toggle="tooltip" data-placement="top" title="View" (click)="onViewCommonDocument(Common)"><i class="fas fa-eye mx-1"></i></a></td>
+                                <td><a class="mx-1" data-toggle="tooltip" data-placement="top" title="Download" (click)="onCommonDocumentDownload(Common)"><i class="fas fa-download mx-1"></i></a></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-container *ngIf="DocumentInfo.length == 0">
+                    No Data Found DocumentInfo
+                </ng-container>
+            </p-tabPanel>
+            <!-- <p-tabPanel header="Header III">
+                <p>
+                    At vero eos et accusamus et iusto odio dignissimos...
+                </p>
+            </p-tabPanel> -->
+        </p-tabView>
+    </p-accordionTab>
+    <p-accordionTab header="Additional Info">
+            <p-tabView>
+                <ng-container *ngIf="productId=='5'">
+                <p-tabPanel header="Driver Details">
+                    <ng-container *ngIf="DriverInfo">
+                    <p-table [value]="DriverInfo" [style]="{ 'min-width': '50rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Driver</th>
+                                <th>Driver Dob</th>
+                                <th>Driver Type</th>
+                                <th>License No</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-Driver >
+                            <tr>
+                                <td>{{ Driver.DriverName }}</td>
+                                <td>{{ Driver.DriverDob }}</td>
+                                <td>{{getDriverName(Driver.DriverType)}}</td>
+                                <td>{{ Driver.LicenseNo }}</td>
+                             
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-container *ngIf="DriverInfo == null">
+                    No Data Found 
+                </ng-container>
+                </p-tabPanel>
+                </ng-container>
+                <ng-container *ngIf="productId=='5'">
+                <p-tabPanel header="Additional Information">
+                    <ng-container *ngIf="accessoriesList">
+                        <p-table [value]="accessoriesList" [style]="{ 'min-width': '50rem' }">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Accessories</th>
+                                    <th>Serial No</th>
+                                    <th>Sum Insured</th>
+                                    <th>Chassis No</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-acc >
+                                <tr>
+                                    <td>{{acc.ContentRiskDesc}}</td>
+                                    <td>{{ acc.SerialNoDesc }}</td>
+                                    <td>{{acc.SumInsured}}</td>
+                                    <td>{{getLocationName(acc.RiskId)}}</td>
+                                 
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </ng-container>
+                    <ng-container *ngIf="accessoriesList == null">
+                        No Data Found 
+                    </ng-container>
+                </p-tabPanel>
+            </ng-container>
+            <ng-container *ngIf="productId!='5'">
+                <p-tabPanel header="Additional Information">
+                    <ng-container *ngIf="accessoriesList">
+                        <p-table [value]="accessoriesList" [style]="{ 'min-width': '50rem' }">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Accessories</th>
+                                    <th>Serial No</th>
+                                    <th>Sum Insured</th>
+                                    <th>Chassis No</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-acc >
+                                <tr>
+                                    <td>{{acc.ContentRiskDesc}}</td>
+                                    <td>{{ acc.SerialNoDesc }}</td>
+                                    <td>{{acc.SumInsured}}</td>
+                                    <td>{{getLocationName(acc.RiskId)}}</td>
+                                 
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </ng-container>
+                    <ng-container *ngIf="accessoriesList == null">
+                        No Data Found 
+                    </ng-container>
+                </p-tabPanel>
+            </ng-container>
+            <ng-container *ngIf="productId=='5'">
+                <p-tabPanel header="Collateral Details">
+                    <ng-container *ngIf="risk">
+                        <p-table [value]="risk" [style]="{ 'min-width': '50rem' }">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Collateral Name</th>
+                                    <th>Bank Name</th>
+                                    <th>CollateralYn</th>
+                                    <th>First LossPayee</th>
+                                    <th>BrowerType</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-acc >
+                                <tr>
+                                    <td *ngIf="acc.BorrowerType=='2'">{{acc.CollateralName}}</td>
+                                    <td *ngIf="acc.BorrowerType=='1'">{{acc.CollateralName}}</td>
+                                    <td>{{acc.CollateralYn}}</td>
+                                    <td>{{acc.FirstLossPayee}}</td>
+                                    <td>{{acc.BorrowerTypeDesc}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </ng-container>
+                    <ng-container *ngIf="risk == null">
+                        No Data Found 
+                    </ng-container>
+                </p-tabPanel>
+            </ng-container>
+            </p-tabView>
+    </p-accordionTab>
+</p-accordion>
+</div>

@@ -1,0 +1,657 @@
+<div class="card">
+  <div class="grid">
+    <div class="col-12 sm:col-6 md:col-4">
+      <h3 class="mr-3">{{ 'QUOTEGRID.Quotation' | translate}}</h3>
+      <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+    </div>
+    <div class="col-12 sm:col-6 md:col-8">
+      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+        <!-- <span class="p-input-icon-right mr-3 mb-3">
+          <i class="pi pi-search"></i>
+          <input type="text" placeholder="Search" pInputText/>
+        </span> -->
+        <!-- <p-button icon="pi pi-cloud-download" label="Export" styleClass="p-button-outlined" class="mr-3" size="small"></p-button> -->
+        <p-button (click) = "showSearchForm('change')" icon="pi pi-plus" [label]="'QUOTEGRID.AddNewQuote' | translate" severity="warning" size="small"></p-button>
+      </div>
+    </div>
+  </div>
+  
+  <p-divider></p-divider>
+  
+  <p-tabView [activeIndex]="tabIndex"  (onChange)="onTabClicked($event)">
+    <p-tabPanel [header]="'QUOTEGRID.Existing' | translate">
+      <div class="flex justify-content-end mb-4">
+        <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+        <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+      </div>
+      <div class="grid mb-2 mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+          <label for="username">{{'QUOTEGRID.Broker' | translate}}</label><span class="text-danger">*</span>
+          <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getExistingQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'QUOTEGRID.Selectt' | translate">
+          </p-dropdown>
+        </div>
+      </div>
+      <ng-container *ngIf="finalQuoteData.length!=0">
+        <p-table #dtEmployeeExist *ngIf="tableView == 'table' else cardTableView" [value]="finalQuoteData" 
+        [tableStyle]="{'min-width':'50rem'}" [paginator]="false" rows="5" [totalRecords]="totalQuoteRecords" dataKey="RequestReferenceNo" expanded
+        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']">
+          <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                  </span>
+              </div>
+              </div>
+              
+          </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{checkHeaderName(column) | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <tr> 
+            <th *ngFor="let col of cols"> 
+                <input pInputText type="text" (input)= 
+                "tableref.filter($event.target.value, col.field, col.filterMatchMode)" /> 
+            </th> 
+          </tr> 
+          <ng-template pTemplate="body" let-customer let-expanded="expanded">
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td *ngIf="productId=='5' || productId=='46' || productId=='29'">
+                <a href="#" [pRowToggler]="customer">
+                <i [ngClass]="expanded ? 'pi pi-minus' : 'pi pi-plus'" (click)="onInnerData(customer)"></i>
+              </a>
+            </td>
+              <td>{{ customer.QuoteNo }}</td>
+              <td>{{ customer.RequestReferenceNo }}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+              <td>{{ customer.OverallPremiumLc }}</td>
+              <td>{{ customer.Currency }}</td>
+              <td>
+                <span class="p-buttonset">
+                  <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                  <button pButton pRipple *ngIf="customer.QuoteNo" icon="pi pi-cloud-download" title="Draft" (click)="onGetDraft(customer)" class="p-button-outlined"></button>
+                  <button pButton pRipple icon="pi pi-times" (click)="onRejects(customer)" title="Reject" class="p-button-outlined"></button>
+                  <button pButton pRipple icon="pi pi-envelope" title="Mail" (click)="onMail(customer)" class="p-button-outlined"></button>
+                  <button pButton pRipple icon="pi pi-inbox" title="SMS" (click)="onSms(customer)"  class="p-button-outlined"></button>
+                  
+                  <button pButton pRipple icon="pi pi-user" title="Followup" (click)="onFollowup(customer)" class="p-button-outlined"></button>
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="rowexpansion" let-customer let-columns="columns">
+            <tr>
+                <td colspan="10">
+                    <div class="p-p-3">
+                        <p-table [value]="MotorList" dataKey="name">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width:4rem">{{'QUOTEGRID.VehicleID' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.RegistrationNo' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.ChassisNo' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.PolicyType' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.Make' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.Model' | translate}}</th>
+                                    <th style="width:4rem">{{'QUOTEGRID.Premium' | translate}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-customers>
+                                <tr>
+                            
+            <td>{{customers.Vehicleid}}</td>
+            <td>{{customers.Registrationnumber}}</td>
+            <td>{{customers.Chassisnumber}}</td>
+            <td>{{customers.PolicyTypeDesc}}</td>
+            <td>{{customers.Vehcilemodel}}</td>
+            <td>{{customers.Vehiclemake}}</td>
+            <td>{{customers.OverallPremiumFc
+            }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+        
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        </p-table>
+        <div style="padding-right: 15px !important;background-color: transparent !important;" class="grid d-flex flex-warp justify-content-center mt-2" *ngIf="nextSection && (tableView == 'table')"> 
+          <div>
+              <ul class="pagination" >
+                <li style="cursor:pointer !important" *ngIf="startCount!=1" (click)="onPreviousPage()" ><a>&lt; Previous</a></li>
+                <li style="cursor:not-allowed !important" *ngIf="startCount==1" ><a style="cursor:not-allowed !important">&lt; Previous</a></li>
+                <li style="margin-top: 15px !important;">{{startCount}}&nbsp;-&nbsp;{{endCount}}&nbsp;of&nbsp;{{totalQuoteRecords}}</li>
+                <li style="cursor:pointer !important" (click)="onNextPage()" *ngIf="nextSection && checkDataIndex()"><a >Next &gt; </a></li>
+                <li style="cursor:not-allowed !important" *ngIf="!nextSection || !checkDataIndex()"><a style="cursor:not-allowed !important">Next &gt;</a></li>
+            </ul>
+          </div>
+          
+      </div>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card  mr-4" *ngFor="let quote of quoteData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                <tr class="justify-content-between">
+                  
+                    <td><b>{{'QUOTEGRID.ReferenceNo' | translate}}</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="quote.QuoteNo">
+                        <b>{{'QUOTEGRID.QuoteNo' | translate}}</b>
+                        <p>{{quote.QuoteNo}}</p>
+                      </ng-container>
+                    </td>
+                </tr>
+                <!-- <tr class="">
+                  <td >
+                    <b>Quote No</b>
+                    <p-chip [label]="quote.QuoteNo" styleClass="bg-orange-500 text-white"></p-chip>
+                  </td>
+                  <td class="text-right">
+                    <b> Reference No</b>
+                    <p class="text-teal-600"></p>
+                      {{ quote.RequestReferenceNo }}
+                  </td>
+                </tr> -->
+                <tr class="justify-content-between">
+                  <td><b>{{'QUOTEGRID.StartDate' | translate}}</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>{{'QUOTEGRID.EndDate' | translate}}</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr>
+                  <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <span class="p-buttonset">
+                      <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(quote)" title="Edit" class="p-button-outlined"></button>
+                      <button pButton pRipple icon="pi pi-times" (click)="onRejects(quote)" title="Reject" class="p-button-outlined"></button>
+                      <button pButton pRipple icon="pi pi-envelope" title="Mail" class="p-button-outlined"></button>
+                      <button pButton pRipple icon="pi pi-inbox" title="SMS" class="p-button-outlined"></button>
+                      <button pButton pRipple icon="pi pi-user" title="Followup" (click)="onFollowup(quote)" class="p-button-outlined"></button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="quoteData.length==0">
+            <div class="flex flex-wrap justify-content-center mt-2">
+                  {{ 'QUOTEGRID.NoQuoteAvailable' | translate}}
+            </div>
+      </ng-container>
+    </p-tabPanel>
+    <p-tabPanel [header]="'QUOTEGRID.Lapsed' | translate">
+      <div class="flex justify-content-end mb-4">
+        <p-button icon="pi pi-table" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+        <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+      </div>
+      <div class="grid mb-2 mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+          <label for="username">{{ 'QUOTEGRID.NoQuoteAvailable' | translate}}</label><span class="text-danger">*</span>
+          <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerlapsedCode"  [options]="brokerLapsedList" (onChange)="getLapsedQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'QUOTEGRID.Selectt' | translate">
+          </p-dropdown>
+        </div>
+      </div>
+      <ng-container  *ngIf="lapsedQuoteData.length!=0">
+        <p-table #dtEmployee *ngIf="tableView == 'table' else cardTableView" [value]="lapsedQuoteData" 
+        [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [expanded]="true"
+        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']" [rows]="5">
+        <ng-template pTemplate="caption">
+          <div class="flex flex wrap justify-content-end">
+            <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                </span>
+            </div>
+          </div>
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{checkHeaderName(column) | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer let-expanded="expanded">
+            <tr>
+              <td>
+                <a href="#" [pRowToggler]="customer" >
+                  <i [ngClass]="expanded ? 'pi pi-minus' : 'pi pi-plus'" (click)="onInnerDataLapsed(customer)"></i>
+                </a>
+              </td>
+              
+              <td>{{ customer.QuoteNo }}</td>
+              <td>{{ customer.RequestReferenceNo }}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+              <td>{{ customer.OverallPremiumLc }}</td>
+              <td>{{ customer.Currency }}</td>
+              <td>
+                <span class="p-buttonset" >
+                  <button pButton pRipple icon="pi pi-check" class="p-button-outlined" (click)="lapsedAction(customer)"></button>
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="rowexpansion" let-customer>
+            <tr>
+              <td colspan="5">
+                <div class="p-p-3">
+                  <p-table [value]="customer.LapsedList" datakey="id">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th style="width:4rem">{{'QUOTEGRID.VehicleID'}}</th>
+                        <th style="width:4rem">{{'QUOTEGRID.RegistrationNo' | translate}}</th>
+                        <th style="width:4rem">{{'QUOTEGRID.ChassisNo' | translate}}</th>
+                        <th style="width:4rem">{{'QUOTEGRID.Make' | translate}}</th>
+                        <th style="width:4rem">{{'QUOTEGRID.Model' | translate}}</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-LapsedLists>
+                      <tr>
+                        <td>{{ LapsedLists.Vehicleid }}</td>
+                        <td>{{ LapsedLists.Registrationnumber }}</td>
+                        <td>{{ LapsedLists.Chassisnumber }}</td>
+                        <td>{{ LapsedLists.Vehcilemodel }}</td>
+                        <td>{{ LapsedLists.Vehiclemake }}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+
+
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card  mr-4" *ngFor="let quote of lapsedQuoteData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                <tr class="justify-content-between">
+                  
+                    <td><b>Reference No</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p>{{quote.QuoteNo}}</p>
+                      </ng-container>
+                    </td>
+                </tr>
+                <tr class="justify-content-between">
+                  <td><b>Start Date</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>End Date</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr *ngIf="quote.OverallPremiumLc">
+                  <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <span class="p-buttonset">
+                      <button pButton pRipple icon="pi pi-check" class="p-button-outlined"></button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="lapsedQuoteData.length==0">
+          <div class="flex flex-wrap justify-content-center mt-2">
+            {{ 'QUOTEGRID.NoQuoteAvailable' | translate}}
+          </div>
+      </ng-container>
+      
+    </p-tabPanel>
+    <p-tabPanel [header]="'QUOTEGRID.Rejected' | translate">
+      <div class="flex justify-content-end mb-4">
+        <p-button icon="pi pi-table" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+        <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+      </div>
+      <div class="grid mb-2 mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+          <label for="username">{{'QUOTEGRID.Broker' | translate}}</label><span class="text-danger">*</span>
+          <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerRejectedCode"  [options]="brokerRejectedList" (onChange)="getRejectedQuotes(null,'change')"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'QUOTEGRID.Selectt' | translate">
+          </p-dropdown>
+        </div>
+      </div>
+      <ng-container *ngIf="quoteRejectedData.length!=0">
+        <p-table #dtEmployeeReject *ngIf="tableView == 'table' else cardTableView" [value]="quoteRejectedData" 
+        [tableStyle]="{'min-width':'50rem'}" [paginator]="true" 
+        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']" [rows]="5">
+          <ng-template pTemplate="caption">
+            <div class="flex flex wrap justify-content-end">
+              <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeReject.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                  </span>
+              </div>
+            </div>
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of rejectedColumns">{{checkHeaderName(column) | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer>
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+            
+              <td>{{ customer.QuoteNo }}</td>
+              <td>{{ customer.RequestReferenceNo }}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+              <td>{{ customer.OverallPremiumLc }}</td>
+              <td>{{ customer.Currency }}</td>
+              <td>{{ customer.RejectReason}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-template #cardTableView>
+          <div class="grid">
+            <div class="card  mr-4" *ngFor="let quote of quoteRejectedData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                <tr class="justify-content-between">
+                  
+                    <td><b>Reference No</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p>{{quote.QuoteNo}}</p>
+                      </ng-container>
+                    </td>
+                </tr>
+                <tr class="justify-content-between">
+                  <td><b>Start Date</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>End Date</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr>
+                  <td>
+                    <b>Rejected Reason</b>
+                    <p>{{quote.RejectReason}}</p>
+                  </td>
+                </tr>
+                
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="quoteRejectedData.length==0">
+          <div class="flex flex-wrap justify-content-center mt-2">
+            {{ 'QUOTEGRID.NoQuoteAvailable' | translate}}
+          </div>
+      </ng-container>
+    </p-tabPanel>
+    <p-tabPanel [header]="'QUOTEGRID.ShortQuote' | translate" *ngIf="insuranceId=='100019' || insuranceId=='100027' || insuranceId=='100040' || insuranceId=='100042' || insuranceId=='100004'">
+      <div class="flex justify-content-end mb-4">
+        <p-button icon="pi pi-table"  class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+        <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+      </div>
+      <div class="grid mb-2 mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+          <label for="username">{{'QUOTEGRID.Broker' | translate}}</label><span class="text-danger">*</span>
+          <p-dropdown inputId="make" class="w-full" styleClass="w-full" [(ngModel)]="brokerCode"  [options]="brokerList" (onChange)="getShortQuoteList(null,'change')"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'QUOTEGRID.Selectt' | translate">
+          </p-dropdown>
+        </div>
+      </div>
+      <ng-container *ngIf="quoteData.length!=0">
+        <p-table #dtEmployeeExist *ngIf="tableView == 'table' else cardTableView5" [value]="quoteData" 
+        [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" dataKey="RequestReferenceNo" expanded
+        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']">
+          <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                  </span>
+              </div>
+              </div>
+              
+          </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{checkHeaderName(column) | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <tr> 
+            <th *ngFor="let col of cols"> 
+                <input pInputText type="text" (input)="tableref.filter($event.target.value, col.field, col.filterMatchMode)" /> 
+            </th> 
+          </tr> 
+          <ng-template pTemplate="body" let-customer let-expanded="expanded">
+            <tr>
+              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+              <td *ngIf="productId=='5' || productId=='46' || productId=='29'">
+                <a href="#" [pRowToggler]="customer">
+                <i [ngClass]="expanded ? 'pi pi-minus' : 'pi pi-plus'" (click)="onInnerData(customer)"></i>
+              </a>
+            </td>
+              <td>{{ customer.QuoteNo }}</td>
+              <td>{{ customer.RequestReferenceNo }}</td>
+              <td>{{ customer.ClientName }}</td>
+              <td>{{ customer.PolicyStartDate }}</td>
+              <td>{{ customer.PolicyEndDate }}</td>
+              <td>{{ customer.OverallPremiumLc }}</td>
+              <td>{{ customer.Currency }}</td>
+              <td>
+                <span class="p-buttonset">
+                  <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                  <button pButton pRipple icon="pi pi-times" (click)="onRejects(customer)" title="Reject" class="p-button-outlined"></button>
+                 
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+
+
+          <ng-template pTemplate="rowexpansion" let-customer let-columns="columns">
+            <tr>
+                <td colspan="10">
+                    <div class="p-p-3">
+                        <p-table [value]="MotorList" dataKey="name">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                  <th style="width:4rem">{{'QUOTEGRID.VehicleID'}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.RegistrationNo' | translate}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.ChassisNo' | translate}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.PolicyType' | translate}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.Make' | translate}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.Model' | translate}}</th>
+                                  <th style="width:4rem">{{'QUOTEGRID.Premium' | translate}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-customers>
+                                <tr>
+                            
+            <td>{{customers.Vehicleid}}</td>
+            <td>{{customers.Registrationnumber}}</td>
+            <td>{{customers.Chassisnumber}}</td>
+            <td>{{customers.PolicyTypeDesc}}</td>
+            <td>{{customers.Vehcilemodel}}</td>
+            <td>{{customers.Vehiclemake}}</td>
+            <td>{{customers.OverallPremiumFc
+            }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+        
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        </p-table>
+        <ng-template #cardTableView5>
+          <div class="grid">
+            <div class="card  mr-4" *ngFor="let quote of quoteData">
+              <table>
+                <tr>
+                  <td><h5>{{quote.ClientName}}</h5></td>
+                </tr>
+                <tr class="justify-content-between">
+                  
+                    <td><b>Reference No</b>
+                      <p> {{ quote.RequestReferenceNo }}</p>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="quote.QuoteNo">
+                        <b>Quote No</b>
+                        <p>{{quote.QuoteNo}}</p>
+                      </ng-container>
+                    </td>
+                </tr>
+                <!-- <tr class="">
+                  <td >
+                    <b>Quote No</b>
+                    <p-chip [label]="quote.QuoteNo" styleClass="bg-orange-500 text-white"></p-chip>
+                  </td>
+                  <td class="text-right">
+                    <b> Reference No</b>
+                    <p class="text-teal-600"></p>
+                      {{ quote.RequestReferenceNo }}
+                  </td>
+                </tr> -->
+                <tr class="justify-content-between">
+                  <td><b>Start Date</b>
+                  <p>{{quote.PolicyStartDate}}</p>
+                  </td>
+                  <td class=""><b>End Date</b>
+                  <p>{{quote.PolicyEndDate}}</p></td>
+                </tr>               
+                <tr>
+                  <td>{{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <span class="p-buttonset">
+                      <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(quote)" title="Edit" class="p-button-outlined"></button>
+                      <button pButton pRipple icon="pi pi-times" (click)="onRejects(quote)" title="Reject" class="p-button-outlined"></button>
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="quoteData.length==0">
+            <div class="flex flex-wrap justify-content-center mt-2">
+              {{ 'QUOTEGRID.NoQuoteAvailable' | translate}}
+            </div>
+      </ng-container>
+    </p-tabPanel>
+  </p-tabView>
+</div> 
+
+<p-dialog [header]="'QUOTEGRID.SelectaCustomer' | translate" [(visible)]="isSearchFormVisible" [modal]="true" styleClass="w-10 md:w-8 lg:w-6"
+    [draggable]="false" [resizable]="false">
+    <div class="grid mt-2">
+        <div class="col-12 md:col-5 lg:col-5 xl:col-5">
+            <input pInputText id="username" class="w-full" styleClass="w-full" [(ngModel)]="searchValue" maxlength="100" [placeholder]="'QUOTEGRID.SearchByName/TINNo/PassportNo' | translate" />
+        </div>
+        <div class="col-12 md:col-2 lg:col-2 xl:col-2" *ngIf="searchValue.length > 2 ? '...' : ''">
+            <p-button [label]="'QUOTEGRID.Search' | translate" class="mr-3" size="small" (click)="onCustomerSearch()"></p-button>
+        </div>
+        <!-- <p-autoComplete field="name" class="mr-3 mb-3" styleClass="w-22rem md:w-25rem"
+            inputStyleClass="w-22rem md:w-25rem" [suggestions]="customerFilterSuggestions"
+            (completeMethod)="customerSearch($event)"></p-autoComplete> -->
+        
+    </div>
+    <div class="body mt-3">
+        <p-table [value]="customers" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="customerColumn" *ngFor="let column of customerColumn">{{checkHeaderName(column) | translate}} <p-sortIcon
+                            [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+                <tr>
+                    <td>
+                        <input type="radio" [id]="customer?.CustomerReferenceNo" name="fav_language"
+                            (change)="onSelectCustomer(customer)" [value]="customer.CustomerReferenceNo">
+                        <label for="html"></label>
+                        <!-- <p-radioButton  [value]="customer.CustomerReferenceNo" name="city" [(ngModel)]="selectedCustomer" [inputId]="customer.CustomerReferenceNo"></p-radioButton>
+                        <label for="ingredient1" class="ml-2"></label> -->
+                    </td>
+                    <td>{{customer?.CustomerReferenceNo}}</td>
+                    <td>{{customer?.ClientName}}</td>
+                    <td>{{customer?.PolicyHolderTypeDesc }}</td>
+                    <td>{{ customer?.IdNumber }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="flex flex-wrap mt-5 justify-content-center">
+        <p-button (click)="hideSearchForm()" [label]="'QUOTEGRID.Close' | translate" styleClass="p-button-outlined" class="mr-3"></p-button>&nbsp;
+        <p-button [label]="'QUOTEGRID.ClearSearch' | translate" *ngIf="clearSearchSection" (click)="showSearchForm('change')" class="mr-3"></p-button>&nbsp;
+        <p-button (click)="navigateToCustomerDetail()" *ngIf="selectedCustomer" [label]="'QUOTEGRID.Proceed' | translate" severity="warning"
+            class="mb-3"></p-button>
+    </div>
+</p-dialog>
+
+<p-dialog header="Reject Quote" [(visible)]="isRejectVisible" [modal]="true" styleClass="w-10 md:w-8 lg:w-6"
+    [draggable]="false" [resizable]="false">
+    <div class="flex flex-wrap justify-content-end mt-2">
+          <div  *ngIf="quotes"><b>QuoteNo: {{quote}}</b></div>
+          <div><b>Reference No : {{Reference}}</b></div>
+    </div>
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-6 xl:col-6">
+          <label><b>Reject Reason&nbsp;*</b></label>
+          <textarea rows="5" class="w-full" [(ngModel)]="Remarks" placeholder="Enter Reject Reason" maxlength="500" pInputText></textarea>
+          <div class="input-form-error" *ngIf="remarksError">
+            <div class="error-text text-danger">
+                Please Enter Reject Reason
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-content-center">
+      <p-button  label="Submit" (click)="RejectQuote()" severity="warning"
+      class="mb-3"></p-button>
+    </div>
+</p-dialog>

@@ -1,0 +1,957 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <div class="grid justify-content-end">
+        <!-- <div class="col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+            <h3 class="mr-3">{{'MOTORQUOTE.QuoteDetails' | translate}}</h3>
+        </div> -->
+        <div class="col-12 md:col-6 lg:col-6 xl:col-6">
+            <div class="flex flex-wrap justify-content-end">
+                <div *ngIf="quoteNo"><b>{{'PREMIUM.QuoteNo' | translate}} - <span class="primaryTextColor bolder">{{quoteNo}}</span></b>&nbsp;|&nbsp;</div>
+                <div *ngIf="quoteRefNo"><b>{{'PREMIUM.ReferenceNo' | translate}} - <span class="primaryTextColor bolder">{{quoteRefNo}}</span></b></div>
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4">
+            <h3 class="mr-3">{{'MOTORQUOTE.QuoteDetails' | translate}}</h3>
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+            <div class="flex flex-wrap">
+
+            </div>
+            <div class="flex justify-content-start sm:justify-content-end  flex-wrap" *ngIf="productId=='5' && (!endorsementSection || (endorsementSection && enableAddVehicle))">
+                <div *ngIf="customerDetails">
+                    <input pInputText id="username" style="min-width: 200px;text-transform: uppercase;" maxlength="50" [(ngModel)]="regNo"
+                    [placeholder]="'MOTORQUOTE.SearchAddVehicleByRegNo' | translate"  />
+                    <div class="input-form-error" *ngIf="regNoError">
+                        <div class="error-text text-danger">
+                            {{'MOTORQUOTE.PleaseEnterValidRegNo' | translate}}
+                        </div>
+                    </div>
+                    <div class="input-form-error" *ngIf="duplicateRegister">
+                        <div class="error-text text-danger">
+                            {{'MOTORQUOTE.RegisterNoAlreadyAvailable' | translate}}
+                        </div>
+                    </div>
+                </div>
+                
+                &nbsp;<p-button [label]="'MOTORQUOTE.SearchVehicle' | translate" *ngIf="customerDetails" icon="pi pi-search" (onClick)="onSearchVehicle()"></p-button>&nbsp;
+                <p-button [label]="'MOTORQUOTE.AddVehicle' | translate" icon="pi pi-plus" *ngIf="customerDetails" (click)="onCreateVehicle()"></p-button>&nbsp;&nbsp;
+                <!-- <p-button [label]="'MOTORQUOTE.FileUpload' | translate" icon="pi pi-cloud-upload" *ngIf="customerDetails" (click)="onMoveToUpload()"></p-button>&nbsp;&nbsp; -->
+                <p-button [label]="'HOME.Customer' | translate" *ngIf="!customerDetails" icon="pi pi-plus" (click)="showSearchForm('change')"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <p-divider></p-divider>
+    <p-messages [(value)]="messages" [enableService]="false"></p-messages>
+    <ng-container *ngIf="tabIndex!=null && tabIndex!=undefined">
+        <p-tabView [(activeIndex)]="tabIndex" (onChange)='tabIndex = $event.index' >
+            <p-tabPanel [header]="'MOTORQUOTE.PersonalDetails' | translate">
+                <div class="grid" *ngIf="customerDetails">
+                    <div class="lg:col-6 md:col-6 col-12">
+                        <h3>{{'MOTORQUOTE.PersonalInformation' | translate}}</h3>
+                        <div class="flex flex-wrap">
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.CustomerName' | translate}}</b>
+                                <p>{{customerDetails.TitleDesc}}&nbsp;{{customerDetails.ClientName}}</p>
+                            </div>
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.CustomerType' | translate}}</b>
+                                <p>{{customerDetails.PolicyHolderTypeDesc}}</p>
+                            </div>
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.Occupation' | translate}}</b>
+                                <p>{{customerDetails.OccupationDesc}}</p>
+                            </div>
+    
+                        </div>
+                    </div>
+                    <div class="lg:col-6 md:col-6 col-12">
+                        <div class="flex flex-wrap justify-content-between">
+                                <div><h3>{{'MOTORQUOTE.AddressDetails' | translate}}</h3></div>
+                                <div><p-button [label]="'MOTORQUOTE.ChangeCustomer' | translate" icon="pi pi-user" (click)="showSearchForm('change')" *ngIf="!endorsementSection"></p-button></div>
+                        </div>
+                        
+                        <div class="flex flex-wrap">
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.Address' | translate}}</b>
+                                <p>{{customerDetails.Address1}}</p>
+                            </div>
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.Country' | translate}}</b>
+                                <p>{{customerDetails.Nationality}}</p>
+                            </div>
+                            <div class="lg:col-4 md:col-6 col-12">
+                                <b>{{'MOTORQUOTE.District' | translate}}</b>
+                                <p>{{customerDetails.StateName}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p-divider *ngIf="customerDetails"></p-divider>
+                <div class="grid" *ngIf="issuerSection">
+                    <div class="lg:col-12 md:col-12 col-12">
+                        <h3>{{'MOTORQUOTE.PolicyDetails' | translate}}</h3>
+                        <div class="flex flex-wrap">
+                            <div class="lg:col-2 md:col-2 col-3">
+                                <label for="username">{{'MOTORQUOTE.SourceType' | translate}} *</label>
+                                <p-dropdown inputId="sourceType" class="w-full" styleClass="w-full" [disabled]="endorsementSection  || checkDisableField()"
+                                    [options]="sourceTypeList" [(ngModel)]="Code" (onChange)="onSourceTypeChange('change')"
+                                    [optionLabel]="getDisplayName()" optionValue="Code" [placeholder]="'MOTORQUOTE.SelectSourceType' | translate">
+                                </p-dropdown>
+                                <div class="input-form-error" *ngIf="sourceCodeError">
+                                    <div class="error-text">
+                                        {{'MOTORQUOTE.PleaseSelectSourceType' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:col-3 md:col-3 col-3"
+                                *ngIf="issuerSection && (sourceCodeDesc=='Premia Agent' || sourceCodeDesc=='Premia Broker' || sourceCodeDesc=='Premia Direct')">
+                                <label for="username">{{'MOTORQUOTE.SourceCode' | translate}} *</label>
+                                <!-- <p-autoComplete [(ngModel)]="customerCode" [suggestions]="customerList" field="CustomerName" (completeMethod)="onGetCustomerList('change',$event.query)"></p-autoComplete> 
+                                <p-autoComplete  class="w-full" styleClass="w-full" [suggestions]="customerList"  (onSelect)="onCommonDetailsChange();onChangeCustomer($event)"
+                                    (completeMethod)="onGetCustomerList('change',$event.query)" [field]="CustomerCode+'-'+CustomerName">
+                                        <ng-container *ngIf="customer">
+                                                <ng-template let-customer pTemplate="item">
+                                                    <ng-container *ngIf="customer.CustomerName!=null">
+                                                        {{customer.CustomerName}}&nbsp;-&nbsp;{{customer.CustomerCode}}
+                                                    </ng-container>
+                                                    <ng-container *ngIf="customer.CustomerName==null">
+                                                        No Data Found
+                                                    </ng-container>
+                                                </ng-template>
+                                        </ng-container>
+                                        
+                                </p-autoComplete>-->
+                                <input pInputText id="username" class="w-full" maxlength="50" (change)="onCommonDetailsChange();"
+                                    [disabled]="(endorsementSection) || checkDisableField()" [(ngModel)]="customerCode"
+                                    type="text" (keyup)="onGetCustomerList('change',$event.target.value)" autocomplete="off"
+                                    [placeholder]="'MOTORQUOTE.Search' | translate" data-toggle="dropdown" />
+                                    <ul class="dropdown-menu dropdown-list-style CustomerInput" appendTo="body"
+                                        [ngClass]="{dropdownDisplay: showCustomerList, dropdownNotDisplay: !showCustomerList}">
+                                        <li *ngFor="let item of customerList"
+                                            (click)="setCustomerValue(item.Code, item.Name,'change')">
+                                            {{item.Code}} - {{ item.Name }}
+                                        </li>
+                                        <div class="text-center" *ngIf="customerList.length == 0">
+                                            <p>{{'MOTORQUOTE.EnteranycodetoSearch' | translate}} ...</p>
+                                        </div>
+                                    </ul> 
+                                <div class="input-form-error" *ngIf="customerCodeError">
+                                    <div class="error-text text-danger">
+                                        {{'MOTORQUOTE.PleaseEnterValidSourceCode' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:col-4 md:col-4 col-12"
+                                *ngIf="issuerSection && (sourceCodeDesc=='Premia Agent' || sourceCodeDesc=='Premia Broker' || sourceCodeDesc=='Premia Direct')">
+                                <label for="username">{{'MOTORQUOTE.SourceName' | translate}} *</label>
+                                <input pInputText id="username" class="w-full" [(ngModel)]="customerName" disabled type="text"
+                                    [placeholder]="'MOTORQUOTE.SourceName' | translate" />
+                            </div>
+                            <div class="lg:col-2 md:col-2 col-3"
+                                *ngIf="issuerSection && (sourceCodeDesc=='agent' || sourceCodeDesc=='Agent' || sourceCodeDesc=='broker' || sourceCodeDesc=='direct' || sourceCodeDesc=='Direct' || sourceCodeDesc=='bank' || sourceCodeDesc=='Bank' || sourceCodeDesc=='Broker' || sourceCodeDesc=='whatsapp' || sourceCodeDesc=='Whatsapp')">
+                                <label for="username">{{'MOTORQUOTE.SourceCode' | translate}} *</label>
+                                <input pInputText id="username" class="w-full" maxlength="50" (change)="onCommonDetailsChange();"
+                                    [disabled]="(endorsementSection) || checkDisableField()" [(ngModel)]="customerCode"
+                                    type="text" (keyup)="onGetCustomerList('change',$event.target.value)" autocomplete="off"
+                                    [placeholder]="'MOTORQUOTE.Search' | translate" data-toggle="dropdown" />
+                                    <ul class="dropdown-menu dropdown-list-style CustomerInput" appendTo="body"
+                                        [ngClass]="{dropdownDisplay: showCustomerList, dropdownNotDisplay: !showCustomerList}">
+                                        <li *ngFor="let item of customerList"
+                                            (click)="setCustomerValue(item.Code, item.Name,'change')">
+                                            {{item.Code}} - {{ item.Name }}
+                                        </li>
+                                        <div class="text-center" *ngIf="customerList.length == 0">
+                                            <p>{{'MOTORQUOTE.EnteranycodetoSearch' | translate}} ...</p>
+                                        </div>
+                                    </ul> 
+                                <div class="input-form-error" *ngIf="customerCodeError">
+                                    <div class="error-text text-danger">
+                                        {{'MOTORQUOTE.PleaseEnterValidSourceCode' | translate}}
+                                    </div>
+                                </div>
+                                <!-- <ng-container *ngIf="sourceCodeDesc!='broker' && sourceCodeDesc!='Broker'">
+                                    <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                                        [options]="brokerList" [(ngModel)]="brokerCode" (onChange)="onBrokerChange()"
+                                        [disabled]="endorsementSection || finalizeYN=='Y'" optionLabel="Name"
+                                        optionValue="Code" placeholder="Select Source Code">
+                                    </p-dropdown>
+                                </ng-container>
+                                <ng-container *ngIf="sourceCodeDesc=='broker' || sourceCodeDesc=='Broker'">
+                                    <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                                        [options]="brokerList" [(ngModel)]="brokerCode" (onChange)="onBrokerChange()"
+                                        [disabled]="endorsementSection || finalizeYN=='Y'" optionLabel="Name"
+                                        optionValue="Code" placeholder="Select Source Code">
+                                    </p-dropdown>
+                                </ng-container>
+                                <div class="input-form-error" *ngIf="brokerCodeError">
+                                    <div class="error-text text-danger">
+                                        Please Select Source Code
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="lg:col-4 md:col-4 col-12"
+                                *ngIf="issuerSection && (sourceCodeDesc=='agent' || sourceCodeDesc=='Agent' || sourceCodeDesc=='broker' || sourceCodeDesc=='direct' || sourceCodeDesc=='Direct' || sourceCodeDesc=='bank' || sourceCodeDesc=='Bank' || sourceCodeDesc=='Broker' || sourceCodeDesc=='whatsapp' || sourceCodeDesc=='Whatsapp')">
+                                <label for="username">{{'MOTORQUOTE.SourceName' | translate}} *</label>
+                                <input pInputText id="username" class="w-full" [(ngModel)]="customerName" disabled type="text"
+                                    [placeholder]="'MOTORQUOTE.SourceName' | translate" />
+                            </div>
+                            <!-- <div class="lg:col-2 md:col-2 col-3"
+                                *ngIf="issuerSection && brokerCode && (sourceCodeDesc=='agent' || sourceCodeDesc=='Agent' || sourceCodeDesc=='broker' || sourceCodeDesc=='direct' || sourceCodeDesc=='Direct' || sourceCodeDesc=='bank' || sourceCodeDesc=='Bank' || sourceCodeDesc=='Broker' || sourceCodeDesc=='whatsapp' || sourceCodeDesc=='Whatsapp')">
+                                <label for="username">Broker Branch *</label>
+                                <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                                    [options]="brokerBranchList" [(ngModel)]="brokerBranchCode"
+                                    (onChange)="onBrokerBranchChange()" [disabled]="endorsementSection || finalizeYN=='Y'"
+                                    optionLabel="CodeDesc" optionValue="Code" placeholder="Select Broker Branch">
+                                </p-dropdown>
+                                <div class="input-form-error" *ngIf="brokerBranchCodeError">
+                                    <div class="error-text text-danger">
+                                        Please Select BrokerBranchCode
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <p-divider *ngIf="issuerSection"></p-divider>
+                <div class="grid">
+                    <div class="lg:col-12 md:col-12 col-12">
+                            <div class="flex flex-wrap">
+                                <div class="lg:col-8 md:col-8 col-12">
+                                    <h3>{{'MOTORQUOTE.PeriodOfInsurance' | translate}}</h3>
+                                </div>
+                                <div class="lg:col-4 md:col-4 col-12" *ngIf="productId=='6' || this.productId=='16' || productId=='39' || productId=='14' || productId=='32' || productId=='1' || productId=='21'
+                                || productId=='26' || this.productId=='25' || productId=='13' || productId=='57'">
+                                    <label for="username">Industry</label>
+                                    <p-dropdown inputId="make" class="w-full" styleClass="w-full" [options]="industryList"
+                                        [(ngModel)]="IndustryId" [disabled]="(endorsementSection || finalizeYN=='Y')"
+                                        optionLabel="CodeDesc" optionValue="Code" placeholder="Select Industry">
+                                    </p-dropdown>
+                                    <div class="input-form-error" *ngIf="industryError">
+                                        <div class="error-text">
+                                            Please Select Industry
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap">
+                                <div class="lg:col-2 md:col-2 col-3">
+                                    <label for="username">{{'QUOTEGRID.PolicyStartDate' | translate}}</label>
+                                    <p-calendar class="w-full" styleClass="w-full" [minDate]="minDate" [disabled]="(endorsementSection && !enablePolicyStart) || (checkDisableField() && !checkDatesDisabled())"
+                                        [(ngModel)]="policyStartDate" (onSelect)="onStartDateChange('change')"
+                                        dateFormat="dd/mm/yy" [placeholder]="'MOTORQUOTE.SelectStartDate' | translate">
+                                    </p-calendar>
+                                    <div class="input-form-error bottomSpacing" *ngIf="policyStartError || policyPassDate"
+                                        >
+                                        <div class="error-text text-danger" *ngIf="policyStartError">
+                                            <span class="spancommon span_font_size">{{'MOTORQUOTE.PleaseEnterPolicyStartDate' | translate}}</span>
+                                        </div>
+                                        <div class="error-text text-danger" *ngIf="policyPassDate">
+                                            <span class="spancommon span_font_size">{{'MOTORQUOTE.PleaseSelectFutureDate' | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lg:col-2 md:col-2 col-3" *ngIf="insuranceId=='100004' || insuranceId=='100040'">
+                                    <label for="username">{{'QUOTEGRID.NoOfDays' | translate}}</label>
+                                    <p-dropdown inputId="noOfDays" class="w-full" styleClass="w-full" [options]="noOfDaysList"
+                                        [(ngModel)]="noOfDays" (onChange)="onNoOfDaysChange('change')"
+                                        optionLabel="Code" optionValue="Code">
+                                    </p-dropdown>
+                                </div>
+                                <div class="lg:col-2 md:col-2 col-3" *ngIf="insuranceId!='100004'">
+                                    <label for="username">{{'QUOTEGRID.PolicyEndDate' | translate}}</label>
+                                    <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="policyEndDate"
+                                        (onSelect)="onChangeEndDate()" dateFormat="dd/mm/yy" [disabled]="(endorsementSection && !enablePolicyStart) || (checkDisableField() && !checkDatesDisabled()) || (insuranceId=='100004' || insuranceId=='100040')"
+                                        [placeholder]="'MOTORQUOTE.SelectEndDate' | translate">
+                                    </p-calendar>
+                                    <div class="input-form-error" *ngIf="policyEndError">
+                                        <div class="error-text  text-danger">
+                                            <span class="spancommon span_font_size">{{'MOTORQUOTE.PleaseEnterPolicyEndDate' | translate}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lg:col-2 md:col-2 col-3" [hidden]="insuranceId=='100040'">
+                                    <label for="username" >{{'MOTORQUOTE.Currency' | translate}} *</label>
+                                    <p-dropdown inputId="make" class="w-full" styleClass="w-full" [options]="currencyList"
+                                        [(ngModel)]="currencyCode" (onChange)="onCurrencyChange('change')" [disabled]="(endorsementSection && !enableCurrency) || checkDisableField() " 
+                                        [optionLabel]="getDisplayName()" optionValue="Code" [placeholder]="'MOTORQUOTE.SelectCurrency' | translate">
+                                    </p-dropdown>
+                                    <div class="input-form-error" *ngIf="currencyCodeError">
+                                        <div class="error-text">
+                                            {{'MOTORQUOTE.PleaseSelectCurrency' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lg:col-2 md:col-2 col-3" [hidden]="insuranceId=='100040'">
+                                    <label for="username">{{'MOTORQUOTE.ExchangeRate' | translate}}</label>
+                                    <input pInputText id="username" maxlength="50" [disabled]="(endorsementSection && !enableCurrency) || checkDisableField()" [(ngModel)]="exchangeRate"
+                                        (change)="onCommonDetailsChange()" />
+                                </div>
+                                <div class="lg:col-2 md:col-2 col-3">
+                                    <label for="username">{{'MOTORQUOTE.PromoCode' | translate}}&nbsp;({{'MOTORQUOTE.Optional' | translate}})</label>
+                                    <input pInputText id="username" maxlength="50" [(ngModel)]="promocode" [disabled]="(endorsementSection) || checkDisableField()"
+                                        (change)="onCommonDetailsChange()" [placeholder]="'MOTORQUOTE.EnterPromoCode' | translate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-content-center">
+                        <p-button (click)="navigateTo('back')" styleClass="p-button-outlined" [label]="'MOTORQUOTE.Back' | translate"
+                            size="small"></p-button>&nbsp;
+                        <p-button (click)="onResetTabIndex()" *ngIf="vehicleDetailsList.length!=0 || productId!='5'"
+                            [label]="'MOTORQUOTE.Next' | translate" size="small"></p-button>
+                    </div>
+            </p-tabPanel>
+            <ng-container *ngFor="let veh of vehicleDetailsList;let j=index;">
+                <p-tabPanel [header]="veh?.Registrationnumber" disabled="true" [scrollable]="true">
+                    <div class="grid" *ngIf="customerDetails">
+                        <div class="lg:col-6 md:col-6 col-12">
+                            <div class="flex flex-wrap">
+                                <div class="lg:col-6 md:col-6 col-12">
+                                    <h3>{{'MOTORQUOTE.MotorDetails' | translate}}</h3> 
+                                </div>
+                                <div class="lg:col-6 md:col-6 col-12 flex flex-wrap justify-content-end">
+                                    <ng-container *ngIf="veh.SavedFrom!='API'">
+                                        <p-button [label]="'MOTORQUOTE.Edit' | translate" *ngIf="!endorsementSection || (endorsementSection && enableAddVehicle && vehicleDetails?.EndorsementYn=='Y')" icon="pi pi-pencil" size="small"
+                                            (click)="EditData(veh)"></p-button>&nbsp;
+                                    </ng-container>
+                                    <p-button *ngIf="!endorsementSection || (endorsementSection && enableRemoveVehicle)" styleClass="p-button-outlined" [label]="'MOTORQUOTE.Delete' | translate" icon="pi pi-trash"
+                                        (click)="onDelete(veh)" size="small"></p-button>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap">
+                                <div class="lg:col-4 md:col-6 col-12">
+                                    <b>{{'QUOTEGRID.Make' | translate}}</b>
+                                    <p>{{vehicleDetails?.VehiclemakeDesc}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId!='100040' && insuranceId!='100042'">
+                                    <b>{{'QUOTEGRID.Model' | translate}}</b>
+                                    <p>{{vehicleDetails?.VehicleModelDesc}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12">
+                                    <b>{{'MOTORQUOTE.BodyType' | translate}}</b>
+                                    <p>{{vehicleDetails?.TiraBodyType}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId!='100040' && insuranceId!='100042'">
+                                    <b>{{'MOTORQUOTE.VehicleUsage' | translate}}</b>
+                                    <p>{{vehicleDetails?.TiraMotorUsage}}</p>
+                                </div>
+                                <!-- <div class="lg:col-4 md:col-6 col-12">
+                                    <b>Motor Category</b>
+                                    <p>{{vehicleDetails?.MotorCategoryDesc}}</p>
+                                </div> -->
+                                <div class="lg:col-4 md:col-6 col-12">
+                                    <b>{{'MOTORQUOTE.EngineNo' | translate}}</b>
+                                    <p>{{vehicleDetails?.EngineNumber}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId!='100040' && insuranceId!='100042'">
+                                    <b>{{'MOTORQUOTE.EngineCapacity' | translate}}</b>
+                                    <p>{{vehicleDetails?.EngineCapacity}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId=='100040' || insuranceId=='100042'">
+                                    <b>{{'HOME.RegistrationDate' | translate}}</b>
+                                    <p>{{vehicleDetails?.RegistrationDate}}</p>
+                                </div>
+                                <!-- <div class="lg:col-4 md:col-6 col-12" *ngIf="(insuranceId=='100040' || insuranceId=='100042') && (vehicleDetails.HorsePower!=null || vehicleDetails.HorsePower!='')">
+                                    <b>{{'MOTORQUOTE.HorsePower' | translate}}</b>
+                                    <p>{{vehicleDetails?.HorsePower}}</p>
+                                </div> -->
+                                <!-- <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId=='100040' || insuranceId=='100042'">
+                                    <b>{{'MOTORQUOTE.RegistrationDate' | translate}}</b>
+                                    <p>{{vehicleDetails?.RegistrationDate}}</p>
+                                </div> -->
+                                <div class="lg:col-4 md:col-6 col-12" *ngIf="insuranceId!='100040' && insuranceId!='100042'">
+                                    <b>{{'MOTORQUOTE.ManufactureYear' | translate}}</b>
+                                    <p>{{vehicleDetails?.ManufactureYear}}</p>
+                                </div>
+    
+                                <!-- <div class="lg:col-4 md:col-6 col-12">
+                                    <b>Owner Category</b>
+                                    <p>{{vehicleDetails?.OwnerCategory}}</p>
+                                </div> -->
+                                <div class="lg:col-4 md:col-6 col-12">
+                                    <b>{{'MOTORQUOTE.SeatingCapacity' | translate}}</b>
+                                    <p>{{vehicleDetails?.SeatingCapacity}}</p>
+                                </div>
+                                <!-- <div class="lg:col-4 md:col-6 col-12">
+                                    <b>Gross Weight</b>
+                                    <p>{{vehicleDetails?.Grossweight}}</p>
+                                </div>
+                                <div class="lg:col-4 md:col-6 col-12">
+                                    <b>Tare Weight</b>
+                                    <p>{{vehicleDetails?.TareWeight}}</p>
+                                </div> -->
+                            </div>
+                            <!-- <div class="flex flex-wrap">
+                                <div class="lg:col-6 md:col-6 col-12 mt-2">
+                                    <h3>{{'MOTORQUOTE.UWQuestion' | translate}}</h3> 
+                                </div>
+                            </div> -->
+                            <div class="grid">
+                                <ng-container  *ngFor="let ques of uwQuestionList;let i=index">
+                                    <div class="lg:col-4 md:col-4 col-12" [hidden]="checkHideQUestion(ques)">
+                                        <label for="uwQuesDesc">{{ques.UwQuestionDesc}}</label><ng-container *ngIf="ques.MandatoryYn=='Y'"> &nbsp;<span class="text-danger">*</span></ng-container>
+                                        <ng-container *ngIf="ques?.QuestionType=='01'">
+                                            <p-selectButton [options]="ques.Options" [(ngModel)]="ques.Value" id="driverType2"
+                                                optionLabel="UwQuesOptionDesc" optionValue="UwQuesOptionDesc"></p-selectButton>
+                                        </ng-container>
+                                        <ng-container *ngIf="ques?.QuestionType=='02' && ques?.DataType!='02'">
+                                            <input pInputText [id]="ques.UwQuestionId" maxlength="50" [disabled]="(endorsementSection) || checkDisableField()"
+                                            [(ngModel)]="ques.Value" />
+                                        </ng-container>
+                                        <ng-container *ngIf="ques?.QuestionType=='02' && ques?.DataType=='02'">
+                                            <input pInputText [id]="ques.UwQuestionId" maxlength="50" [disabled]="(endorsementSection) || checkDisableField()"
+                                            [(ngModel)]="ques.Value" />
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            
+                        </div>
+                        <div class="lg:col-6 md:col-6 col-12">
+                            <h3 *ngIf="insuranceId=='100040' || this.insuranceId=='100042'">{{'MOTORQUOTE.QuoteDetails' | translate}}</h3>
+                            <h3 *ngIf="insuranceId!='100040' && this.insuranceId!='100042'">{{'MOTORQUOTE.InsuredDetails' | translate}}</h3>
+                            <ng-container *ngIf="insuranceId=='100027' || insuranceId=='100040' || insuranceId=='100044' || this.insuranceId=='100042' || insuranceId=='100002' || insuranceId=='100028' || insuranceId=='100018' || insuranceId=='100019' || insuranceId=='100020' || insuranceId=='100004'">
+                                <ng-container *ngIf="!hideSection">
+                                    <ng-container *ngFor="let step of fields">
+                                        <form [formGroup]="form">
+                                            <formly-form [form]="form" [fields]="step.fieldGroup" [model]="productItem"></formly-form>
+                                        </form>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            <h3 class="mt-0">{{'MOTORQUOTE.CollateralDetails' | translate}}</h3>
+                            <div class="grid">
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <div class="p-field-checkbox">
+                                        <p-checkbox [(ngModel)]="collateralValue"  binary="true" (onChange)="onCollateralChange()" [disabled]="((endorsementSection && !enableCollateralDetails)) || checkDisableField()" [checked]="collateralYN=='Y'" inputId="collateralYN"></p-checkbox>
+                                        <label for="binary">&nbsp;{{'MOTORQUOTE.Collateral' | translate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid" *ngIf="collateralYN=='Y'">
+                                <div class="lg:col-4 md:col-4 col-4" >
+                                    <label for="borrowerType">{{'MOTORQUOTE.BorrowerType' | translate}}</label><span class="">*</span>
+                                    <p-dropdown inputId="borrowerType" class="w-full" styleClass="w-full" [options]="borrowerList" (onChange)="borrowerValueChange()"
+                                        [(ngModel)]="borrowerValue" [disabled]="((endorsementSection && !enableCollateralDetails)) || checkDisableField()" optionLabel="label" optionValue="Code"
+                                        [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                    </p-dropdown>
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4" *ngIf="borrowerValue=='2'">
+                                    <label for="collateralName">{{'MOTORQUOTE.CollateralName' | translate}}&nbsp;<span class="">*</span></label>
+                                    <input pInputText id="collateralName" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="collateralName" />
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4" *ngIf="borrowerValue=='1'">
+                                    <label for="bankName">{{'MOTORQUOTE.CollateralBankName' | translate}}</label><span class="">*</span>
+                                    <p-dropdown inputId="bankName" class="w-full" styleClass="w-full" [options]="bankList"
+                                        [(ngModel)]="collateralName" [disabled]="((endorsementSection && !enableCollateralDetails)) || checkDisableField()" optionLabel="label" optionValue="Code"
+                                        [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                    </p-dropdown>
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="payeeName">{{'MOTORQUOTE.FirstLossPayeeName' | translate}}&nbsp;<span class="">*</span></label>
+                                    <input pInputText id="payeeName" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="firstLossPayee" />
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="LoanStartDate">{{'MOTORQUOTE.LoanStartDate' | translate}}</label>
+                                    <p-calendar class="w-full" id="LoanStartDate" styleClass="w-full" 
+                                        [(ngModel)]="LoanStartDate" dateFormat="dd/mm/yy">
+                                    </p-calendar>
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="LoanEndDate">{{'MOTORQUOTE.LoanEndDate' | translate}}</label>
+                                    <p-calendar class="w-full" id="LoanEndDate" styleClass="w-full" 
+                                        [(ngModel)]="LoanEndDate" dateFormat="dd/mm/yy">
+                                    </p-calendar>
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="LoanAmount">{{'MOTORQUOTE.LoanAmount' | translate}}&nbsp;<span class=""></span></label>
+                                    <input pInputText id="LoanAmount" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="LoanAmount" />
+                                </div>
+                                
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="CollateralCompanyName">{{'MOTORQUOTE.CollateralCompanyName' | translate}}&nbsp;<span class=""></span></label>
+                                    <input pInputText id="CollateralCompanyName" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="CollateralCompanyName" />
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="CollateralCompanyAddress">{{'MOTORQUOTE.CollateralCompanyAddress' | translate}}&nbsp;<span class=""></span></label>
+                                    <input pInputText id="CollateralCompanyAddress" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="CollateralCompanyAddress" />
+                                </div>
+                                <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                    <label for="BankingDelegation">{{'MOTORQUOTE.BankingDelegation' | translate}}&nbsp;<span class=""></span></label>
+                                    <input pInputText id="BankingDelegation" maxlength="50" [disabled]="(endorsementSection && !enableCollateralDetails) || checkDisableField()" [(ngModel)]="BankingDelegation" />
+                                </div>
+                            </div>
+                            <div class="grid mt-0" *ngIf="customerDetails && (insuranceId=='100028' ) ">
+                                <div class="lg:col-12 md:col-12 xl:col-12 col-12">
+                                    <h3>{{'MOTORQUOTE.DriverDetails' | translate}}</h3>
+                                    <div class="grid">
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="driverName2">{{'MOTORQUOTE.DriverName' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="driverName2" class="w-full" styleClass="w-full" maxlength="50" [(ngModel)]="driverName" />
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="licenseNo2">{{'MOTORQUOTE.LicenseNumber' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="licenseNo2" class="w-full" styleClass="w-full" maxlength="50" [(ngModel)]="licenseNo" />
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="DrivingExperience2">{{'MOTORQUOTE.DrivingExperience' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="DrivingExperience2" class="w-full" styleClass="w-full" maxlength="3" [(ngModel)]="driveExperience" />
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="Dob2">{{'MOTORQUOTE.DateOfBirth' | translate}}</label>
+                                            <p-calendar class="w-full" id="Dob2" styleClass="w-full" [maxDate]="minDobDate"
+                                                [(ngModel)]="driverDob" dateFormat="dd/mm/yy">
+                                            </p-calendar>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="martialStatus2">{{'MOTORQUOTE.MartialStatus' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="martialStatus2" class="w-full" styleClass="w-full" [options]="martialList" [(ngModel)]="martialStatus"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4" *ngIf="insuranceId=='100028'">
+                                            <label for="claimType2">{{'MOTORQUOTE.ClaimType' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="claimType2" class="w-full" styleClass="w-full" [options]="claimTypeList" [(ngModel)]="claimTypeValue" optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="driverType2">{{'MOTORQUOTE.DriverType' | translate}}</label>
+                                            <div class="flex justify-content-start gap-3">
+                                                <p-selectButton [options]="driverOptions" [(ngModel)]="driverType" id="driverType2"
+                                                optionLabel="label" optionValue="value"></p-selectButton>
+                                                <!-- <div class="flex align-items-center">
+                                                   
+                                                    <p-radioButton name="Yes" value="2" [(ngModel)]="driverType"
+                                                        inputId="driver_Yes"></p-radioButton>
+                                                    <span for="driver_Yes" class="ml-2">Driver</span>
+                                                </div>
+                                                <div class="flex align-items-center">
+                                                    <p-radioButton name="No" value="1" [(ngModel)]="driverType"
+                                                        inputId="driver_No"></p-radioButton>
+                                                    <span for="driver_No" class="ml-2">Owner</span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="gender2">{{'MOTORQUOTE.Gender' | translate}}</label>
+                                            <div class="flex justify-content-start gap-3">
+                                                <p-selectButton [options]="genderOptions" [(ngModel)]="gender" id="gender2"
+                                                optionLabel="label" optionValue="value"></p-selectButton>
+                                                <!-- <div class="flex align-items-center">
+                                                    <p-radioButton name="gender" value="M" [(ngModel)]="gender"
+                                                        inputId="gender_Yes"></p-radioButton>
+                                                    <span for="gender_Yes" class="ml-2">Male</span>
+                                                </div>
+                                                <div class="flex align-items-center">
+                                                    <p-radioButton name="gender" value="F" [(ngModel)]="gender"
+                                                        inputId="gender_No"></p-radioButton>
+                                                    <span for="gender_No" class="ml-2">Female</span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid" *ngIf="customerDetails && (insuranceId=='100020')">
+                                <div class="lg:col-12 md:col-12 xl:col-12 col-12">
+                                    <h3>{{'MOTORQUOTE.DriverDetails' | translate}}</h3>
+                                    <div class="grid">
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="username">{{'MOTORQUOTE.DriverType' | translate}}</label>
+                                            <div class="flex justify-content-start gap-3">
+                                                <p-selectButton [options]="driverOptions" [(ngModel)]="driverType" id="DriverType1"
+                                                optionLabel="label" optionValue="value"></p-selectButton>
+                                                <!-- <div class="flex align-items-center">
+                                                    <p-radioButton name="Yes" value="2" [(ngModel)]="driverType"
+                                                        inputId="driver_Yes"></p-radioButton>
+                                                    <span for="driver_Yes" class="ml-2">Driver</span>
+                                                </div>
+                                                <div class="flex align-items-center">
+                                                    <p-radioButton name="No" value="1" [(ngModel)]="driverType"
+                                                        inputId="driver_No"></p-radioButton>
+                                                    <span for="driver_No" class="ml-2">Owner</span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="driverName1">{{'MOTORQUOTE.DriverName' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="driverName1" class="w-full" styleClass="w-full" maxlength="50" [(ngModel)]="driverName"  />
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="gender1">{{'MOTORQUOTE.Gender' | translate}}</label>
+                                            <div class="flex justify-content-start gap-3">
+                                                <p-selectButton [options]="genderOptions" [(ngModel)]="gender" id="gender1"
+                                                optionLabel="label" optionValue="value"></p-selectButton>
+                                                <!-- <div class="flex align-items-center">
+                                                    <p-radioButton name="gender" value="M" [(ngModel)]="gender"
+                                                        inputId="gender_Yes"></p-radioButton>
+                                                    <span for="gender_Yes" class="ml-2">Male</span>
+                                                </div>
+                                                <div class="flex align-items-center">
+                                                    <p-radioButton name="gender" value="F" [(ngModel)]="gender"
+                                                        inputId="gender_No"></p-radioButton>
+                                                    <span for="gender_No" class="ml-2">Female</span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="Dob1">{{'MOTORQUOTE.DateOfBirth' | translate}}</label>
+                                              <mat-form-field class="example-full-width">
+                                                    <input matInput [matDatepicker]="picker" [(ngModel)]="driverDob" [max]="minDobDate" id="Dob1">
+                                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                              </mat-form-field>
+                                            <!-- <p-calendar class="w-full" styleClass="w-full" [maxDate]="minDobDate"
+                                                [(ngModel)]="driverDob"
+                                                dateFormat="dd/mm/yy" placeholder="Select Date Of Birth">
+                                            </p-calendar> -->
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="licenseNo1">{{'MOTORQUOTE.LicenseNumber' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="licenseNo1" class="w-full" styleClass="w-full" maxlength="14" [(ngModel)]="licenseNo"  />
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="DrivingExperience1">{{'MOTORQUOTE.DrivingExperience' | translate}}&nbsp;<span class="text-danger">*</span></label><br>
+                                            <input pInputText id="DrivingExperience1" class="w-full" styleClass="w-full" maxlength="3" [(ngModel)]="driveExperience"  />
+                                        </div>
+                                       <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="State1">State</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="State1" class="w-full" styleClass="w-full" [options]="stateList" [(ngModel)]="stateValue" (onChange)="getDistrictList('change',null,null)"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                            
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="City1">{{'MOTORQUOTE.City' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="City1" class="w-full" styleClass="w-full" [options]="districtList" [(ngModel)]="cityCode" (onChange)="getSubUrbanList('change')" optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="SubUrban1">{{'MOTORQUOTE.SubUrban' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="SubUrban1" class="w-full" styleClass="w-full" [options]="subUrbanList" [(ngModel)]="subUrbanCode" optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                       
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4" *ngIf="insuranceId=='100028'">
+                                            <label for="ClaimType1">{{'MOTORQUOTE.ClaimType' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="ClaimType1" class="w-full" styleClass="w-full" [options]="claimTypeList" [(ngModel)]="claimTypeValue" optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                        <div class="col-12 lg:col-4 md:col-4 xl:col-4">
+                                            <label for="MartialStatus1">{{'MOTORQUOTE.MartialStatus' | translate}}</label><span class="text-danger">*</span>
+                                            <p-dropdown inputId="MartialStatus1" class="w-full" styleClass="w-full" [options]="martialList" [(ngModel)]="martialStatus"  optionLabel="CodeDesc" optionValue="Code" [placeholder]="'MOTORQUOTE.Selectt' | translate">
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="flex justify-content-center">
+                        <p-button (click)="navigateTo('back')" id="Back" styleClass="p-button-outlined" [label]="'MOTORQUOTE.Back' | translate"
+                            size="small"></p-button>&nbsp;
+                        <p-button (click)="navigateTo('quote-plan')" id="Next" *ngIf="vehicleDetailsList.length!=tabIndex" [label]="'MOTORQUOTE.Next' | translate"
+                            size="small"></p-button>&nbsp;
+                        <p-button (click)="onProceed('save')" id="ViewPremium2" *ngIf="vehicleDetailsList.length==tabIndex" [label]="'MOTORQUOTE.ViewPremium' | translate"
+                            size="small"></p-button>&nbsp;
+                        <p-button (click)="onProceed('default')" id="ViewPremium" *ngIf="checkActiveVehicles() && vehicleDetailsList.length!=tabIndex" [label]="'MOTORQUOTE.ViewPremium' | translate"
+                            size="small"></p-button>
+                    </div>
+                </p-tabPanel>
+            </ng-container>
+
+            <p-tabPanel [header]="'MOTORQUOTE.FileUpload' | translate" *ngIf="uploadTab" >
+                <div class="grid">
+                    <div class="col-12 sm:col-2 md:col-2"></div>
+                    <div class="col-12 sm:col-8 md:col-8">
+                        <mat-stepper #stepper>
+                            <mat-step >  
+                                <ng-template matStepLabel>{{'MOTORQUOTE.FileUpload' | translate}}</ng-template>
+                                <div class="grid" >
+                                    <div class="col-12">
+                                        <input style="display: none;" type="file" (change)="onUploadDocuments($event,null,'cover')" #doc>
+                                        <div class="imag-card my-3" style="width:250px !important;height:80px !important;width:100% !important;border:1px dashed;background-color: whitesmoke;" appDragDropFileUpload (fileDropped)="onUploadDocuments($event,null,'cover')" (click)="doc.click()">
+                                            <div>
+                                                <div class="center">
+                                                    <b class="text-dark" style="font-size:1rem;position: relative;top:25px">
+                                                        <i class="far fa-images"></i> {{'DOCUMENT.DragorClick' | translate}}</b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <!-- <button pButton pRipple icon="pi pi-eye" class="p-button-outlined" title="View" (click)="onFileUploadCommonList()"></button> -->
+                                <!-- <button pButton pRipple icon="pi pi-download" class="p-button-outlined" title="Download" (click)="onListDocumentDownload(i,doc)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-outlined" title="Delete" (click)="onDeleteListDocument(i,doc)"></button> -->
+                                <ng-container *ngIf="uploadDocList!=0 && checkStatusSP=='P'">
+                                    <h5>{{'DOCUMENT.UploadedDocuments' | translate}}</h5><br>
+                                    <div class="grid">
+                                        <div class="col-12 sm:col-12 md:col-12">
+                                            <p-table  [value]="uploadDocList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                    <th>S.No</th>
+                                                    <th>DocumentDesc</th>
+                                                    <th>Action</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-doc let-i="rowIndex">
+                                                  <tr>
+                                                        <td>{{ i+1 }}</td>
+                                                        <td >{{doc.filename}}</td>
+                                                        <!-- <td>{{doc.DocumentDesc}}</td> -->
+                                                        <td>
+                                                            <span class="p-buttonset">
+                                                                <button pButton pRipple icon="pi pi-cloud-upload" class="p-button-outlined" title="View" (click)="onFileUploadCommonList()"></button>
+                                                                <!-- <button pButton pRipple icon="pi pi-download" class="p-button-outlined" title="Download" (click)="onListDocumentDownload(i,doc)"></button>-->
+                                                                <button pButton pRipple icon="pi pi-trash" class="p-button-outlined" title="Delete" (click)="onDeleteListDocument(i,doc)"></button> 
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="uploadDocList.length==0">
+                                    <div class="text-center">
+                                        <b>No Document Available</b>
+                                    </div>
+                                </ng-container> 
+                                 <ng-container *ngIf="uploadedDocList!=0 && checkStatusSP=='S'">
+                                    <h5>{{'DOCUMENT.UploadedDocuments' | translate}}</h5><br>
+                                    <div class="grid">
+                                        <div class="col-12 sm:col-12 md:col-12">
+                                            <p-table  [value]="uploadedDocList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                    <th>Transaction Id</th>
+                                                    <th>File Name</th>
+                                                    <th>Status</th>
+                                                    <th>Totel Records</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-docs>
+                                                  <tr>
+                                                        <td>{{ docs.TranId }}</td>
+                                                        <td >{{docs.ExcelFileName}}</td>
+                                                        <td >Completed</td>
+                                                        <td>{{docs.TotalRecord}}</td>
+                                                       
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="uploadedDocList.length==0 && checkStatusSP=='S'">
+                                    <div class="text-center">
+                                        <b>No Document Available</b>
+                                    </div>
+                                </ng-container> 
+                                <div class="flex flex-wrap justify-content-end" *ngIf="uploadedDocList.length!=0">
+                                    
+                                        <button matStepperNext class="mat-button" (click)="rawTableInsert()">Next</button>
+                                   
+                                </div>
+                            </mat-step>
+                            
+                            <mat-step>
+                                <ng-template matStepLabel>{{'MOTORQUOTE.RawTableInsert' | translate}}</ng-template>
+                                <ng-container *ngIf="uploadedDocList!=0 && checkStatusSP=='S'">
+                                    <h5>{{'DOCUMENT.UploadedDocuments' | translate}}</h5><br>
+                                    <div class="grid">
+                                        <div class="col-12 sm:col-12 md:col-12">
+                                            <p-table  [value]="uploadedDocList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                    <th>Transaction Id</th>
+                                                    <th>File Name</th>
+                                                    <th>Status</th>
+                                                    <th>Totel Records</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-docs>
+                                                  <tr>
+                                                        <td>{{ docs.TranId }}</td>
+                                                        <td >{{docs.ExcelFileName}}</td>
+                                                        <td >Completed</td>
+                                                        <td>{{docs.TotalRecord}}</td>
+                                                       
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- <ng-container *ngIf="uploadedDocList.length==0 && checkStatusSP=='P'">
+                                    <div class="text-center">
+                                        <b>No Document Available</b>
+                                    </div>
+                                </ng-container>  -->
+                                <div class="flex flex-wrap justify-content-end" *ngIf="uploadedDocList.length!=0 && checkStatusSP=='S'">
+                                    <button matStepperPrevious class="mat-button" (click)="rawTableInsert()">Back</button>
+                                    <button matStepperNext class="mat-button" (click)="dataValidation()">Next</button>
+                                </div>
+                            </mat-step>
+        
+                            <mat-step>
+                                <ng-template matStepLabel>{{'MOTORQUOTE.DataValidation' | translate}}</ng-template>
+                                <ng-container *ngIf="uploadedDocList!=0 && checkStatusSP=='S'">
+                                    <h5>{{'DOCUMENT.UploadedDocuments' | translate}}</h5><br>
+                                    <div class="grid">
+                                        <div class="col-12 sm:col-12 md:col-12">
+                                            <p-table  [value]="uploadedDocList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                    <th>Transaction Id</th>
+                                                    <th>File Name</th>
+                                                    <th>Status</th>
+                                                    <th>Totel Records</th>
+                                                    <th>Valid Records</th>
+                                                    <th>Error Records</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-docs>
+                                                  <tr>
+                                                        <td>{{ docs.TranId }}</td>
+                                                        <td >{{docs.ExcelFileName}}</td>
+                                                        <td >Completed</td>
+                                                        <td>{{docs.TotalRecord}}</td>
+                                                        <td>{{docs.ValidRecord}}</td>
+                                                        <td>{{docs.ErrorRecord}}</td>
+                                                       
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- <ng-container *ngIf="uploadedDocList.length==0 && checkStatusSP=='P'">
+                                    <div class="text-center">
+                                        <b>No Document Available</b>
+                                    </div>
+                                </ng-container>  -->
+                                <ng-container *ngIf="uploadedDocList!=0 && checkStatusSP=='S' && uploadedDocList.ErrorRecord!=0" class="mt-5">
+                                    <div class="flex flex-wrap justify-content-between">
+                                        <h5>{{'DOCUMENT.ErrorDocuments' | translate}}</h5><br>
+                                        <button matStepperNext class="mat-button" (click)="dataValidation()">Download</button>
+                                    </div>
+                                    <div class="grid">
+                                        <div class="col-12 sm:col-12 md:col-12">
+                                            <p-table  [value]="uploadedDocList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                    <th>Transaction Id</th>
+                                                    <th>File Name</th>
+                                                    <th>Status</th>
+                                                    <th>Totel Records</th>
+                                                    <th>Valid Records</th>
+                                                    <th>Error Records</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-docs>
+                                                  <tr>
+                                                        <td>{{ docs.TranId }}</td>
+                                                        <td >{{docs.ExcelFileName}}</td>
+                                                        <td >Completed</td>
+                                                        <td>{{docs.TotalRecord}}</td>
+                                                        <td>{{docs.ValidRecord}}</td>
+                                                        <td>{{docs.ErrorRecord}}</td>
+                                                       
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="flex flex-wrap justify-content-end" *ngIf="uploadedDocList.length!=0 && checkStatusSP=='S'">
+                                    <button matStepperPrevious class="mat-button" (click)="dataValidation()" *ngIf="uploadedDocList.ErrorRecord==0">Back</button>
+                                    <button  class="mat-button" (click)="restart()">Cancel</button>
+                                    <button matStepperNext class="mat-button" (click)="movingRecords()" >Proceed</button>
+                                </div>
+                            </mat-step>
+        
+                            <mat-step>
+                                <ng-template matStepLabel>{{'MOTORQUOTE.MovingRecords' | translate}}</ng-template>
+                            </mat-step>
+                          </mat-stepper>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </ng-container>
+  
+
+</div>
+
+<p-dialog [header]="'QUOTEGRID.SelectaCustomer' | translate" [(visible)]="isSearchFormVisible" [modal]="true" styleClass="w-10 md:w-8 lg:w-6"
+    [draggable]="false" [resizable]="false">
+    <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+        <div class="mr-3">
+            <input pInputText id="username" style="min-width: 220px !important;" class="w-full" styleClass="w-full" [(ngModel)]="searchValue" maxlength="100" [placeholder]="'QUOTEGRID.SearchByName/TINNo/PassportNo' | translate" />
+        </div>
+        <div class="mr-3"  *ngIf="searchValue.length > 2 ? '...' : ''">
+            <p-button [label]="'QUOTEGRID.Search' | translate" class="mr-3" size="small" (click)="onCustomerSearch()"></p-button>
+        </div>
+        <div class="mr-3">
+            <p-button [label]="'QUOTEGRID.CreateCustomer' | translate" class="mr-3" size="small" (click)="onCreateCustomer()"></p-button>
+        </div>
+    </div>
+    <!-- <div class="grid mt-2">
+        <div class="col-12 md:col-5 lg:col-5 xl:col-5">
+            <input pInputText id="username" class="w-full" styleClass="w-full" [(ngModel)]="searchValue" maxlength="100" placeholder="Search By Name/TIN No/Passport No" />
+        </div>
+        <div class="col-12 md:col-2 lg:col-2 xl:col-2" *ngIf="searchValue.length > 2 ? '...' : ''">
+            <p-button label="Search" class="mr-3" size="small" (click)="onCustomerSearch()"></p-button>
+        </div>
+        <div class="col-12 md:col-2 lg:col-2 xl:col-2 offset-3">
+            <p-button label="Create Customer" class="mr-3" size="small" (click)="onCustomerSearch()"></p-button>
+        </div>
+        
+    </div> -->
+    <div class="body mt-3">
+        <p-table [value]="customers" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [pSortableColumn]="customerColumn" *ngFor="let column of customerColumn">{{checkHeaderName(column) | translate}} <p-sortIcon
+                            [field]="column"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+                <tr>
+                    <td>
+                        <input type="radio" [id]="customer?.CustomerReferenceNo" name="fav_language"
+                            (change)="onSelectCustomer(customer)" [value]="customer.CustomerReferenceNo">
+                        <label for="html"></label>
+                        <!-- <p-radioButton  [value]="customer.CustomerReferenceNo" name="city" [(ngModel)]="selectedCustomer" [inputId]="customer.CustomerReferenceNo"></p-radioButton>
+              <label for="ingredient1" class="ml-2"></label> -->
+                    </td>
+                    <td>{{customer?.CustomerReferenceNo}}</td>
+                    <td>{{customer?.ClientName}}</td>
+                    <td>
+                        <ng-container *ngIf="customer?.PolicyHolderType==1">{{ 'HOME.Individual' | translate}}</ng-container>
+                        <ng-container *ngIf="customer?.PolicyHolderType==2">{{ 'HOME.Corporate' | translate}}</ng-container>
+                    </td>
+                    <td>{{ customer?.IdNumber }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="flex flex-wrap mt-5 justify-content-center">
+        <p-button (click)="hideSearchForm()" [label]="'QUOTEGRID.Close' | translate" styleClass="p-button-outlined" class="mr-3"></p-button>&nbsp;
+        <p-button [label]="'QUOTEGRID.ClearSearch' | translate" *ngIf="clearSearchSection" (click)="showSearchForm('change')" class="mr-3"></p-button>&nbsp;
+        <p-button (click)="navigateToCustomerDetail()" *ngIf="selectedCustomer" [label]="'QUOTEGRID.Proceed' | translate" severity="warning"
+            class="mb-3"></p-button>
+    </div>
+</p-dialog>
+<p-dialog header="Choose any Section You Wish to Buy" [(visible)]="showSectionSeltion" [modal]="true"
+    styleClass="w-10 md:w-8 lg:w-6" [draggable]="false" [resizable]="false">
+            
+</p-dialog>

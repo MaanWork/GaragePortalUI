@@ -1,0 +1,88 @@
+<div class="card">
+  <div class="grid">
+    <div class="col-12 sm:col-6 md:col-4">
+      <h3 class="mr-3">{{'Renewal.Renewal' | translate}}</h3>
+      <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+    </div>
+    <div class="col-12 sm:col-6 md:col-8">
+
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+  <div class="grid mt-4">
+    <div class="col-12 py-0">
+      <div class=" flex justify-content-start flex-wrap w-full form-container">
+        <div class="flex flex-column m-3">
+          <label for="username">{{'Renewal.StartDate' | translate}}</label>
+          <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="startdate" dateFormat="dd/mm/yy">
+          </p-calendar>
+        </div>
+        <div class="flex flex-column m-3">
+          <label for="username">{{'Renewal.EndDate' | translate}}</label>
+          <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="enddate" dateFormat="dd/mm/yy">
+          </p-calendar>
+        </div>
+        <div class="flex flex-column m-3">
+          <label for="username">{{'Renewal.Branch' | translate}}</label>
+          <p-dropdown inputId="make" class="w-full" styleClass="w-full" [optionLabel]="getDisplayName()"
+            [options]="branchList" optionValue="Code" [(ngModel)]="branchValue">
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mx-auto flex flex-wrap justify-content-center">
+      <p-button class="mr-4 mb-4" [label]="'Renewal.Search' | translate" (click)="getsearch()"></p-button>
+      <!-- <p-button icon="pi pi-cloud-download" [label]="'Renewal.DownloadAll' | translate" styleClass="p-button-outlined" (click)="onCommonDocumentDownload()"></p-button> -->
+    </div>
+    <div class="grid">
+      <ng-container *ngIf="RenewalListData.length!=0">
+        <p-table #dtEmployee [value]="RenewalListData" [paginator]="true"
+          [globalFilterFields]="['BatchId','NotifyId','BatchDate','Referral','RenewalCompleted',]" [rows]="5">
+          <ng-template pTemplate="caption">
+            <!--[tableStyle]="{'min-width':'50rem'}" -->
+            <div class="flex flex wrap justify-content-end">
+              <div class="table-header">
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')"
+                    [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                </span>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th [pSortableColumn]="column" *ngFor="let column of columns">{{'Renewal.'+column | translate}}
+                <p-sortIcon [field]="column"></p-sortIcon></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-Renew let-i="rowIndex">
+            <tr>
+
+              <td>{{ i+1 }}</td>
+              <td>{{ Renew.BatchId}}</td>
+              <td>{{ Renew.NotifyId }}</td>
+              <td><button pButton pRipple icon="pi pi-check" class="p-button-outlined"></button></td>
+              <td>{{ Renew.BatchDate }}</td>
+              <td class="center">{{ Renew.TotalNoOfRenewal}}</td>
+              <td class="center"><button pButton pRipple class="p-button-outlined">{{ Renew.RenewalCompleted}}</button>
+              </td>
+              <td class="center"><button pButton pRipple [routerLink]="['/renewal/RenewalDetails']">{{ Renew.InitiateactionforRenewal}}</button></td>
+              <td>{{ Renew.Referral}}</td>
+
+              <!-- <td>
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-check" class="p-button-outlined"></button>
+                  </span>
+                </td> -->
+            </tr>
+          </ng-template>
+          <ng-container *ngIf="RenewalListData.length==0">
+            No Data Available
+          </ng-container>
+        </p-table>
+      </ng-container>
+    </div>
+  </div>
+</div>

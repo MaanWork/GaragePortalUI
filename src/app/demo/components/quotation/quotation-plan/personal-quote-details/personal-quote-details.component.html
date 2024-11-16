@@ -1,0 +1,307 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-12 md:col-12">
+            <div class="grid" *ngIf="customerDetails">
+                <div class="lg:col-6 md:col-6 col-12">
+                    <h3>Personal Information</h3>
+                    <div class="flex flex-wrap">
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>Customer Name</b>
+                            <p>{{customerDetails.TitleDesc}}&nbsp;{{customerDetails.ClientName}}</p>
+                        </div>
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>Customer Type</b>
+                            <p>{{customerDetails.PolicyHolderTypeDesc}}</p>
+                        </div>
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>Occupation</b>
+                            <p>{{customerDetails.OccupationDesc}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-6 md:col-6 col-12">
+                    <h3>Address Details</h3>
+                    <div class="flex flex-wrap">
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>Address</b>
+                            <p>{{customerDetails.Address1}}</p>
+                        </div>
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>Country</b>
+                            <p>{{customerDetails.Nationality}}</p>
+                        </div>
+                        <div class="lg:col-4 md:col-6 col-12">
+                            <b>District</b>
+                            <p>{{customerDetails.StateName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-12 sm:col-10 md:col-10">
+                    <div class="flex flex-wrap justify-content-between p-su-header">
+                        <div>
+                                <h4>Insured Details</h4>
+                        </div>
+                        <div>
+                            <ng-container *ngIf="industryName">{{industryName}}&nbsp;|&nbsp; </ng-container>Currency({{currencyCode}})
+                        </div>
+                    </div>
+                    <div class="grid" *ngIf="formSection && productId!='45'">
+                        <div class="row" *ngIf="productId=='14' && employeeError">
+                            <div class="input-form-error text-center">
+                                <div class="error-text  text-danger">
+                                    <b>Please Add Atleast One Employee Details</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="productId=='14'">
+                            <div class="row">
+                                <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                    <button class="btn btn-warning btn-sm" (click)="createCover(null,myModal2)">
+                                        <i class="fas fa-plus"></i>&nbsp;Add New
+                                    </button>
+                                </div>
+                                </div>
+                                <div class="row" *ngIf="listSection">
+                                     <div class="col-12 col-md-10 offset-lg-1">
+                                        <app-grid-table [cols]="queryHeader1" [data]="EmployeeListNew" [filterValue]="filterValue" (onEdit)="onEditBuilding($event,myModal2)" (onDeleteNew)="delete($event,myModal2)">
+                                        </app-grid-table>
+                                     </div>
+                                </div>
+                                <div class="row" *ngIf="listn">
+                                    <div class="col-12 col-md-10 offset-lg-1">
+                                       <app-grid-table [cols]="queryHeader1" [data]="EmployeeListNew" [filterValue]="filterValue" (onEdit)="onEditBuilding($event,myModal2)">
+                                       </app-grid-table>
+                                    </div>
+                               </div>
+                        </div>
+                        <div *ngIf="productId=='57'">
+                            <div class="row">
+                                <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                    <button class="btn btn-warning btn-sm" (click)="createCover2(null,myModal4)">
+                                        <i class="fas fa-plus"></i>&nbsp;Add New
+                                    </button>
+                                </div>
+                                </div>
+                                <div class="row" *ngIf="listSectionGroup">
+                                     <div class="col-12 col-md-10 offset-lg-1">
+                                        <app-grid-table [cols]="groupPaHeader" [data]="GroupListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingGroup($event,myModal4)" (onDeleteNew)="deleteGroup($event,myModal4)">
+                                        </app-grid-table>
+                                     </div>
+                                </div>
+                                <div class="row" *ngIf="listnGroup">
+                                    <div class="col-12 col-md-10 offset-lg-1">
+                                       <app-grid-table [cols]="groupPaHeader" [data]="GroupListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingGroup($event,myModal4)">
+                                       </app-grid-table>
+                                    </div>
+                               </div>
+                        </div>
+                        <div class="row" *ngIf="productId=='56'">
+                            <div class="col-12 col-md-5 col-lg-5 offset-md-3 offset-lg-3">
+                                <div class="input-control-container">
+                                      <label class="input-form-label">Inpatient SumInsured</label>&nbsp;<ng-container *ngIf="categoryDesc">({{categoryDesc}})</ng-container><span class="text-danger">*</span>
+                                      <ng-select class="custom" [items]="sectionDropdownList" [disabled]="(endorsementSection) || finalizeYN=='Y'" [(ngModel)]="ProductCode" placeholder="Select SumInsured" appendTo="body" [ngModelOptions]="{standalone: true}" bindValue="Code" bindLabel="CodeDesc">
+                                      </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="productId=='32'">
+                            <div class="row">
+                                <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                    <button class="btn btn-warning btn-sm" (click)="createCover1(null,myModal3)">
+                                        <i class="fas fa-plus"></i>&nbsp;Add New
+                                    </button>
+                                </div>
+                                </div>
+                                <div class="row" *ngIf="listSectionFed">
+                                    <div class="col-12 col-md-10 offset-lg-1">
+                                       <app-grid-table [cols]="queryHeader2" [data]="FidelityListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingFed($event,myModal3)" (onDeleteNew)="deleteFed($event,myModal2)">
+                                       </app-grid-table>
+                                    </div>
+                               </div>
+                               <div class="row" *ngIf="listnFed">
+                                   <div class="col-12 col-md-10 offset-lg-1">
+                                      <app-grid-table [cols]="queryHeader2" [data]="FidelityListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingFed($event,myModal3)">
+                                      </app-grid-table>
+                                   </div>
+                              </div>
+    
+                        </div>
+                        
+                        <div>
+                            <div class="form__wrapper" *ngIf="productId=='21' || productId=='26'|| productId=='6' || productId=='25' || productId=='13' || (productId=='1' && insuranceId!='100004') || (productId=='39' && insuranceId!='100004') || (productId=='27' && insuranceId!='100004')">
+                                <div class="grid">
+                                    <ng-container *ngFor="let step of fields; let index = index; let last = last">
+                                        <ng-container *ngIf="step.props.label=='Plant All Risk'||step.props.label=='Fire And Material Damage' || step.props.label=='Fire & Allied Perils' || step.props.label=='Burglary' || step.props.label=='Machinery BreakDown' || step.props.label=='Public Liability'">
+                                            <div class="col-12 sm:col-12 md:col-12">
+                                                <div class="col-12 sm:col-4 md:col-4 p-su-header splitCardHeaders d-flex justify-content-between" (click)="selectedIndex=index">
+                                                    <div (click)="selectedIndex=index"><h1 class="headings"><u>{{ step.props.label }}</u></h1></div>
+                                                    <div class="pr-3 pt-1">
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                        <formly-form [form]="form" [fields]="step.fieldGroup" [model]="productItem"></formly-form>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="step.props.label=='Business All Risk' || step.props.label=='Electronic Equipment' || step.props.label=='Personal Accident'">
+                                            <div class="col-md-6 col-lg-5 col-xl-5 col-12 ml-2 splitCard">
+                                                <div class="col-md-12 col-lg-12 col-xl-12 splitCardHeader d-flex justify-content-between" (click)="selectedIndex=index">
+                                                    <div (click)="selectedIndex=index" class="mt-2 pl-4"><h1 class="headings2"><u>{{ step.props.label }}</u></h1></div>
+                                                    <div class="pr-3 pt-1">
+                                                       
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                        <formly-form [form]="form" [fields]="step.fieldGroup" [model]="productItem"></formly-form>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form__wrapper" *ngIf="productId!='14' && productId!='57' && productId!='32' && productId!='19' && productId!='24' && productId!='59' && productId!='42' && productId!='13' && productId!='21' && productId!='26' && productId!='6' && productId!='25' && productId!='56' && (productId!='1' || (productId=='1' && insuranceId=='100004'))  && (productId!='39' || (productId=='39' && insuranceId=='100004')) && (productId!='27' || (productId=='27' && insuranceId=='100004'))">
+                                <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                    <formly-form [form]="form" [fields]="fields" [model]="productItem"></formly-form>
+                                </form>
+                            </div>
+                        </div>
+                      
+                        <div class="form__wrapper" *ngIf="(productId=='19' || productId=='24' || productId=='59' || productId=='56') && showSection">
+                            
+                                <div class="row">
+                                    <ng-container *ngFor="let step of fields[0].fieldGroup; let index = index; let last = last">
+    
+                                        <ng-container *ngIf="step.props.label=='Employers Liability' || step.props.label=='Health Insurance' || (step.props.label=='Contents Risk' && insuranceId=='100004' && productId!='24') || step.props.label=='Building Risk' || step.props.label=='Money' || step.props.label=='Business Interruption' || (step.props.label=='Burglary' && insuranceId=='100004') || step.props.label=='Fidelity' || step.props.label=='Public Liability' || step.props.label=='Machinery BreakDown' || step.props.label=='Fire & Allied Perils' || (step.props.label=='Burglary' && insuranceId=='100002')  || step.props.label=='Goods in Transit'">
+    
+                                            <div class="col-md-12 col-lg-12 col-xl-12">
+                                                <div style="width:100% !important;" class="col-md-4 col-lg-4 col-xl-4 customer-grid maan-grid-item-titles d-flex justify-content-between" (click)="selectedIndex=index">
+                                                    <div (click)="selectedIndex=index" class="mt-2 pl-4"><h1 class="spancon"><u>{{ step.props.label }}</u></h1></div>
+                                                    <div class="pr-3 pt-1">
+                                                    </div>
+                                                </div>
+                                                <div class="card-body" *ngIf="step.props.label!='Employers Liability' && step.props.label!='Fidelity'">
+                                                    <form [formGroup]="form">
+                                                        <formly-form [form]="form" [fields]="step.fieldGroup" [model]="productItem"></formly-form>
+                                                    </form>
+                                                </div>
+                                                <div class="row" *ngIf="step.props.label=='Employers Liability' && step.props.label!='Fidelity'">
+                                                    <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                                        <button class="btn btn-warning btn-sm" (click)="createCover(null,myModal2)">
+                                                            <i class="fas fa-plus"></i>&nbsp;Add New
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="listSection && step.props.label=='Employers Liability'">
+                                                         <div class="col-12 col-md-10 offset-lg-1">
+                                                            <app-grid-table [cols]="queryHeader1" [data]="EmployeeListNew" [filterValue]="filterValue" (onEdit)="onEditBuilding($event,myModal2)" (onDeleteNew)="delete($event,myModal2)">
+                                                            </app-grid-table>
+                                                         </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="listn && step.props.label=='Employers Liability'">
+                                                        <div class="col-12 col-md-10 offset-lg-1">
+                                                           <app-grid-table [cols]="queryHeader1" [data]="EmployeeListNew" [filterValue]="filterValue" (onEdit)="onEditBuilding($event,myModal2)">
+                                                           </app-grid-table>
+                                                        </div>
+                                                   </div>
+    
+                                                   <div class="row" *ngIf="step.props.label=='Fidelity' && step.props.label!='Employers Liability'">
+                                                    <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                                        <button class="btn btn-warning btn-sm" (click)="createCover1(null,myModal3)">
+                                                            <i class="fas fa-plus"></i>&nbsp;Add New
+                                                        </button>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="listSectionFed && step.props.label=='Fidelity'">
+                                                        <div class="col-12 col-md-10 offset-lg-1">
+                                                           <app-grid-table [cols]="queryHeader2" [data]="FidelityListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingFed($event,myModal3)" (onDeleteNew)="deleteFed($event,myModal2)">
+                                                           </app-grid-table>
+                                                        </div>
+                                                   </div>
+                                                   <div class="row" *ngIf="listnFed && step.props.label=='Fidelity'">
+                                                       <div class="col-12 col-md-10 offset-lg-1">
+                                                          <app-grid-table [cols]="queryHeader2" [data]="FidelityListNew" [filterValue]="filterValue" (onEdit)="onEditBuildingFed($event,myModal3)">
+                                                          </app-grid-table>
+                                                       </div>
+                                                  </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="(step.props.label=='Contents Risk' && insuranceId!='100004') || (step.props.label=='Contents Risk' && insuranceId=='100004' && productId=='24') || step.props.label=='Personal Liability' || step.props.label=='Personal Accident' || step.props.label=='All Risk' || step.props.label=='Business All Risk' || step.props.label=='Electronic Equipment'">
+                                            <div class="col-md-6 col-lg-4 col-xl-4 col-12 ml-2 splitCard">
+                                                <div class="col-md-12 col-lg-12 col-xl-12 splitCardHeader d-flex justify-content-between" (click)="selectedIndex=index">
+                                                
+                                                    <div (click)="selectedIndex=index" class="mt-2 pl-4"><h1 class="headings2"><u>{{ step.props.label }}</u></h1></div>
+                                                    <div class="pr-3 pt-1">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <form [formGroup]="form">
+                                                        <formly-form [form]="form" [fields]="step.fieldGroup" [model]="productItem"></formly-form>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            
+                                        </ng-container>
+    
+                                     
+                                    </ng-container>
+                                   
+                                </div>
+                            <div class="text-center" *ngIf="productId!='56'">
+                                <button type="button" class="btn btn-danger" routerLink="/Home/existingQuotes/customerSelection/customerDetails/risk-selection"><<&nbsp;Back</button>&nbsp;
+                                <button class="btn btn-primary" (click)="onNextProceed()">Submit</button>
+                            </div>
+                        </div>
+                        
+                        <div class="row" *ngIf="productId=='42'">
+                            <div class="col-md-6 col-lg-6  col-xl-6">
+                                <div class="input-control-container">
+                                    <label class="input-form-label"><b>Occupation Type</b></label><span class="text-danger">*</span>
+                                    <div style="width:400px;">
+                                        <div class="d-flex justify-content-between"> 
+                                            <div *ngFor="let pro of CyperNewList;let i=index;"> 
+                                        <div class="input-form-radio-box">
+                                                <div class="radio-toolbar">
+                                                        <input [id]="'claims_Own'+i" type="radio" name="SampleType" [(ngModel)]="CyberCode" [value]='pro.Code'>
+                                                        <label [for]="'claims_Own'+i" class="yes_alt">{{pro.CodeDesc}}</label>
+                                                    </div>
+                                        </div>
+                                    </div>
+                                        </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-lg-5 col-xl-5 offset-1">
+                                              
+                                <div class="input-control-container">
+                                    <label class="input-form-label"><b>Plan Type</b></label><span class="text-danger">*</span>
+                                    <div style="width:300px;">
+                                    <div class="d-flex justify-content-between">  
+                                    <div *ngFor="let products of ProductsList;let j=index">
+                                    <div class="input-form-radio-box">
+                                        <div class="radio-toolbar">
+                                            <input [id]="'Silver'+j" type="radio" name="PlanType" [(ngModel)]="ProductCode" [value]='products.Code'>
+                                            <label [for]="'Silver'+j" class="no">{{products.CodeDesc}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                   </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div  *ngIf="productId=='1'">
+
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

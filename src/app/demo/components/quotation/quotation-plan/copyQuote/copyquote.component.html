@@ -1,0 +1,130 @@
+<div class="card">
+        <div class="grid">
+            <div class="col-12 sm:col-6 md:col-4">
+                <h3 class="mr-3">{{'CopyQuote.CopyQuotes' | translate}}</h3>
+            </div>
+        </div>
+    <div class="card-body">
+        <div class="grid ml-3">
+            <div class="md:col-3 lg:col-3 col-12">
+                <p-dropdown inputId="IdType" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="SearchList" 
+                    [(ngModel)]="search" 
+                    [optionLabel]="getDisplayName()"
+                    optionValue="Code"
+                    [placeholder]="'CopyQuote.Select' | translate">
+                </p-dropdown>
+            </div>
+            <!-- <div class="md:col-3 lg:col-3 col-12 ml-5" *ngIf="search!='EntryDate'">
+                <div class="input-control-container">
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control with-icon" [(ngModel)]="searchValue" placeholder="Search">
+                        <span class="input-form-icon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+            <div class="flex flex wrap justify-content-end mt-3">
+                <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" [placeholder]="'DASHBOARD.GlobalSearch' | translate" [(ngModel)]="searchValue" />
+                  </span>
+              </div>
+              </div>
+            <div class="col-12 md:col-3 lg:col-3" *ngIf="search=='EntryDate'">
+                <mat-form-field appearance="fill">
+                    <mat-label>{{'CopyQuote.EntryDate' | translate}}<span class="text-danger">*</span></mat-label>
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="dob">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+         
+            <div class="col-12 md:col-2 lg:col-2" *ngIf="searchValue.length > 2 ? '...' : '' || dob">
+                <p-button (click)="onCustomerSearch()" [label]="'CopyQuote.Search' | translate" size="small"></p-button>
+                <!-- <button class="btn btn-primary" matRipple style="margin: 0.7rem 0;" (click)="onCustomerSearch()"><i class="fas fa-search"></i>&nbsp;Search </button> -->
+            </div>
+            <div class="col-12 md:col-2 lg:col-2">
+            </div>
+        </div>
+        <div>
+            <div class="row">
+                <div class="col-12 col-md-11 col-lg-11 ml-5">
+                    <ng-container *ngIf="customerData.length!=0">
+                        <!-- <app-grid-table [cols]="columnHeader" [data]="customerData" [innerCols]="innerColumnHeader" [innerData]="innerTableData" (onSelectCustomer)="onSelect($event)" (onEdit)="onEditQuotes($event)" (onAdd)="onInnerData($event)">
+                        </app-grid-table> -->
+                        <p-table #dtEmployeeExist [value]="customerData" [(selection)]="selectedProducts3"
+                        [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" 
+                        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']">
+                          <ng-template pTemplate="caption">
+                              <div class="flex flex wrap justify-content-end">
+                                <div class="table-header">
+                                  <span class="p-input-icon-left">
+                                      <i class="pi pi-search"></i>
+                                      <input pInputText type="text" [placeholder]="'DASHBOARD.GlobalSearch' | translate"  />
+                                  </span>
+                              </div>
+                              </div>
+                              
+                          </ng-template>
+                          <ng-template pTemplate="header">
+                              <tr>
+                                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{'CopyQuote.'+column | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                              </tr>
+                          </ng-template>
+                          <tr> 
+                            <th *ngFor="let col of cols"> 
+                                <input pInputText type="text" /> 
+                            </th> 
+                          </tr> 
+                          <ng-template pTemplate="body" let-customer>
+                            <tr>
+                              <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                              <td class="p-field-checkbox">
+                                <p-checkbox (onChange)="onSelect(customer,$event)"  [binary]="true" [value]="customerData"></p-checkbox>
+                                <!-- <label for="binary">&nbsp;Collateral</label> -->
+                                </td>
+                              <td>{{ customer.QuoteNo }}</td>
+                              <td>{{ customer.RequestReferenceNo }}</td>
+                              
+                              <td>{{ customer.ClientName }}</td>
+                              <!-- <td>{{ customer.PolicyStartDate }}</td>
+                              <td>{{ customer.PolicyEndDate }}</td>
+                              <td>{{ customer.OverallPremiumLc }}</td> -->
+                              <td>{{ customer.Currency }}</td>
+                              <!-- <td>
+                                <span class="p-buttonset">
+                                  <button pButton pRipple icon="pi pi-pencil" (click)="onEditQuotes(customer)" title="Edit" class="p-button-outlined"></button>
+                                  <button pButton pRipple icon="pi pi-times" (click)="onRejects(customer)" title="Reject" class="p-button-outlined"></button>
+                                  <button pButton pRipple icon="pi pi-envelope" title="Mail" class="p-button-outlined"></button>
+                                  <button pButton pRipple icon="pi pi-inbox" title="SMS" class="p-button-outlined"></button>
+                                  <button pButton pRipple icon="pi pi-user" title="Followup" class="p-button-outlined"></button>
+                                </span>
+                              </td> -->
+                            </tr>
+                          </ng-template>
+                        </p-table>
+                        <!-- <div class="text-center" *ngIf="selectedData">
+                            <button class="custom-btn btn-6 mx-2" (click)="onCopyQuote()">Copy Quote</button>
+                        </div> -->
+                    </ng-container>
+                    <ng-container *ngIf="customerData.length==0">
+                        <div class="text-center spancommon span_font_size">
+                            {{'QUOTEGRID.NoQuoteAvailable' | translate}}
+                        </div>
+
+                    </ng-container>
+                    <div class="text-center mt-5" *ngIf="selectedData">
+                        <p-button (click)="onCopyQuote()" [label]="'CopyQuote.CopyQuote' | translate" size="small"></p-button>
+                        <!--custom-btn btn-6 mx-2-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

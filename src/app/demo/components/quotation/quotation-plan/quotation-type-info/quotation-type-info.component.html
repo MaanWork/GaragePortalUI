@@ -1,0 +1,25 @@
+<div class="mx-auto text-center">
+    <h2>Let's Talk About Your Info</h2>
+    <p>Hi, We have to ask few important details about your health.</p>
+</div>
+
+<div class="card border-solid border-orange-500 mx-auto mt-5" style="max-width: max-content;">
+    <p>Do you like to move this Quote to Referal Manually?</p>
+    <div class="flex">
+        <p-button class="mr-3" label="Yes"></p-button>
+        <p-button label="No" styleClass="p-button-outlined"></p-button>
+    </div>
+</div>
+<div class="card border-solid border-orange-500 mx-auto" style="max-width: max-content;">
+    <p>Do you like to move this Quote to Referal Manually?</p>
+    <div class="flex">
+        <p-button class="mr-3" label="Yes"></p-button>
+        <p-button label="No" styleClass="p-button-outlined"></p-button>
+    </div>
+</div>
+
+<div class="flex justify-content-between mx-auto" style="max-width: fit-content;">
+    <p-button label="Back" [routerLink]="['/quotation/plan/main/vehicle']" class="mr-6" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+    <p-fileUpload class="mr-6" mode="basic" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" styleClass="p-button-outlined" accept="image/*" maxFileSize="1000000" [auto]="true" chooseLabel="Upload Document"></p-fileUpload>
+    <p-button label="Proceed" [routerLink]="['/quotation/plan/main/accessories']"></p-button>
+</div>

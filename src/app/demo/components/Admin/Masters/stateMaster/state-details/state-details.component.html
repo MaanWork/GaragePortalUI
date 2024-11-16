@@ -1,0 +1,117 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4">
+          <h3 class="mr-3">State Details</h3>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4 " >
+            <label for="username">Country*</label>
+            <p-dropdown inputId="countryList" 
+                class="w-full"
+                [disabled]="true"
+                [(ngModel)]="stateDetails.CountryId"
+                styleClass="w-full"
+                [options]="countryList" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="Select Country">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">State Name*</label><br>
+            <input pInputText 
+            [(ngModel)]="stateDetails.StateName" maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Country Name"/>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4" >
+            <label for="username">Region*</label>
+            <p-dropdown inputId="regionList" 
+                class="w-full"
+                styleClass="w-full" 
+                [(ngModel)]="stateDetails.RegionCode"
+                [options]="countryList" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="Select Country">
+            </p-dropdown>
+        </div>
+
+
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">CoreApp Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="stateDetails.CoreAppCode" maxlength="20"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Country Short Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">State Short Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="stateDetails.StateShortCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="EnterRegulatory Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Regulatory Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="stateDetails.RegulatoryCode" maxlength="20"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Mobile Code"/>
+        </div>
+       
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Start Date</label>
+            <p-calendar class="w-full" styleClass="w-full" 
+            [(ngModel)]="stateDetails.EffectiveDateStart"
+                dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+        <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+            <div class="error-text text-danger" *ngIf="policyEndDateError">
+                <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+            </div>
+        </div> -->
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CountryName">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="stateDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+ 
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <!-- <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="P" 
+                [(ngModel)]="CountryDetails.Status" inputId="ingredient1">
+            </p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div> -->
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" 
+                [(ngModel)]="stateDetails.Status" inputId="ingredient2">
+            </p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" 
+                [(ngModel)]="stateDetails.Status" inputId="ingredient3">
+            </p-radioButton>
+                <span for="ingredient3" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R"
+                [(ngModel)]="stateDetails.Status" inputId="ingredient4">
+                </p-radioButton>
+                <span for="ingredient4" class="ml-1">Referral</span>
+            </div>
+         </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()" ></p-button>
+    </div>
+</div>

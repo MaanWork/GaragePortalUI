@@ -1,0 +1,166 @@
+<div class="flex flex-wrap card">
+    <div class="col-12 md:col-4 lg:col-4 border-right-1 border-500 px-5">
+        <ng-container *ngIf="riskDetails.length!=0">
+            <p-tabView [activeIndex]="tabIndex" (onChange)="onTabClicked($event)" [scrollable]="true">
+                <ng-container>
+                    <ng-container *ngFor="let veh of riskDetails;let i=index">
+                        <p-tabPanel [header]="getHeaderName(veh)" >
+                            <ng-container *ngFor="let sec of veh.SectionDetails;let i=index">
+                                <ng-container *ngIf="checkCovers(sec,'opted')">
+                                    <p *ngIf="i==0"><b>{{'PREMIUM.OptedCovers' | translate}}</b></p>
+                                    <div class="grid p-0">
+                                        <ng-container *ngFor="let cover of sec.Covers">
+                                            <ng-container *ngIf="checkCoverSelected(cover)">
+                                                <div class="col-12 md:col-12 lg:col-12 xl:col-12 p-1">
+                                                    <div class="card p-1 m-0 customOptCoverCard customOptCoverBg">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                        <ng-container *ngIf="productId=='14' || productId=='32'">
+                                                            <p>Risk - {{getOccupationDesc(veh)}}</p>
+                                                        </ng-container>
+                                                        <div class="flex justify-content-end">
+                                                            <div>
+                                                                <p><span class="font-bold text-2xl">{{getPremiumIncTax(cover)}} &nbsp;({{currencyCode}})</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="checkCovers(sec,'default')">
+                                    <p *ngIf="i==0"><b>{{'PREMIUM.DefaultCovers' | translate}}</b></p>
+                                    <div class="grid p-0">
+                                        <ng-container *ngFor="let cover of sec.Covers">
+                                            <ng-container *ngIf="cover.isSelected=='D' && cover.CoverageType!='A'">
+                                                <div class="col-12 md:col-12 lg:col-12 xl:col-12 p-1 mt-3">
+                                                    <div class="card bg-blue-800 text-0 p-1 m-0">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                        <ng-container *ngIf="productId=='14' || productId=='32'">
+                                                            <p>Risk - {{getOccupationDesc(veh)}}</p>
+                                                        </ng-container>
+                                                        <p class="mb-0" *ngIf="checkSubCoverName(cover)"><b>( {{getSubCoverName(cover)}} )</b></p>
+    
+                                                        <div class="flex justify-content-end">
+                                                            <div>
+                                                                <p><span class="font-bold text-2xl">{{cover.PremiumIncludedTax}}&nbsp;({{currencyCode}})</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="checkCovers(sec,'benefit')">
+                                    <p *ngIf="i==0"><b>{{'PREMIUM.BenefitCovers' | translate}}</b></p>
+                                    <div class="grid">
+                                        <ng-container *ngFor="let cover of sec.Covers">
+                                            <ng-container *ngIf="(cover.isSelected=='Y') && cover.CoverageType=='A'">
+                                                <div class="col-12 md:col-6 lg:col-6 xl:col-6 p-1 ">
+                                                    <div class="card customOptCoverCard customOptCoverBg p-2 m-0">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="(cover.isSelected=='D') && cover.CoverageType=='A'">
+                                                <div class="col-12 md:col-6 lg:col-6 xl:col-6 p-1">
+                                                    <div class="card bg-blue-800 text-0 p-2 m-0">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </p-tabPanel>
+                    </ng-container>
+                </ng-container>
+                <!-- <ng-container *ngIf="productId=='59'">
+                    <p-tabPanel [header]="getHeaderName(null)"> 
+                        <ng-container *ngFor="let veh of riskDetails;let i=index">
+                            <ng-container *ngFor="let sec of veh.SectionDetails">
+                                <ng-container *ngIf="checkCovers(sec,'opted')">
+                                    <div class="grid p-0">
+                                        <ng-container *ngFor="let cover of sec.Covers">
+                                            <ng-container *ngIf="checkCoverSelected(cover)">
+                                                <div class="col-12 md:col-12 lg:col-12 xl:col-12 p-1">
+                                                    <div class="card p-1 m-0 customOptCoverCard customOptCoverBg">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                        <div class="flex justify-content-end">
+                                                            <div>
+                                                                <p><span class="font-bold text-2xl">{{getPremiumIncTax(cover)}} &nbsp;({{currencyCode}})</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngFor="let veh of riskDetails;let i=index">
+                            <ng-container *ngFor="let sec of veh.SectionDetails">
+                                <ng-container *ngIf="checkCovers(sec,'default')">
+                                    
+                                    <div class="grid p-0 mt-1">
+                                        <ng-container *ngFor="let cover of sec.Covers">
+                                            <ng-container *ngIf="cover.isSelected=='D' && cover.CoverageType!='A'">
+                                                <div class="col-12 md:col-12 lg:col-12 xl:col-12 p-1">
+                                                    <div class="card bg-blue-800 text-0 p-1 m-0">
+                                                        <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p><br>
+                                                        <p class="mb-0" *ngIf="checkSubCoverName(cover)"><b>( {{getSubCoverName(cover)}} )</b></p>
+    
+                                                        <div class="flex justify-content-end">
+                                                            <div>
+                                                                <p><span class="font-bold text-2xl">{{cover.PremiumIncludedTax}}&nbsp;({{currencyCode}})</span></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngFor="let veh of riskDetails;let i=index">
+                            <ng-container *ngFor="let sec of veh.SectionDetails">
+                                    <ng-container *ngIf="checkCovers(sec,'benefit')">
+                                        <p><b>Benefit Covers</b></p>
+                                        <div class="grid">
+                                            <ng-container *ngFor="let cover of sec.Covers">
+                                                <ng-container *ngIf="cover.isSelected=='D' && cover.CoverageType=='A'">
+                                                    <div class="col-12 md:col-6 lg:col-6 xl:col-6 p-1">
+                                                        <div class="card bg-blue-800 text-0 p-2 m-0">
+                                                            <p class="mb-0"><b>{{getCoverNameDesc(cover)}}</b></p>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </p-tabPanel>
+                </ng-container> -->
+            </p-tabView>
+        </ng-container>
+        <!-- <div class="flex flex-wrap justify-content-between">
+            <p-button label="Clauses" styleClass="mr-3 mb-3 p-button-outlined"></p-button>
+            <p-button label="Exclusions" styleClass="mr-3 mb-3 p-button-outlined"></p-button>
+            <p-button label="Warranties" styleClass="mr-3 mb-3 p-button-outlined"></p-button>
+        </div> -->
+    </div>
+    <div class="col-12 md:col-8 lg:col-8 px-5">
+        <router-outlet></router-outlet>
+    </div>
+</div>

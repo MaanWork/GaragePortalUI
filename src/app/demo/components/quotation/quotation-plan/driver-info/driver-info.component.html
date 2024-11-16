@@ -1,0 +1,278 @@
+<div class="grid">
+    <div class="col-12 md:col-7 lg:col-7 xl:col-7">
+    </div>
+    <div class="col-12 md:col-5 lg:col-5 xl:col-5">
+        <div class="flex flex-wrap justify-content-start">
+            <div *ngIf="quoteNo"><b>{{'PREMIUM.QuoteNo' | translate}} - <span class="primaryTextColor bolder">{{quoteNo}}</span></b>&nbsp;|&nbsp;</div>
+            <div *ngIf="quoteRefNo"><b>{{'PREMIUM.ReferenceNo' | translate}} - <span class="primaryTextColor bolder">{{quoteRefNo}}</span></b></div>
+        </div>
+    </div>
+</div>
+<!-- <div class="grid align-items-center mt-4 p-4">
+    <p-inputSwitch class="mr-4"></p-inputSwitch><label for="">Use same Customer details</label>
+</div> -->
+<p-tabView [(activeIndex)]="tabIndex" (onChange)='tabIndex = $event.index' >
+    <ng-container *ngFor="let veh of vehicleList;let j=index;">
+        <p-tabPanel [header]="getHeaderName(veh)">
+            <div class="grid">
+                <div class="col-12 md:col-9 lg:col-9 xl:col-9">
+                    <h2>{{'DRIVERINFO.DriverInformation' | translate}}</h2>
+                </div>
+                <div class="col-12 md:col-3 lg:col-3 xl:col-3">
+                    <p-button icon="pi pi-plus" [label]="'DRIVERINFO.AddNewDriver' | translate" (click)="addNewDriver(veh.RiskId)"></p-button>
+                </div>
+            </div>
+            <ng-container *ngFor="let row of driverDetailsList;let i = index">
+                
+                <ng-container *ngIf="row.RiskId==veh.RiskId">
+                    <div class="flex flex-wrap justify-content-end mt-2">
+                        <div>
+                            
+                        </div>
+                    </div>
+                    <div class="grid w-full" styleClass="w-full" *ngIf="insuranceId!='100040' && insuranceId!='100042'">
+                        <div class="col-12 md:col-3 lg:col-3 xl:col-3">
+                            <label for="username">{{'MOTORQUOTE.DriverName' | translate}}*</label>
+                            <input pInputText id="username" [(ngModel)]="row.DriverName" class="customInput" [disabled]="endorsementSection && !enableDriverDetails"  maxlength="100" [placeholder]="'DRIVERINFO.EnterDriverName' | translate"/>
+                            <div class="input-form-error" *ngIf="row.driverNameError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.PleaseEnterValidDriverName' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12 md:col-4 lg:col-4 xl:col-4">
+                            <label for="username">Registration Number*</label>
+                            <p-dropdown inputId="make" class="w-full" styleClass="w-full" [options]="LicenseList" (change)="onLicenseChange(row)" [(ngModel)]="row.RiskId"  optionLabel="CodeDesc" optionValue="Code" placeholder="---Select---">
+                            </p-dropdown>
+                        </div> -->
+                        <div class="col-12 md:col-3 lg:col-3 xl:col-3">
+                            <label for="username">{{'MOTORQUOTE.LicenseNumber' | translate}}*</label>
+                            <input pInputText id="username" [(ngModel)]="row.LicenseNo"  class="customInput" [disabled]="endorsementSection && !enableDriverDetails"  maxlength="14" [placeholder]="'DRIVERINFO.EnterLicenceNumber' | translate"/>
+                            <div class="input-form-error" *ngIf="row.licenseNoError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.PleaseEnterValidLicenseNumber' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-2 lg:col-2 xl:col-2">
+                            <label for="username">{{'MOTORQUOTE.DateOfBirth' | translate}}*</label>
+                            <p-calendar class="w-full" [(ngModel)]="row.DriverDob" styleClass="w-full" [disabled]="endorsementSection && !enableDriverDetails"  [maxDate]="minDate"
+                                dateFormat="dd/mm/yy" [placeholder]="'DRIVERINFO.SelectDOB' | translate">
+                            </p-calendar>
+                            <div class="input-form-error" *ngIf="row.driverDobError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.PleaseSelectValidDateOfBirth' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-3 lg:col-3 xl:col-3">
+                            <label for="username"> {{'MOTORQUOTE.DriverType' | translate}}</label>
+                            <div class="flex justify-content-start gap-3">
+                                <p-selectButton [options]="driverOptions" [disabled]="endorsementSection && !enableDriverDetails" [(ngModel)]="row.DriverType"
+                                [optionLabel]="getDisplayName()" optionValue="value">
+                            </p-selectButton>
+                            </div>
+                            <div class="input-form-error" *ngIf="row.driverTypeError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.PleaseSelectValidDriverType' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-1 lg:col-1 xl:col-1 mt-3"  *ngIf="checkDriverDelete(veh.RiskId)" >
+                            <p-button (click)="onRemove(i)" icon="pi pi-trash" severity="danger" size="small"></p-button>
+                        </div>
+                    </div>
+                    <div class="grid w-full" *ngIf="insuranceId=='100040' || insuranceId=='100042'">
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="licenseNo1">{{'MOTORQUOTE.Name' | translate}}&nbsp;</label><br>
+                            <input pInputText id="Name"  class="w-full driverInput" styleClass="w-full driverInput" maxlength="14" [(ngModel)]="row.DriverName"  />
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="driverName1">{{'MOTORQUOTE.Drivinglicenseage' | translate}}&nbsp;</label><span class="text-danger">*</span><br>
+                            <input pInputText id="Drivinglicenseage" class="w-full driverInput" styleClass="w-full driverInput" [(ngModel)]="row.DrivingLicensingAge" maxlength="50" />
+                            <div class="input-form-error" *ngIf="row.drivinglicenseageError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.EnterLicenseAge' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4 ">
+                            <label for="username">{{'MOTORQUOTE.SameasSubscriber' | translate}}</label>
+                            <div class="flex justify-content-start gap-3">
+                                <p-selectButton [options]="driverOptions"  [(ngModel)]="row.Subscriber" id="SameasSubscriber"
+                                [optionLabel]="getDisplayName()" optionValue="value"></p-selectButton>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4 ">
+                            <label for="licenseNo1">{{'MOTORQUOTE.Civility' | translate}}&nbsp;</label><br>
+                            <!-- <input pInputText id="licenseNo1" class="w-full driverInput" styleClass="w-full driverInput" maxlength="14" [(ngModel)]="row.Civility"  /> -->
+                            <p-dropdown inputId="Civility" class="w-full" styleClass="w-full" [(ngModel)]="row.Civility" [options] ="nationalityList"
+                            optionLabel="CodeDesc" optionValue="Code" >
+                        </p-dropdown>
+                        </div>
+                        
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4 ">
+                            <label for="Dob2">{{'MOTORQUOTE.DateOfBirth' | translate}}</label>
+                            <p-calendar class="w-full" id="DateOfBirth" class="w-full driverInput" styleClass="w-full driverInput" [maxDate]="minDate"
+                                [(ngModel)]="row.DriverDob" dateFormat="dd/mm/yy">
+                            </p-calendar>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="licenseNo1">{{'MOTORQUOTE.Drivinglicensenumber' | translate}}&nbsp;</label><span class="text-danger">*</span><br>
+                            <input pInputText id="licenseNo" class="w-full driverInput" styleClass="w-full driverInput" maxlength="14" [(ngModel)]="row.LicenseNo"  />
+                            <div class="input-form-error" *ngIf="row.licenseNoError">
+                                <div class="error-text text-danger">
+                                    {{'DRIVERINFO.PleaseEnterValidLicenseNumber' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="DrivingExperience1">{{'MOTORQUOTE.Dateofissue' | translate}}&nbsp;</label><br>
+                            <p-calendar class="w-full driverInput" id="Dateofissue" styleClass="w-full driverInput" 
+                                [(ngModel)]="row.LicenseIssueDt" dateFormat="dd/mm/yy">
+                            </p-calendar>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="SubUrban1">{{'MOTORQUOTE.Placeofissue' | translate}}</label>
+                            <input pInputText id="Placeofissue" class="w-full driverInput" styleClass="w-full driverInput" maxlength="14"  [(ngModel)]="row.PlaceIssue"  />
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="SubUrban1">{{'MOTORQUOTE.Category' | translate}}</label>
+                            <input pInputText id="Category" class="w-full driverInput" styleClass="w-full driverInput" maxlength="14"  [(ngModel)]="row.CategoryCode"  />
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="SubUrban1">{{'MOTORQUOTE.CategoryDateobtained' | translate}}</label>
+                            <p-calendar class="w-full driverInput" id="CategoryDateobtained" styleClass="w-full driverInput" 
+                            [(ngModel)]="row.CategoryDate" dateFormat="dd/mm/yy">
+                        </p-calendar>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="SubUrban1">{{'MOTORQUOTE.Categoryexpirationdate' | translate}}</label>
+                            <p-calendar class="w-full driverInput" id="Categoryexpirationdate" styleClass="w-full driverInput" 
+                            [(ngModel)]="row.CategoryExDate" dateFormat="dd/mm/yy">
+                        </p-calendar>
+                        </div>
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4">
+                            <label for="SubUrban1">{{'HOME.EmailId' | translate}}</label>
+                            <input pInputText id="EmailId" class="w-full driverInput" styleClass="w-full driverInput"  [(ngModel)]="row.Email"  />
+                        </div>
+                        <div class="col-12 lg:col-2 md:col-2 xl:col-2">
+                            <label for="SubUrban1">{{'DRIVERINFO.CountryCode' | translate}}</label>
+                            <p-dropdown inputId="CountryCode" class="w-full" styleClass="w-full" [(ngModel)]="row.ContactCode" [options] ="mobileCodeList"
+                            [optionLabel]="getDisplayName()" optionValue="Code" >
+                        </p-dropdown>
+                            <!-- <input pInputText id="licenseNo1" class="w-full" styleClass="w-full" maxlength="14"  [(ngModel)]="row.ContactCode"  /> -->
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3 xl:col-3">
+                            <label for="SubUrban1">{{'HOME.MobileNumber' | translate}}</label>
+                            <input pInputText id="MobileNumber" class="w-full driverInput" styleClass="w-full driverInput" maxlength="10"   [(ngModel)]="row.Contact" />
+                        </div> 
+                        
+                    </div>
+                    <div class="flex flex-wrap justify-content-end">
+
+                        <div class="col-12 md:col-1 lg:col-1 xl:col-1 "  *ngIf="checkDriverDelete(veh.RiskId)" >
+                            <p-button (click)="onRemove(i)" icon="pi pi-trash" severity="danger" size="small"></p-button>
+                        </div> 
+                    </div> 
+                </ng-container>
+                
+            </ng-container>
+            <div class="grid" *ngIf="insuranceId=='100027' || insuranceId=='100040' || this.insuranceId=='100042'">
+                <div class="col-12 md:col-7 lg:col-7 xl:col-7">
+                    <h2>{{'DRIVERINFO.OtherInformationAboutVehicle' | translate}}</h2>
+                </div>
+            </div>
+            <div class="grid" *ngIf="insuranceId=='100027' || insuranceId=='100040' || this.insuranceId=='100042'">
+                <ng-container *ngFor="let list of vehicleDetailsList">
+                    <ng-container *ngIf="list.VehicleId==veh.RiskId">
+                        <!-- <div class="col-12 lg:col-6 md:col-6 xl:col-4 mt-2">
+                            <label for="username">{{'DRIVERINFO.SeriesNumber' | translate}} &nbsp;(Eg: TRN-123)</label>
+                            <input pInputText maxlength="20" id="SeriesNumber" class="w-full" styleClass="w-full" [(ngModel)]="list.SeriesNo" [placeholder]="'DRIVERINFO.EnterSeriesNumber' | translate"/>
+
+                            
+                        </div> -->
+<!--                     
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4 mt-2">
+                            <label for="username">{{'DRIVERINFO.NumberOfCylinders' | translate}}</label>
+                            <p-dropdown inputId="engineType" class="w-full" styleClass="w-full" [(ngModel)]="list.NoCylinder" [options] ="CylinderTypeList"
+                            [optionLabel]="getDisplayName()"  optionValue="Code" [placeholder]="'DRIVERINFO.EnterNoOfCylinders' | translate">
+                             </p-dropdown>
+                        </div>
+                     -->
+                        <!-- <div class="col-12 lg:col-6 md:col-6 xl:col-4 mt-2">
+                            <label for="username">{{'DRIVERINFO.PlateType' | translate}}</label>
+                            <p-dropdown inputId="PlateType" class="w-full" styleClass="w-full" [options] ="plateTypeList" [(ngModel)]="list.PlateType"
+                            [optionLabel]="getDisplayName()" optionValue="Code" id="PlateType" [placeholder]="'DRIVERINFO.SelectPlateType' | translate">
+                            </p-dropdown>
+                        </div> -->
+                        <!-- <div class="col-12 lg:col-6 md:col-6 xl:col-4 mt-2">
+                            <label for="username">{{'DRIVERINFO.PlateColor' | translate}}</label>
+                            <p-dropdown inputId="PlateColor" class="w-full" styleClass="w-full" 
+                            [options]="colorList" id="PlateColor"
+                            [(ngModel)]="list.PlateColorId"
+                            [optionLabel]="getDisplayName()"
+                                optionValue="Code" 
+                                [placeholder]="'DRIVERINFO.SelectColor' | translate">
+                            </p-dropdown>
+                        </div> -->
+                    
+                        <div class="col-12 lg:col-6 md:col-6 xl:col-4 mt-2">
+                            <label for="username">{{'DRIVERINFO.NumberOfDoors' | translate}}</label>
+                            <p-dropdown inputId="NumberOfDoors" id="NumberOfDoors" class="w-full" styleClass="w-full" [options] ="NoOfDoorsList"  [(ngModel)]="list.NoDoors"
+                            [optionLabel]="getDisplayName()" optionValue="Code" [placeholder]="'DRIVERINFO.SelectDoors' | translate">
+                            </p-dropdown>
+                        </div>
+                    </ng-container>
+                   
+                <!-- <div class="col-12 md:col-6 lg:col-4 xl:col-4 mt-2">
+                    <label for="username">Number Of Passengers's (Shown Based on Motor Type)</label>
+                    <input pInputText  maxlength="5" class="w-full" styleClass="w-full" placeholder="Enter Number Of Passengers"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 xl:col-4 mt-2">
+                    <label for="username">Mileage (Km/lit)</label>
+                    <input pInputText  maxlength="5" class="w-full" styleClass="w-full" placeholder="Enter Mileage Of Vehicle"/>
+                </div> -->
+                <!-- <div class="col-12 md:col-6 lg:col-4 xl:col-4 mt-2">
+                    <label for="username">Number Of Claim Document</label>
+                    <input pInputText  maxlength="5" class="w-full" styleClass="w-full" placeholder="Enter Number Of Claim Document"/>
+                </div> -->
+                <!-- <div class="col-12 md:col-6 lg:col-4 xl:col-4 mt-2">
+                    <label for="username">Number Of Claim Years</label>
+                    <input pInputText  maxlength="5" class="w-full" styleClass="w-full" placeholder="Enter Number Of Claim Years"/>
+                </div> -->
+            </ng-container>
+            </div>
+        
+            <div class="flex flex-wrap justify-content-center mt-2">
+                <div>
+                    <ng-container *ngIf="tabIndex==0">
+                        <p-button [label]="'PREMIUM.Back' | translate" (click)="ongetBack()" class="mr-6" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                    </ng-container>
+                    <ng-container *ngIf="tabIndex!=0">
+                        <p-button [label]="'PREMIUM.Back' | translate" (click)="tabIndex=tabIndex-1" class="mr-6" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+                    </ng-container>
+                </div>
+               <div>
+                <ng-container *ngIf="tabIndex!=(vehicleList.length-1)">
+                    <p-button [label]="'MOTORQUOTE.Next' | translate" (click)="onNextProceed()" class="text-l pi-button mt-6"></p-button>
+                </ng-container>
+                <ng-container *ngIf="tabIndex==(vehicleList.length-1)">
+                    <p-button [label]="'PREMIUM.Proceed' | translate" (click)="onsave()" class="text-l pi-button mt-6"></p-button>
+                </ng-container>
+               </div>
+                
+            </div>
+        </p-tabPanel>
+    </ng-container>  
+</p-tabView>
+<!-- <div class="flex flex-wrap justify-content-end">
+    <div>
+        <p-button (click) = "onAddNewDriver()" icon="pi pi-plus" label="Add New Driver" severity="warning" size="small"></p-button>
+    </div>
+</div> -->
+
+
+

@@ -1,0 +1,269 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-9 md:col-9">
+          <h3 class="mr-3">Motor Body Type</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div> -->
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4 " >
+            <label for="username">Insurance Type*</label>
+            <p-dropdown inputId="insuranceList" 
+                class="w-full" 
+                styleClass="w-full"
+                [options]="insuranceList" 
+                [(ngModel)]="BodyTypeDetails.SectionId" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4 ">
+            <label for="username">Branch Code*</label>
+            <p-dropdown inputId="branchList" 
+                class="w-full" 
+                styleClass="w-full"
+                [options]="branchList" 
+                [(ngModel)]="BodyTypeDetails.BranchCode" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+
+
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Body Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="BodyTypeDetails.BodyNameEn"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Body Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="BodyTypeDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Seating Capacity*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="BodyTypeDetails.SeatingCapacity"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Bank Short Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4 ">
+            <label for="Bankname">Tonnage*</label><br>
+            <input pInputText 
+            [(ngModel)]="BodyTypeDetails.Tonnage" 
+            class="w-full" styleClass="w-full" 
+            placeholder="Enter Regulatory Code"/>
+        </div>
+                
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Cylinders*</label><br>
+            <input pInputText 
+            [(ngModel)]="BodyTypeDetails.Cylinders"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Regulatory Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="BodyTypeDetails.RegulatoryCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter BranchCode"/>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full"
+             [(ngModel)]="BodyTypeDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <!-- <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="P" [(ngModel)]="BankDetails.Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div> -->
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="BodyTypeDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="BodyTypeDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="BodyTypeDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="BodyTypeDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()" ></p-button>
+    </div>
+</div>
+
+    
+   <!-- <div class="card">
+        <div class="card-header">Motor Body Type</div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Insurance Type</label>
+                        <ng-select class="input-form-select"
+                         appendTo="body" [items]="insuranceList"
+                          [(ngModel)]="BodyTypeDetails.SectionId"
+                           bindValue="Code" bindLabel="CodeDesc">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Branch Code</label>
+                        <ng-select class="input-form-select" 
+                        disabled appendTo="body" 
+                        [items]="branchList" 
+                        [(ngModel)]="BodyTypeDetails.BranchCode"
+                         bindValue="Code" bindLabel="CodeDesc">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Body Name<span class="text-required">*</span></label>
+                        <div class="input-form-box">
+                            <input type="text" 
+                            class="input-form-control without-icon" 
+                            [(ngModel)]="BodyTypeDetails.BodyNameEn"
+                             maxlength="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Seating Capacity</label>
+                        <div class="input-form-box">
+                            <input type="text" 
+                            class="input-form-control without-icon"
+                             [(ngModel)]="BodyTypeDetails.SeatingCapacity"
+                              maxlength="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Tonnage</label>
+                        <div class="input-form-box">
+                            <input type="text" 
+                            class="input-form-control without-icon"
+                             [(ngModel)]="BodyTypeDetails.Tonnage" 
+                              maxlength="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Cylinders</label>
+                        <div class="input-form-box">
+                            <input type="text" 
+                            class="input-form-control without-icon"
+                             [(ngModel)]="BodyTypeDetails.Cylinders"
+                              maxlength="100">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Regulatory Code</label>
+                        <div class="input-form-box">
+                            <input type="text"
+                             class="input-form-control without-icon" 
+                             [(ngModel)]="BodyTypeDetails.RegulatoryCode" maxlength="100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Effective Date <span class="text-danger">*</span></label>
+                        <mat-form-field appearance="fill">
+                            <input matInput [matDatepicker]="picker" 
+                            [min]="minDate" 
+                            [(ngModel)]="BodyTypeDetails.EffectiveDateStart">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Remarks</label>
+                        <div class="input-form-box">
+                            <textarea cols="120" rows="2" 
+                            class="input-form-control without-icon"
+                             [(ngModel)]="BodyTypeDetails.Remarks" maxlength="200"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Status</label>
+                        <div class="input-form-radio-box">
+                            <div class="radio-toolbar">
+                                <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse"  value="Y" [(ngModel)]="BodyTypeDetails.Status">
+                                <label for="orginwarehouse_Yes">Active</label>
+                                <input type="radio" id="orginwarehouse_No" name="originatingWarehouse"  value="N" [(ngModel)]="BodyTypeDetails.Status">
+                                <label for="orginwarehouse_No">DeActive</label>
+                                <input type="radio" id="orginwarehouse_Referral" name="originatingWarehouse"  value="R" [(ngModel)]="BodyTypeDetails.Status">
+                                <label for="orginwarehouse_Referral">Referral</label>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <button class="btn btn-danger" (click)="ongetBack()">Cancel</button>&nbsp;
+                <button class="btn btn-success ml-2" (click)="onProceed()">Submit</button>
+            </div>
+        </div>
+      </div>->
+</div> -->

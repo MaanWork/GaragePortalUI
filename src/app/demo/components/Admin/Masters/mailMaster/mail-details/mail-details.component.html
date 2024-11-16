@@ -1,0 +1,355 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+            <h3 class="mr-3"> Mail Details</h3>
+          </div>
+          <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3"> Mail Details</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap" *ngIf="Sno">
+           
+                SnoId ~ {{Sno}}
+           
+            <!-- <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button> -->
+          </div>
+        </div>
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4 " >
+            <label for="username">Branch Code*</label>
+            <p-dropdown inputId="insuranceList" 
+                class="w-full" 
+                styleClass="w-full"
+                [options]="branchList" 
+                [(ngModel)]="MailDetails.BranchCode" 
+                (onChange)="getEditMailDetails()"
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+        <!-- <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+            <label for="username">Branch Code*</label>
+            <p-dropdown inputId="branchList" 
+                class="w-full" 
+                styleClass="w-full"
+                [options]="branchList" 
+                [(ngModel)]="BodyTypeDetails.BranchCode" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div> -->
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="MailDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">SmtpHost*</label><br>
+            <input pInputText type="text"
+             [(ngModel)]="MailDetails.SmtpHost"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter SmtpHost"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">SmtpUser*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="MailDetails.SmtpUser"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter SmtpUser"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4 ">
+            <label for="Bankname">SmtpPwd*</label><br>
+            <input pInputText 
+            [(ngModel)]="MailDetails.SmtpPwd" 
+            maxlength="20"
+            class="w-full" styleClass="w-full" 
+            placeholder="Enter SmtpPwd"/>
+        </div>
+                
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">SmtpPort*</label><br>
+            <input pInputText 
+            maxlength="20" [(ngModel)]="MailDetails.SmtpPort"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter SmtpPort"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Regulatory Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="MailDetails.RegulatoryCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Regulatory Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core App Code*</label><br>
+            <input pInputText 
+            maxlength="20" [(ngModel)]="MailDetails.CoreAppCode"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Address*</label><br>
+            <input pInputText 
+            maxlength="20" [(ngModel)]="MailDetails.Address"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Address"/>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full"
+             [(ngModel)]="MailDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <!-- <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="P" [(ngModel)]="BankDetails.Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div> -->
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="MailDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="MailDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <!-- <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="BodyTypeDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div> -->
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="MailDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onSaveMail()" ></p-button>
+    </div>
+</div>
+
+
+
+
+<!-- <div class="card">
+  <div class="card-header">
+      <div class="d-flex justify-content-between">
+          <div>
+             Mail Details
+          </div>
+          <div *ngIf="Sno">
+              SnoId ~ {{Sno}}
+          </div>
+      </div>
+  </div>
+  <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="input-control-container">
+              <label class="input-form-label">Branch Code</label>
+              <ng-select class="input-form-select"
+               appendTo="body" [items]="branchList"
+                [(ngModel)]="MailDetails.BranchCode"
+                 (change)="getEditMailDetails()" bindValue="Code"
+                  bindLabel="CodeDesc">
+              </ng-select>
+          </div>
+        </div>
+
+          <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">SmtpHost<span class="text-required">*</span></label>
+                  <div class="input-form-box">
+                      <input type="text"
+                       class="input-form-control without-icon" 
+                       [(ngModel)]="MailDetails.SmtpHost" maxlength="100">
+                  </div>
+              </div>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4">
+            <div class="input-control-container">
+                <label class="input-form-label">SmtpUser<span class="text-required">*</span></label>
+                <div class="input-form-box">
+                    <input type="text" 
+                    class="input-form-control without-icon"
+                     [(ngModel)]="MailDetails.SmtpUser" maxlength="100">
+                </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">SmtpPwd<span class="text-required">*</span></label>
+                  <div class="input-form-box">
+                      <input type="text"
+                       class="input-form-control without-icon" 
+                       maxlength="20" [(ngModel)]="MailDetails.SmtpPwd">
+                  </div>
+              </div>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4">
+            <div class="input-control-container">
+                <label class="input-form-label">SmtpPort<span class="text-required">*</span></label>
+                <div class="input-form-box">
+                    <input type="text" 
+                    class="input-form-control without-icon"
+                     maxlength="20" [(ngModel)]="MailDetails.SmtpPort">
+                </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4">
+            <div class="input-control-container">
+                <label class="input-form-label">Regulatory Code<span class="text-required">*</span></label>
+                <div class="input-form-box">
+                    <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="MailDetails.RegulatoryCode">
+                </div>
+            </div>
+          </div>
+
+         <div class="col-12 col-md-4 col-lg-4">
+          <div class="input-control-container">
+              <label class="input-form-label">Core App Code<span class="text-required">*</span></label>
+              <div class="input-form-box">
+                  <input type="text" 
+                  class="input-form-control without-icon" 
+                  maxlength="20" [(ngModel)]="MailDetails.CoreAppCode">
+              </div>
+          </div>
+         </div>
+      <div class="col-12 col-md-4 col-lg-4">
+        <div class="input-control-container">
+            <label class="input-form-label">Address<span class="text-required">*</span></label>
+            <div class="input-form-box">
+                <input type="text" 
+                class="input-form-control without-icon" 
+                maxlength="20" [(ngModel)]="MailDetails.Address">
+            </div>
+        </div>
+      </div> -->
+    <!--<div class="col-12 col-md-6 col-lg-4">
+      <div class="input-control-container">
+          <label class="input-form-label">Branch Code</label>
+          <ng-select class="input-form-select" appendTo="body" [items]="branchList" [(ngModel)]="MailDetails.BranchCode" (change)="getEditMailDetails()" bindValue="Code" bindLabel="CodeDesc">
+          </ng-select>
+      </div>
+  </div>-->
+  <!-- <div class="col-12 col-md-4 col-lg-4">
+    <div class="input-control-container">
+        <label class="input-form-label">Status<span class="text-required">*</span></label>
+        <div class="input-form-radio-box">
+            <div class="radio-toolbar">
+                <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="MailDetails.Status" value="Y">
+                <label for="orginwarehouse_Yes">Active</label>
+                <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="MailDetails.Status" value="N">
+                <label for="orginwarehouse_No">DeActive</label> -->
+                <!--<input id="orginwarehouse_Pending" type="radio" name="originatingWarehouse" [(ngModel)]="statusValue" value="R">
+                          <label for="orginwarehouse_Pending" class="customLabel">Referral</label>-->
+            <!-- </div>
+        </div>
+    </div>
+  </div> -->
+          <!-- <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Core App Code<span class="text-required" >*</span></label>
+                  <div class="input-form-box">
+                      <input type="text" class="input-form-control without-icon" [(ngModel)]="sectionDetails.CoreAppCode" maxlength="20">
+                  </div>
+              </div>
+          </div> -->
+         <!--<div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Status<span class="text-required">*</span></label>
+                  <div class="input-form-radio-box">
+                      <div class="radio-toolbar">
+                          <input id="orginwarehouse_Pending" type="radio" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="P">
+                          <label for="orginwarehouse_Pending">Pending</label>
+                          <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="Y">
+                          <label for="orginwarehouse_Yes">Active</label>
+                          <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="N">
+                          <label for="orginwarehouse_No">DeActive</label>
+                      </div>
+                  </div>
+              </div>
+          </div>-->
+      <!-- </div>
+      <div class="row">
+          <div class="col-12 col-md-4 col-lg-4">
+            <label class="input-form-label">Effective Date<span class="text-required">*</span></label>
+              <mat-form-field appearance="fill">
+                  
+                  <input matInput [matDatepicker]="picker" [min]="minDate"
+                   (dateChange)="onDateFormatInEdit" [(ngModel)]="MailDetails.EffectiveDateStart">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field> -->
+              <!-- <div class="input-control-container">
+                  <label class="input-form-label">Effective Date Start<span class="text-required">*</span></label>
+                  <div class="input-form-box">
+                      <input matInput [matDatepicker]="picker" [(ngModel)]="productDetails.EffectiveDateStart">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                  </div>
+              </div> -->
+          <!-- </div> -->
+          <!-- <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <mat-form-field appearance="fill">
+                      <mat-label>End Date</mat-label>
+                      <input matInput [matDatepicker]="picker1" [min]="sectionDetails.EffectiveDateStart" [(ngModel)]="sectionDetails.EffectiveDateEnd">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+              </div>
+          </div> -->
+          <!-- <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Remarks<span class="text-required" >*</span></label>
+                  <div class="input-form-box">
+                      <textarea cols="60" ros="3" class="input-form-select" [(ngModel)]="MailDetails.Remarks"></textarea>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      <div class="row">
+
+      </div>
+  </div>
+  <div>
+      <div class="text-center mb-2 mt-2">
+              <button class="btn btn-danger" (click)="ongetBack()">Cancel</button>&nbsp;
+              <button  class="ml-2 btn btn-primary" (click)="onSaveMail()">Submit</button>
+      </div>
+  </div>
+</div> -->

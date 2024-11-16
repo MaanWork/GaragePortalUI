@@ -1,0 +1,1672 @@
+<div class="container">
+    <div *ngIf="productId=='59'">
+        <div class="mt-4">
+            <div class="grid mb-3">
+                <div class="lg:col-2">
+                </div>
+                <div class="col-12 lg:col-8 xl:col-8"
+                    *ngIf="!((coversreuired=='B' || coversreuired=='BC') && Building1) || (coversreuired=='B' || coversreuired=='BC') && Building1">
+                    <div class="memberDetailCard">
+                        <div class="grid">
+                            <div class="mb-2 col-12 lg:col-7 xl:col-7">
+                                <b>Location Details</b>
+                            </div>
+                            <div class="mb-2 col-12 lg:col-5 xl:col-5">&nbsp;<p-button label="Add Location"
+                                    icon="pi pi-plus" (click)="onAddLocationDetails()" />&nbsp;</div>
+                        </div>
+                        <ng-container>
+                            <div class="grid mt-2">
+                                <div class="col-12 md:col-12 lg:col-12 xl:col-12">
+                                    <p-table [value]="locationList" dataKey="id" editMode="row" [rows]="5"
+                                        [paginator]="false" [tableStyle]="{'min-width': '50rem' }">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th [pSortableColumn]="column"
+                                                    *ngFor="let column of buildingColumnHeader">
+                                                    {{column}}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                                            <tr>
+                                                <td>
+                                                    <ng-container *ngIf="locationIndex==ri">
+                                                        <input class="w-full p-button-outlined"
+                                                            placeholder="Enter Location Name" styleClass="w-full"
+                                                            pInputText type="text" [(ngModel)]="product.LocationName" />
+                                                    </ng-container>
+                                                    <ng-container *ngIf="locationIndex!=ri">
+                                                        {{product.LocationName}}
+                                                    </ng-container>
+                                                    <div class="input-form-error" *ngIf="product.LocationNameError">
+                                                        <div class="error-text text-danger">
+                                                            Enter Valid LocationName
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <ng-container *ngIf="locationIndex==ri">
+                                                        <input class="w-full p-button-outlined"
+                                                            placeholder="Enter Address" styleClass="w-full" pInputText
+                                                            type="text" [(ngModel)]="product.BuildingAddress" />
+                                                    </ng-container>
+                                                    <ng-container *ngIf="locationIndex!=ri">
+                                                        {{product.BuildingAddress}}
+                                                    </ng-container>
+                                                    <div class="input-form-error" *ngIf="product.BuildingAddressError">
+                                                        <div class="error-text text-danger">
+                                                            Enter Valid Address
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="flex align-items-center justify-content-center gap-2">
+                                                        <button pButton type="button" *ngIf="locationIndex!=ri"
+                                                            icon="pi pi-pencil" (click)="locationIndex=ri"
+                                                            styleClass="p-button-outlined">
+                                                        </button>
+                                                        <button pButton type="button" icon="pi pi-trash"
+                                                            (click)="deleteLocation(ri)" styleClass="p-button-outlined">
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+
+                            </div>
+                            <!-- <div class="flex flex-warp justify-content-center mt-2" *ngIf="locationIndex!=null">
+                                <p-button label="Save Locations" (click)="onSaveLocationDetails()" />
+                            </div> -->
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="locationList.length!=0 && checkLocationDetailAlt()">
+                <div class="grid mb-3" >
+                    <div class="col-12" >
+                        <p-tabView >
+                            <ng-container *ngFor="let item of locationList;let k=index">
+                                <p-tabPanel [header]="item.LocationName" [(activeIndex)]="tabIndex" disabled="true">
+                                        <div class="col-12 pl-3 pr-2 pb-0" >
+                                            <div>
+                                                <h4 class="m-0 p-0">Section Modification</h4>
+                                            </div>
+                                            <div class="grid mt-1">
+                                                <div class="lg:col-2 md:col-2 col-2"></div>
+                                                <div class="lg:col-10 md:col-10 col-12">
+                                                    <div class="grid" *ngIf="productId=='19' || productId=='59'">
+                                                        <div class="lg:col-6 md:col-6 col-12">
+                                                            <div class="input-control-container">
+                                                                <label class="input-form-label">Ownership Status</label><span class="text-danger">*</span>
+                                                                <div class="input-form-radio-box mt-2">
+                                                                    <div class="radio-toolbar">
+                                                                        <input [id]="'claims_Own'+k" type="radio" [name]="'rentOwnHome'+k" (change)="setBuildingOwnerYN()" [(ngModel)]="item.BuildingOwnerYn" value="Y">
+                                                                        <label [for]="'claims_Own'+k" class="yes_alt"><img style="max-width: 30px;max-height: 10px;">LANDLORD</label>
+                                                                        <input [id]="'claims_Rent'+k" type="radio" [name]="'rentOwnHome'+k" (change)="setBuildingOwnerYN()" [(ngModel)]="item.BuildingOwnerYn" value="N">
+                                                                        <label [for]="'claims_Rent'+k" class="no"><img style="max-width: 30px;max-height: 10px;">TENANT</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="lg:col-6 md:col-6 col-12">
+                                                            <div class="input-control-container">
+                                                                <label class="input-form-label">Cover Required</label><span class="text-danger">*</span>
+                                                                <div class="input-form-radio-box mt-2">
+                                                                    <div class="radio-toolbar">
+                                                                        <input [id]="'Content'+k" type="radio" [name]="'Content'+k"  value="C" [(ngModel)]="item.CoversRequired">
+                                                                        <label [for]="'Content'+k" class="yes_alt"><img style="max-width: 30px;max-height: 10px;">&nbsp;CONTENTS</label>
+                                                                        <ng-container *ngIf="item.BuildingOwnerYn=='Y'">
+                                                                            <input [id]="'Building'+k" type="radio" [name]="'Content'+k" value="B" [(ngModel)]="item.CoversRequired">
+                                                                            <label [for]="'Building'+k" class="no"><img style="max-width: 30px;max-height: 10px;" >&nbsp;BUILDING</label>
+                                                                            <input [id]="'Building_Contents'+k" type="radio" [name]="'Content'+k" [(ngModel)]="item.CoversRequired" value="BC">
+                                                                            <label [for]="'Building_Contents'+k" class="no"><img style="max-width: 30px;max-height: 10px;"  src="./assets/images/houseContents.png">&nbsp;BUILDING & CONTENTS</label>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="productId=='19' || productId=='24'">
+                                                        <div class="col-12 col-md-5 col-lg-5 offset-md-1 offset-lg-1">
+                                                            <div class="input-control-container">
+                                                                    <label class="input-form-label">Industry</label>&nbsp;<ng-container *ngIf="categoryDesc">({{categoryDesc}})</ng-container><span class="text-danger">*</span>
+                                                                    <ng-select class="custom" [items]="industryList" [(ngModel)]="IndustryId" placeholder="Select Industry" appendTo="body" [ngModelOptions]="{standalone: true}" bindValue="Code" bindLabel="CodeDesc">
+                                                                    </ng-select>
+                                                            </div>
+                                                            <div class="input-form-error" *ngIf="industryError" style="position: relative;">
+                                                                <div class="error-text text-danger">
+                                                                    <span class="spancommon span_font_size"> Please Select Industry</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="grid" *ngIf="(item.CoversRequired=='B' || item.CoversRequired=='BC')">
+                                            <div class="col-12 lg:col-1 xl:col-1 md:col-1" ></div>
+                                            <div class="col-12 lg:col-9 xl:xol-9 md:col-9">
+                                                <div class="memberDetailCard">
+                                                    <div class="grid justify-content-start">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>Building Details</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+                                                        <div style="display: flex !important;justify-content: space-between !important;">
+                                                            <p-table [value]="item.BuildingList"
+                                                                dataKey="LocationName" editMode="row" [rows]="5"
+                                                                [paginator]="false"
+                                                                [tableStyle]="{'max-width': '100rem' }">
+                                                                <ng-template pTemplate="header">
+                                                                    <tr>
+                                                                        <th [pSortableColumn]="column"
+                                                                            *ngFor="let column of columnHeaderBuilding">
+                                                                            {{column}}
+                                                                        </th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-Building
+                                                                    let-ri="rowIndex">
+                                                                    <tr>
+        
+                                                                        <td>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex==ri">
+                                                                                <p-dropdown class="w-full"
+                                                                                    styleClass="w-full"
+                                                                                    placeholder="Select Wall Type"
+                                                                                    [options]="wallMaterialList"
+                                                                                    appendTo="body"
+                                                                                    optionLabel="CodeDesc"
+                                                                                    optionValue="Code"
+                                                                                    [(ngModel)]="Building.WallType" />
+        
+                                                                            </ng-container>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex!=ri">
+                                                                                {{getwallTypeDescription(Building.WallType)}}
+                                                                            </ng-container>
+                                                                            <div class="input-form-error"
+                                                                                *ngIf="Building.WallTypeError">
+                                                                                <div class="error-text text-danger">
+                                                                                    Select WallType
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex==ri">
+                                                                                <p-dropdown class="w-full"
+                                                                                    styleClass="w-full"
+                                                                                    placeholder="Select Roof Type"
+                                                                                    [options]="roofMaterialList"
+                                                                                    appendTo="body"
+                                                                                    optionLabel="CodeDesc"
+                                                                                    optionValue="Code"
+                                                                                    [(ngModel)]="Building.RoofType" />
+                                                                            </ng-container>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex!=ri">
+                                                                                {{getRoofTypeDescription(Building.RoofType)}}
+                                                                            </ng-container>
+                                                                            <div class="input-form-error"
+                                                                                *ngIf="Building.RoofTypeError">
+                                                                                <div class="error-text text-danger">
+                                                                                    Select RoofType
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex==ri">
+                                                                                <p-dropdown class="w-full"
+                                                                                    styleClass="w-full"
+                                                                                    placeholder="Select FirstLossPayee"
+                                                                                    [options]="bankList"
+                                                                                    (onChange)="onChangeFirstLoss(Building)"
+                                                                                    appendTo="body"
+                                                                                    optionLabel="CodeDesc"
+                                                                                    optionValue="Code"
+                                                                                    [(ngModel)]="Building.FirstLossPayee" />
+        
+                                                                            </ng-container>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex!=ri">
+                                                                                {{getFirstLossDesc(Building)}}
+                                                                            </ng-container>
+                                                                            <div class="input-form-error"
+                                                                                *ngIf="Building.FirstLossPayeeError">
+                                                                                <div class="error-text text-danger">
+                                                                                    Select FirstLossPayee
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex==ri">
+                                                                                <p-inputNumber type="number"
+                                                                                    [(ngModel)]="Building.BuildingSumInsured"
+                                                                                    inputId="integeronly" />
+        
+                                                                            </ng-container>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex!=ri">
+                                                                                {{Building.BuildingSumInsured |
+                                                                                commaseparator}}
+                                                                            </ng-container>
+                                                                            <div class="input-form-error"
+                                                                                *ngIf="Building.SumInsuredError">
+                                                                                <div class="error-text text-danger">
+                                                                                    Enter Valid Amount
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <!-- <td>
+                                                                            <ng-container
+                                                                                *ngIf="currentBuildingRowIndex!=ri">
+                                                                                <div
+                                                                                    class="flex align-items-center justify-content-center gap-2">
+                                                                                    <button pButton type="button"
+                                                                                        icon="pi pi-pencil"
+                                                                                        (click)="currentBuildingRowIndex=ri"
+                                                                                        styleClass="p-button-outlined">
+                                                                                    </button>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ng-container>
+                                                                                <div
+                                                                                    class="flex align-items-center justify-content-center gap-2">
+                                                                                    <button pButton type="button"
+                                                                                        icon="pi pi-trash"
+                                                                                        (click)="onDeleteBuilding(ri)"
+                                                                                        styleClass="p-button-outlined">
+                                                                                    </button>
+                                                                                </div>
+                                                                            </ng-container>
+                                                                        </td> -->
+                                                                    </tr>
+        
+                                                                </ng-template>
+        
+                                                            </p-table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+                                            <div class="col-12 lg:col-3 xl:col-3" *ngIf="item.CoversRequired=='C' || item.CoversRequired=='BC'">
+                                                    <div class="memberDetailCard">
+                                                        <div class="grid justify-content-end">
+                                                            <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                                <b>Content Risk</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex md:flex-row flex-col items-center md:space-x-3">
+                                                            <ng-container *ngFor="let stes of fields1; let index = index; let last = last">
+                                                                <div>
+                                                                    <div
+                                                                        style="display: flex !important;justify-content: space-between !important;">
+                                                                        <div class="mt-4 mr-3 ml-3">
+                                                                            <img src="./assets/images/content.png" width="40"
+                                                                                height="35">
+                                                                            <!-- <b>{{step.props.label }}</b> -->
+                                                                        </div>
+                                                                        <div>
+                                                                            <form [formGroup]="form"
+                                                                                (ngSubmit)="onSubmit(productItem)">
+                                                                                <formly-form [form]="form"
+                                                                                    [fields]="stes.fieldGroup"
+                                                                                    [model]="productItem"></formly-form>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+        
+                                                                </div>
+                                                            </ng-container>
+                                                        </div>
+                                                        <div class="input-form-error" *ngIf="item.ContentSuminsuredError">
+                                                            <div class="error-text text-danger text-center">
+                                                                Enter Valid Amount
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            
+                                            <div class="col-12 lg:col-3 xl:col-3">
+                                                <div class="memberDetailCard" style="padding:10px !important;">
+                                                    <div class="grid justify-content-end">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>Electronic Equipment</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+        
+                                                        <ng-container
+                                                            *ngFor="let steps of fields6; let index = index; let last = last">
+                                                            <div>
+                                                                <div
+                                                                    style="display: flex !important;justify-content: space-between !important;">
+                                                                    <div class="mt-4 ml-3 mr-3">
+                                                                        <img src="./assets/images/electronicequip.jpg"
+                                                                            width="40" height="35">
+                                                                    </div>
+                                                                    <div>
+                                                                        <form [formGroup]="form"
+                                                                            (ngSubmit)="onSubmit(productItem)">
+                                                                            <formly-form [form]="form"
+                                                                                [fields]="steps.fieldGroup"
+                                                                                [model]="productItem"></formly-form>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+        
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 lg:col-3 xl:col-3">
+                                                <div class="memberDetailCard" style="padding:10px !important;">
+                                                    <div class="grid justify-content-end">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>All Risk</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+    
+                                                        <ng-container
+                                                            *ngFor="let steps of fields2; let index = index; let last = last">
+                                                            <div>
+                                                                <div
+                                                                    style="display: flex !important;justify-content: space-between !important;">
+                                                                    <div class="mt-4 ml-3 mr-3">
+                                                                        <img src="./assets/images/All-risk.png" width="40"
+                                                                            height="35">
+                                                                    </div>
+                                                                    <div>
+                                                                        <form [formGroup]="form"
+                                                                            (ngSubmit)="onSubmit(productItem)">
+                                                                            <formly-form [form]="form"
+                                                                                [fields]="steps.fieldGroup"
+                                                                                [model]="productItem"></formly-form>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+    
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="grid">
+                                            <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div>
+                                            <div class="col-12 lg:col-3 xl:col-3" >
+                                                <div class="memberDetailCard" style="padding:10px !important;">
+                                                    <div class="grid justify-content-end">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>Owner's Liability</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+    
+                                                        <ng-container
+                                                            *ngFor="let stepss of fields3; let index = index; let last = last">
+                                                            <div>
+                                                                <div
+                                                                    style="display: flex !important;justify-content: space-between !important;">
+                                                                    <div class="mt-4 mr-3">
+                                                                        <img src="./assets/images/personalliability.png"
+                                                                            width="50" height="40">
+                                                                    </div>
+                                                                    <div>
+                                                                        <form [formGroup]="form"
+                                                                            (ngSubmit)="onSubmit(productItem)">
+                                                                            <formly-form [form]="form"
+                                                                                [fields]="stepss.fieldGroup"
+                                                                                [model]="productItem"></formly-form>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 lg:col-3 xl:col-3" *ngIf="DomesticServant">
+                                                <div class="memberDetailCard" style="padding:10px !important;">
+                                                    <div class="grid justify-content-end">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>Domestic Servant</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+    
+                                                        <ng-container
+                                                            *ngFor="let stepss of fields7; let index = index; let last = last">
+                                                            <div>
+                                                                <div
+                                                                    style="display: flex !important;justify-content: space-between !important;">
+                                                                    <div class="mt-2 mr-3 ">
+                                                                        <img src="./assets/images/domesticServant.jpg"
+                                                                            width="50" height="40">
+                                                                    </div>
+                                                                    <div>
+                                                                        <form [formGroup]="form"
+                                                                            (ngSubmit)="onSubmit(productItem)">
+                                                                            <formly-form [form]="form"
+                                                                                [fields]="stepss.fieldGroup"
+                                                                                [model]="productItem"></formly-form>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="grid">
+                                            <div class="col-12 lg:col-1 xl:xol-1 md:col-1"></div>
+                                            <div class="col-12 lg:col-9 xl:col-9" >
+                                                <div class="memberDetailCard" style="padding:10px !important;">
+                                                    <div class="grid justify-content-end">
+                                                        <div class="mb-2 col-12 lg:col-10 xl:col-10">
+                                                            <b>Personal Accident</b>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex md:flex-row flex-col items-center md:space-x-3">
+    
+                                                        <ng-container
+                                                            *ngFor="let stepee of fields4; let index = index; let last = last">
+                                                            <div>
+                                                                <div
+                                                                    style="display: flex !important;justify-content: space-between !important;">
+                                                                    <div class="mt-4 mr-3">
+                                                                        <img src="./assets/images/personalAccident1.png"
+                                                                            width="50" height="40">
+                                                                    </div>
+                                                                    <div>
+                                                                        <form [formGroup]="form"
+                                                                            (ngSubmit)="onSubmit(productItem)">
+                                                                            <formly-form [form]="form"
+                                                                                [fields]="stepee.fieldGroup"
+                                                                                [model]="productItem"></formly-form>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+    
+                                                            </div>
+                                                        </ng-container>
+    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                </p-tabPanel>
+                            </ng-container>
+                        </p-tabView>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="text-center mt-2"> <p-button label="Back" size="small" *ngIf="locationList.length>1" (click)="onSubmitDomesticDetails('Save')"></p-button>
+                <p-button label="Next" size="small" *ngIf="locationList.length>1" (click)="onSubmitDomesticDetails('Save')"></p-button></div>
+            <div class="text-center mt-2">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                   
+                <p-button label="Proceed" size="small" (click)="onSubmitDomesticDetails('Submit')"></p-button>
+                <!-- <button pButton pRipple label="Submit" class="p-button-success" (click)="onfinalsave()"></button> -->
+            </div>
+        </div>
+    </div>
+        <div *ngIf="productId=='63'">
+
+            <p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: 'w-6' }"
+                [draggable]="false">
+                <div class="grid ">
+                    <div class="col-12 lg:col-6 xl:col-6">
+                        <label for="Address">Address</label>
+                        <input class="w-full p-button-outlined" placeholder="Enter Address" styleClass="w-full"
+                            pInputText type="text" />
+                    </div>
+                    <div class="col-12 lg:col-6 xl:col-6">
+                        <label for="Location">Location</label>
+                        <input class="w-full p-button-outlined" placeholder="Location" styleClass="w-full" pInputText
+                            type="text" />
+                    </div>
+                </div>
+                <div class="flex justify-content-center gap-2">
+                    <p-button label="Cancel" styleClass="p-button-outlined" (onClick)="visible = false" />
+                    <p-button label="Save" (onClick)="visible = false" />
+                </div>
+            </p-dialog>
+            <ng-container>
+                <div class="card">
+                    <div class="grid ">
+                        <div class="col-12 lg:col-4 md:col-4">
+                            <div class="mb-2"><b>Location Details</b></div>
+                        </div>
+                        <div class="col-12 lg:col-2 md:col-2">
+                            <div class="mb-2 ">&nbsp;<p-button label="Add Location" icon="pi pi-plus"
+                                    (click)="addLocation()" />&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="grid ">
+                        <div class="col-12 lg:col-6 md:col-6">
+
+                            <p-table [value]="LocationName" dataKey="LocationName" editMode="row" [rows]="10"
+                                [paginator]="false" [tableStyle]="{'min-width': '40rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th [pSortableColumn]="column" *ngFor="let column of LocationHeader">
+                                            {{column}}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-Building let-ri="rowIndex">
+                                    <tr>
+                                        <!-- <td>
+                                        <ng-container *ngIf="currentBuildingRowIndex==ri">
+                                            <p-dropdown class="w-full"  placeholder="Select Usage"  [options]="BuildingUsageList" 
+                                                    appendTo="body" optionLabel="CodeDesc" optionValue="Code" [(ngModel)]="Building.BuildingUsageId" />
+                                                
+                                        </ng-container>
+                                        <ng-container *ngIf="currentBuildingRowIndex!=ri">{{getBuildingUsageId(Building.BuildingUsageId)}}</ng-container>
+                                        <div class="input-form-error" *ngIf="Building.BuildingUsageIdError">
+                                            <div class="error-text text-danger">
+                                                Select Valid Usage
+                                            </div>
+                                        </div>
+                                    </td> -->
+                                        <!-- <td>
+                                        <ng-container *ngIf="currentBuildingRowIndex==ri">
+                                            <input class="w-full p-button-outlined"   placeholder="Enter Build Year "  pInputText type="text" 
+                                                [(ngModel)]="Building.BuildingBuildYear" />
+                                        </ng-container>
+                                        <ng-container *ngIf="currentBuildingRowIndex!=ri">
+                                            {{Building.BuildingBuildYear}}
+                                        </ng-container>   
+                                    </td> -->
+                                        <td>
+                                            <input class="w-full p-button-outlined" placeholder="Enter Location Name"
+                                                [(ngModel)]="Building.LocationName" styleClass="w-full" pInputText
+                                                type="text" />
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="ri!=0">
+                                                <!-- *ngIf="currentBuildingRowIndex==ri" -->
+                                                <div class="flex align-items-center justify-content-center gap-2">
+                                                    <button pButton type="button" icon="pi pi-trash"
+                                                        (click)="onDeleteLocation(ri)" styleClass="p-button-outlined">
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+
+                                </ng-template>
+
+                            </p-table>
+                        </div>
+                    </div>
+                    <div class="grid ">
+                        <div class="col-12 lg:col-6 md:col-6">
+
+                        </div>
+                    </div>
+                    <p-tabView *ngIf="LocationName.length!=0 && checkLocationDetail()" [(activeIndex)]="tabIndex"
+                        (onChange)='tabIndex = $event.index'>
+                        <ng-container *ngFor="let item of LocationName">
+                            <p-tabPanel [header]="item.LocationName">
+                                <div class="grid ">
+                                    <div class="col-12 lg:col-1 md:col-1"></div>
+                                    <div class="col-12 lg:col-6 md:col-6">
+                                        <div class="card ">
+                                            <div class="grid justify-content-start">
+                                                <div class="mb-1 ">
+                                                    <b>Building Details</b>
+                                                </div>
+
+                                            </div>
+                                            <div class="grid ">
+                                                <div class="col-12 lg:col-6 md:col-6">
+                                                    <label for="BuildingType">Construction Type</label>
+                                                    <p-dropdown class="w-full" styleClass="w-full"
+                                                        placeholder="Select Construction Type"
+                                                        [options]="constructionTypes" [(ngModel)]="item.BuildingType"
+                                                        appendTo="body" optionLabel="CodeDesc" optionValue="Code" />
+                                                </div>
+                                                <div class="col-12 lg:col-6 md:col-6">
+                                                    <label for="SumInsured">SumInsured</label>
+                                                    <input class="w-full p-button-outlined"
+                                                        placeholder="Enter SumInsured" styleClass="w-full"
+                                                        (keydown)="onSIValueChange($event)"
+                                                        (keyup)="CommaFormatted(item,'Building')"
+                                                        [(ngModel)]="item.BuildingSI" pInputText type="text" />
+                                                </div>
+
+                                                <!-- <div class="col-12 lg:col-6 md:col-6">
+                                                <label for="BuildingType">Construction (Roof)</label>
+                                                <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Roof Type"
+                                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                            </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="grid">
+                                    <div class="col-12 lg:col-1 md:col-1"></div>
+                                    <div class="col-12 lg:col-3 md:col-3">
+                                        <div class="card ">
+                                            <div class="grid justify-content-start">
+                                                <div class="mb-1 ">
+                                                    <b>Content SumInsured</b>
+                                                </div>
+
+                                            </div>
+                                            <div class="grid justify-content-center">
+                                                <div class="col-12 lg:col-8 md:col-8">
+                                                    <label for="SumInsured">SumInsured</label>
+                                                    <input class="w-full p-button-outlined"
+                                                        placeholder="Enter SumInsured"
+                                                        (keydown)="onSIValueChange($event)"
+                                                        (keyup)="CommaFormatted(item,'Content')"
+                                                        [(ngModel)]="item.ContentSI" styleClass="w-full" pInputText
+                                                        type="text" />
+                                                </div>
+                                                <!-- <div class="col-12 lg:col-6 md:col-6">
+                                                <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Building Type"
+                                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"  />
+                                            </div> -->
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12 lg:col-3 md:col-3">
+                                        <div class="card ">
+                                            <div class="grid justify-content-start">
+                                                <div class="mb-1 ">
+                                                    <b>All Risk</b>
+                                                </div>
+
+                                            </div>
+                                            <div class="grid justify-content-center">
+                                                <div class="col-12 lg:col-8 md:col-8">
+                                                    <label for="SumInsured">SumInsured</label>
+                                                    <input class="w-full p-button-outlined"
+                                                        placeholder="Enter SumInsured"
+                                                        (keydown)="onSIValueChange($event)"
+                                                        (keyup)="CommaFormatted(item,'AllRisk')"
+                                                        [(ngModel)]="item.AllRiskSI" styleClass="w-full" pInputText
+                                                        type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 lg:col-3 md:col-3">
+                                        <div class="card ">
+                                            <div class="grid justify-content-start">
+                                                <div class="mb-1 ">
+                                                    <b>Personal Liability</b>
+                                                </div>
+
+                                            </div>
+                                            <div class="grid justify-content-center">
+                                                <div class="col-12 lg:col-8 md:col-8">
+                                                    <label for="SumInsured">SumInsured</label>
+                                                    <input class="w-full p-button-outlined"
+                                                        placeholder="Enter SumInsured"
+                                                        (keydown)="onSIValueChange($event)"
+                                                        (keyup)="CommaFormatted(item,'PL')"
+                                                        [(ngModel)]="item.PersonalLiabilitySI" styleClass="w-full"
+                                                        pInputText type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <div class="col-12 lg:col-1 md:col-1"></div>
+                                    <div class="col-12 lg:col-6 md:col-6">
+                                        <div class="card ">
+                                            <div class="grid justify-content-between">
+                                                <div class="mb-1 ">
+                                                    <b>Domestic Servant</b>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <p-button styleClass="p-button-outlined" label="Add New" size="small" (click)="onAddRow('servant',item)"></p-button>&nbsp;
+                                                </div>
+                                            </div>
+                                            <ng-container *ngFor="let entry of item.ServantList">
+                                                <div class="grid justify-content-between">
+                                                    <div class="col-12 lg:col-4 md:col-4">
+                                                        <label for="Servant">Servant</label>
+                                                        <p-dropdown class="w-full" styleClass="w-full"
+                                                            placeholder="Select Servant" [options]="servantTypeList"
+                                                            [(ngModel)]="entry.ServantType" appendTo="body"
+                                                            optionLabel="CodeDesc" optionValue="Code" />
+                                                    </div>
+                                                    <div class="col-12 lg:col-3 md:col-3">
+                                                        <label for="SumInsured">Employee Count</label>
+                                                        <input class="w-full p-button-outlined" placeholder="Enter Count"
+                                                            [(ngModel)]="entry.ServantCount" styleClass="w-full" pInputText
+                                                            type="text" />
+                                                    </div>
+                                                    <div class="col-12 lg:col-4 md:col-4">
+                                                        <label for="SumInsured">SumInsured</label>
+                                                        <input class="w-full p-button-outlined"
+                                                            placeholder="Enter SumInsured"
+                                                            (keydown)="onSIValueChange($event)"
+                                                            (keyup)="CommaFormatted(entry,'Domestic')"
+                                                            [(ngModel)]="entry.ServantSI" styleClass="w-full" pInputText
+                                                            type="text" />
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                                
+                                        </div>
+                                    </div>
+                                    <div class="col-12 lg:col-4 md:col-4">
+                                        <div class="card ">
+                                            <div class="grid justify-content-between">
+                                                <div class="mb-1 ">
+                                                    <b>Personal Accident</b>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <p-button styleClass="p-button-outlined" label="Add New" size="small" (click)="onAddRow('PA',item)"></p-button>&nbsp;
+                                                </div>
+                                            </div>
+                                            <ng-container *ngFor="let entry of item.PAList">
+                                                <div class="grid ">
+                                                    <div class="col-12 lg:col-6 md:col-6">
+                                                        <label for="BuildingType">Relationship</label>
+                                                        <p-dropdown class="w-full" styleClass="w-full"
+                                                            placeholder="Select Relationship"
+                                                            [(ngModel)]="entry.RelationType" [options]="relationList"
+                                                            appendTo="body" optionLabel="CodeDesc" optionValue="Code" />
+                                                    </div>
+                                                    <div class="col-12 lg:col-6 md:col-6">
+                                                        <label for="SumInsured">Death SI</label>
+                                                        <input class="w-full p-button-outlined"
+                                                            placeholder="Enter SumInsured" styleClass="w-full"
+                                                            (keydown)="onSIValueChange($event)"
+                                                            (keyup)="CommaFormatted(item,'PA')" [(ngModel)]="entry.DeathSI"
+                                                            pInputText type="text" />
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <div class="grid justify-content-start">
+                                        <div class="mb-1 ">
+                                            <h3>{{'MOTORQUOTE.UWQuestion' | translate}}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <ng-container *ngFor="let ques of uwQuestionList;let i=index">
+                                        <div class="lg:col-4 md:col-4 col-12" [hidden]="checkHideQUestion(ques)">
+                                            <label for="uwQuesDesc">{{ques.UwQuestionDesc}}</label><ng-container
+                                                *ngIf="ques.MandatoryYn=='Y'"> &nbsp;<span
+                                                    class="text-danger">*</span></ng-container>
+                                            <ng-container *ngIf="ques?.QuestionType=='01'">
+                                                <p-selectButton [options]="ques.Options" [(ngModel)]="ques.Value"
+                                                    id="driverType2" optionLabel="UwQuesOptionDesc"
+                                                    optionValue="UwQuesOptionDesc"></p-selectButton>
+                                            </ng-container>
+                                            <ng-container *ngIf="ques?.QuestionType=='02' && ques?.DataType!='02'">
+                                                <input pInputText [id]="ques.UwQuestionId" maxlength="50"
+                                                    [disabled]="(endorsementSection) || checkDisableField()"
+                                                    [(ngModel)]="ques.Value" />
+                                            </ng-container>
+                                            <ng-container *ngIf="ques?.QuestionType=='02' && ques?.DataType=='02'">
+                                                <input pInputText [id]="ques.UwQuestionId" maxlength="50"
+                                                    [disabled]="(endorsementSection) || checkDisableField()"
+                                                    [(ngModel)]="ques.Value" />
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </p-tabPanel>
+                        </ng-container>
+                    </p-tabView>
+                </div>
+            </ng-container>
+            <div class="text-center mt-2">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button styleClass="p-button-outlined" label="Save & Proceed" (click)="onSubmit('Save')" size="small"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Submit" *ngIf="LocationName.length!=0 && checkLocationDetail()"
+                    (click)="onSubmit('Submit')" size="small"></p-button>
+                <!-- <button pButton pRipple label="Submit" class="p-button-success" (click)="onfinalsave()"></button> -->
+            </div>
+        </div>
+        <div *ngIf="productId=='19'">
+            <div class="mt-4">
+                <div class="grid mb-3">
+                    <div class="lg:col-2">
+                    </div>
+                    <div class="col-12 lg:col-8 xl:col-8"
+                        *ngIf="!((coversreuired=='B' || coversreuired=='BC') && Building1) || (coversreuired=='B' || coversreuired=='BC') && Building1">
+                        <div class="memberDetailCard">
+                            <div class="grid">
+                                <div class="mb-2 col-12 lg:col-7 xl:col-7">
+                                    <b>Location Details</b>
+                                </div>
+                                <div class="mb-2 col-12 lg:col-5 xl:col-5">&nbsp;<p-button label="Add Location"
+                                        icon="pi pi-plus" (click)="onAddLocationDetails()" />&nbsp;</div>
+                            </div>
+                            <ng-container>
+                                <div class="grid mt-2">
+                                    <div class="col-12 md:col-12 lg:col-12 xl:col-12">
+                                        <p-table [value]="locationList" dataKey="id" editMode="row" [rows]="5"
+                                            [paginator]="false" [tableStyle]="{'min-width': '50rem' }">
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th [pSortableColumn]="column"
+                                                        *ngFor="let column of buildingColumnHeader">
+                                                        {{column}}
+                                                    </th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                                                <tr>
+                                                    <td>
+                                                        <ng-container *ngIf="locationIndex==ri">
+                                                            <input class="w-full p-button-outlined"
+                                                                placeholder="Enter Location Name" styleClass="w-full"
+                                                                pInputText type="text" [(ngModel)]="product.LocationName" />
+                                                        </ng-container>
+                                                        <ng-container *ngIf="locationIndex!=ri">
+                                                            {{product.LocationName}}
+                                                        </ng-container>
+                                                        <div class="input-form-error" *ngIf="product.LocationNameError">
+                                                            <div class="error-text text-danger">
+                                                                Enter Valid LocationName
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <ng-container *ngIf="locationIndex==ri">
+                                                            <input class="w-full p-button-outlined"
+                                                                placeholder="Enter Address" styleClass="w-full" pInputText
+                                                                type="text" [(ngModel)]="product.BuildingAddress" />
+                                                        </ng-container>
+                                                        <ng-container *ngIf="locationIndex!=ri">
+                                                            {{product.BuildingAddress}}
+                                                        </ng-container>
+                                                        <div class="input-form-error" *ngIf="product.BuildingAddressError">
+                                                            <div class="error-text text-danger">
+                                                                Enter Valid Address
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="flex align-items-center justify-content-center gap-2">
+                                                            <button pButton type="button" *ngIf="locationIndex!=ri"
+                                                                icon="pi pi-pencil" (click)="locationIndex=ri"
+                                                                styleClass="p-button-outlined">
+                                                            </button>
+                                                            <button pButton type="button" icon="pi pi-trash"
+                                                                (click)="deleteLocation(ri)" styleClass="p-button-outlined">
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+    
+                                </div>
+                                <!-- <div class="flex flex-warp justify-content-center mt-2" *ngIf="locationIndex!=null">
+                                    <p-button label="Save Locations" (click)="onSaveLocationDetails()" />
+                                </div> -->
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="locationList.length!=0 && checkLocationDetailAlt()">
+                    
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngIf="productId=='57'">
+            <div class="mt-4">
+                <div class="grid mb-3">
+                    <div class="col-12 lg:col-4 xl:col-4"></div>
+                    <div class="col-12 lg:col-4 xl:col-4">
+
+                        <div class="memberDetailCard">
+                            <div class="mb-3"> <b>Group Personal Accident Details</b></div>
+                            <div><!--class="flex md:flex-row flex-col items-center md:space-x-3"-->
+
+                                <ng-container *ngFor="let step of fieldsGroupPa; let index = index; let last = last">
+                                    <div>
+
+                                        <div class="row">
+                                            <!--style="display: flex !important;justify-content: space-between !important;"-->
+                                            <div>
+                                                <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                    <formly-form [form]="form" [fields]="step.fieldGroup"
+                                                        [model]="productItem"></formly-form>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Proceed" size="small" (click)="onsaveGroupPADetails()"></p-button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="productId == '60'">
+            <div class="grid mt-2 mb-3">
+                <div class="col-1 lg:col-1 xl:col-1"></div>
+                <div class="col-10 lg:col-10 xl:col-10">
+                    <div class="memberDetailCard" style="padding:10px !important;">
+                        <div class="mb-2"> <b>Professional Indemnity</b></div>
+                        <div class="flex md:flex-row flex-col items-center md:space-x-3">
+                            <ng-container *ngFor="let stepss of fields8; let index = index; let last = last">
+                                <div>
+                                    <div class="row">
+                                        <div>
+                                            <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                <formly-form [form]="form" [fields]="stepss.fieldGroup"
+                                                    [model]="productItem"></formly-form>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="grid mt-2 mb-3">
+                <div class="col-1 lg:col-1 xl:col-1"></div>
+                <div class="col-10 lg:col-10 xl:col-10">
+                    <div class="memberDetailCard mt-2" style="padding:10px !important;">
+                        <!-- <div class="mb-2"> <b>Professional Indemnity</b></div> -->
+                        <div class="flex md:flex-row flex-col items-center md:space-x-3">
+
+                            <ng-container *ngFor="let stepss of fields9; let index = index; let last = last">
+                                <div>
+                                    <div class="row">
+                                        <div>
+                                            <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                <formly-form [form]="form" [fields]="stepss.fieldGroup"
+                                                    [model]="productItem"></formly-form>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Proceed" size="small" (click)="onprofessionalsave()"></p-button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="productId=='56'">
+
+
+            <div>
+                <div class="grid mt-1 mb-3">
+                    <div class="col-1 lg:col-2 xl:col-1">
+
+                    </div>
+                    <div class="col-10 lg:col-10 xl:col-10">
+                        <div class="memberDetailCard" style="padding:10px !important;">
+                            <div class="mb-2 d-flex justify-content-between">
+                                <div><b>Health Insurance</b></div>
+                                <!-- <div>
+                <button class="btn btn-warning btn-sm" (click)="AddnewCovers()">
+                    <i class="fas fa-plus"></i>&nbsp;Add New
+                </button>
+            </div> -->
+
+                            </div>
+                            <div class="grid pl-5 pr-5 pb-0">
+                                <div
+                                    class="lg:col-2 xl:col-2 md:col-2 col-12 text-center md:col-ffset-2 lg:col-offset-2">
+                                    <label class="input-form-label">Inpatient SumInsured</label>&nbsp;<ng-container
+                                        *ngIf="categoryDesc">({{categoryDesc}})</ng-container><span
+                                        class="text-danger">*</span>
+                                </div>
+                                <div class="lg:col-4 xl:col-4 md:col-4 col-12 text-center">
+                                    <div class="input-control-container">
+
+                                        <ng-select class="custom" [items]="sectionDropdownList"
+                                            [(ngModel)]="ProductCode" placeholder="Select SumInsured" appendTo="body"
+                                            [ngModelOptions]="{standalone: true}" bindValue="Code" bindLabel="CodeDesc">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="showsection">
+
+                                <ng-container
+                                    *ngFor="let step of fields[0].fieldGroup; let index = index; let last = last">
+
+                                    <ng-container
+                                        *ngIf="step.props.label=='Employers Liability' || step.props.label=='Health Insurance' || (step.props.label=='Contents Risk' && insuranceId=='100004' && productId!='24') || step.props.label=='Building Risk' || step.props.label=='Money' || step.props.label=='Business Interruption' || (step.props.label=='Burglary' && insuranceId=='100004') || step.props.label=='Fidelity' || step.props.label=='Public Liability' || step.props.label=='Machinery BreakDown' || step.props.label=='Fire & Allied Perils' || (step.props.label=='Burglary' && insuranceId=='100002')  || step.props.label=='Goods in Transit'">
+
+                                        <div class="col-md-12 col-lg-12 col-xl-12">
+                                            <!--style="margin-top:30px !important;"-->
+                                            <div style="width:100% !important;"
+                                                class="col-md-4 col-lg-4 col-xl-4 customer-grid maan-grid-item-titles d-flex justify-content-between"
+                                                (click)="selectedIndex=index">
+
+                                            </div>
+                                            <div class="card-body"
+                                                *ngIf="step.props.label!='Employers Liability' && step.props.label!='Fidelity'">
+                                                <ng-conttainer>
+                                                    <form [formGroup]="form" (change)="onChange($event)">
+                                                        <formly-form [form]="form" [fields]="step.fieldGroup"
+                                                            [model]="productItem"></formly-form>
+                                                    </form>
+                                                </ng-conttainer>
+                                            </div>
+                                            <div class="grid"
+                                                *ngIf="step.props.label=='Employers Liability' && step.props.label!='Fidelity'">
+                                                <div class="col-md-2 col-lg-2 col-xl-2 offset-10">
+                                                    <button class="btn btn-warning btn-sm"
+                                                        (click)="createCover(null,myModal2)">
+                                                        <i class="fas fa-plus"></i>&nbsp;Add New
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                            <div class="text-center mt-2">
+                                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                                    [routerLink]="['/quotation/plan/quote-details']"
+                                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                                <p-button label="Proceed" size="small" (click)="onSaveHealthInsurance()"></p-button>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </ng-container>
+        <ng-container *ngIf="productId=='24'">
+            <div class="grid mt-1 mb-3">
+                <div class="lg:col-1">
+
+                </div>
+                <div class="col-12 lg:col-5 xl:col-5" *ngIf="Content">
+                    <div class="memberDetailCard" style="padding:10px !important;">
+                        <div class="mb-2"> <b>Content Risk</b></div>
+                        <div class="flex md:flex-row flex-col items-center md:space-x-3">
+
+                            <ng-container *ngFor="let stes of fields1; let index = index; let last = last">
+                                <div>
+                                    <div style="display: flex !important;justify-content: space-between !important;">
+                                        <div class="mt-4 mr-3 ml-3">
+                                            <img src="./assets/images/content.png" width="40" height="35">
+                                            <!-- <b>{{step.props.label }}</b> -->
+                                        </div>
+                                        <div>
+                                            <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                <formly-form [form]="form" [fields]="stes.fieldGroup"
+                                                    [model]="productItem"></formly-form>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 lg:col-5 xl:col-5" *ngIf="AllRisk">
+                    <div class="memberDetailCard" style="padding:10px !important;">
+                        <div class="mb-2"> <b>All Risk</b></div>
+                        <div class="flex md:flex-row flex-col items-center md:space-x-3">
+
+                            <ng-container *ngFor="let steps of fields2; let index = index; let last = last">
+                                <div>
+                                    <div style="display: flex !important;justify-content: space-between !important;">
+                                        <div class="mt-4 ml-3 mr-3">
+                                            <img src="./assets/images/All-risk.png" width="40" height="35">
+                                            <!-- <b>{{step.props.label }}</b> -->
+                                        </div>
+                                        <div>
+                                            <form [formGroup]="form" (ngSubmit)="onSubmit(productItem)">
+                                                <formly-form [form]="form" [fields]="steps.fieldGroup"
+                                                    [model]="productItem"></formly-form>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-container>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2">
+                <p-button styleClass="p-button-outlined" label="Back" size="small"
+                    [routerLink]="['/quotation/plan/quote-details']"
+                    routerLinkActive="router-link-active"></p-button>&nbsp;
+                <p-button label="Proceed" size="small" (click)="onfinalsave('Submit')"></p-button>
+            </div>
+        </ng-container>
+
+    
+    <p-dialog header="Owner's Liability Details" [modal]="true" [(visible)]="personalLiabilityDialog"
+        [style]="{ width: '80rem','z-index': '1000 !important' }">
+        <ng-container class="mt-5">
+            <div class="grid justify-content-end">
+                <!-- <div class="col-12 md:col-6 lg:col-6"> -->
+                <!--  -->
+                <!-- <p-button label="Add" (click)="Addnew(TableRow)" /> -->
+                <!-- </div> -->
+                <!-- <div class="col-12 md:col-4 lg:col-4">
+                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Occupation"
+                    [options]="occupationList"
+                        appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="plOccupationId" />
+                        <div class="input-form-error" *ngIf="plOccupationError">
+                            <div class="error-text text-danger">
+                                Please Select Occupation
+                            </div>
+                        </div>
+                </div> -->
+                <div class="col-12 md:col-8 lg:col-8"></div>
+                <!-- <div class="col-12 md:col-2 lg:col-2" *ngIf="fields3">Total :{{getPLTotal() | commaseparator}}</div> -->
+                <div class="col-12 md:col-2 lg:col-2"><p-button label="Add New" icon="pi pi-plus"
+                        (click)="addRowPL()" /></div>
+            </div>
+        </ng-container>
+        <ng-container class="mt-5">
+            <p-table [value]="TableRowPL" dataKey="id" editMode="row" [rows]="5" [paginator]="false"
+                [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="column" *ngFor="let column of columnHeaderPersonalLiability">
+                            {{column}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                    <tr>
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Location"
+                                    [options]="locationList" (onChange)="onChangeContentLocation(product)"
+                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"
+                                    [(ngModel)]="product.RiskId" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{product.LocationName}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.LocationNameError">
+                                <div class="error-text text-danger">
+                                    Please Select Location
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Occupation"
+                                    [options]="occupationList" appendTo="body" optionLabel="CodeDesc" optionValue="Code"
+                                    [(ngModel)]="product.OccupationId" />
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{getOccupationName(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.OccupationError">
+                                <div class="error-text text-danger">
+                                    Please Select Occupation
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <input class="w-full p-button-outlined customInput" placeholder="Enter Name"
+                                    styleClass="w-full customInput" pInputText type="text" [(ngModel)]="product.Name" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri"> {{ product.Name }}</ng-container>
+                            <div class="input-form-error" *ngIf="product.NameError">
+                                <div class="error-text text-danger">
+                                    Please Enter Name
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-dropdown class="w-full customInput"  styleClass="w-full customInput" placeholder="Select Nationality"
+                                [options]="countryList"
+                                    appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="product.Nationality" />
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{getNationalityDesc(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.NationalityError">
+                                <div class="error-text text-danger">
+                                    Please Select Nationality
+                                </div>
+                            </div>
+                        </td> -->
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-calendar class="w-full customZIndex customInput"
+                                    styleClass="w-full customZIndex customInput" appendTo="body" [maxDate]="minDate"
+                                    [(ngModel)]="product.Dob" [defaultDate]="minDate" dateFormat="dd/mm/yy"
+                                    placeholder="Select Date Of Birth"></p-calendar>
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{getProductDob(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.DobError">
+                                <div class="error-text text-danger">
+                                    Please Select Date of Birth
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-inputNumber class="customInput" styleClass="customInput"
+                                    [(ngModel)]="product.SumInsured" inputId="integeronly" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{product.SumInsured | commaseparator}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.SumInsuredError">
+                                <div class="error-text text-danger">
+                                    Enter Valid Salary
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-pencil" (click)="currentPLRowIndex=ri"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+
+                        <td>
+                            <ng-container>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-trash" (click)="deleteProductPL(ri)"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </tr>
+
+                </ng-template>
+
+            </p-table>
+            <!-- <div class="flex justify-content-end gap-2 mt-5">
+                <p-button label="Cancel" styleClass="p-button-outlined"  (click)="visible = false" />
+                <p-button label="Save" (click)="saveProduct()" />
+            </div> -->
+            <div class="grid justify-content-center gap-2 mt-5">
+                <!-- <p-button label="Cancel" styleClass="p-button-outlined"  (click)="visible = false" /> -->
+                <div>
+                    <p-button label="Save" (click)="onSavePL('direct','PL')" />
+                </div>
+            </div>
+        </ng-container>
+    </p-dialog>
+    <p-dialog header="Personal Accident Details" [modal]="true" [(visible)]="personalAccidentDialog"
+        [style]="{ width: '80rem','z-index': '1000 !important' }">
+        <ng-container class="mt-5">
+            <div class="grid justify-content-end">
+                <!-- <div class="col-12 md:col-4 lg:col-4">
+                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Occupation"
+                    [options]="occupationList"
+                        appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="pAOccupationId" />
+                        <div class="input-form-error" *ngIf="pAOccupationError">
+                            <div class="error-text text-danger">
+                                Please Select Occupation
+                            </div>
+                        </div>
+                </div> -->
+                <div class="col-12 md:col-8 lg:col-8"></div>
+                <!-- <div class="col-12 md:col-2 lg:col-2" *ngIf="fields4">Total :{{getPATotal() | commaseparator}}</div> -->
+                <div class="col-12 md:col-2 lg:col-2"><p-button label="Add New" icon="pi pi-plus"
+                        (click)="addRowPA()" /></div>
+            </div>
+        </ng-container>
+        <ng-container class="mt-5">
+            <p-table [value]="TableRowPA" dataKey="id" editMode="row" [rows]="5" [paginator]="false"
+                [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="column" *ngFor="let column of columnHeaderPersonalAccident">
+                            {{column}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                    <tr>
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Location"
+                                    [options]="TableRowBuilding" (onChange)="onChangeContentLocation(product)"
+                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"
+                                    [(ngModel)]="product.RiskId" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                {{product.LocationName}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.LocationNameError">
+                                <div class="error-text text-danger">
+                                    Please Select Location
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Occupation"
+                                    [options]="occupationList" appendTo="body" optionLabel="CodeDesc" optionValue="Code"
+                                    [(ngModel)]="product.OccupationId" />
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                {{getOccupationName(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.OccupationError">
+                                <div class="error-text text-danger">
+                                    Please Select Occupation
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <input class="w-full p-button-outlined customInput" placeholder="Enter Name"
+                                    styleClass="w-full customInput" pInputText type="text" [(ngModel)]="product.Name" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri"> {{ product.Name }}</ng-container>
+                            <div class="input-form-error" *ngIf="product.NameError">
+                                <div class="error-text text-danger">
+                                    Please Enter Name
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <p-dropdown class="w-full customInput"  styleClass="w-full customInput" placeholder="Select Nationality"
+                                [options]="countryList"
+                                    appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="product.Nationality" />
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                {{getNationalityDesc(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.NationalityError">
+                                <div class="error-text text-danger">
+                                    Please Select Nationality
+                                </div>
+                            </div>
+                        </td> -->
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <p-calendar class="w-full customZIndex customInput"
+                                    styleClass="w-full customZIndex customInput" appendTo="body" [maxDate]="minDate"
+                                    [(ngModel)]="product.Dob" [defaultDate]="minDate" dateFormat="dd/mm/yy"
+                                    placeholder="Select Date Of Birth"></p-calendar>
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                {{getProductDob(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.DobError">
+                                <div class="error-text text-danger">
+                                    Please Select Date of Birth
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex==ri">
+                                <p-inputNumber styleClass="customInput" class="customInput"
+                                    [(ngModel)]="product.SumInsured" inputId="integeronly" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                {{product.SumInsured | commaseparator}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.SumInsuredError">
+                                <div class="error-text text-danger">
+                                    Enter Valid Salary
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentPARowIndex!=ri">
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-pencil" (click)="currentPARowIndex=ri"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+
+                        <td>
+                            <ng-container>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-trash" (click)="deleteProductPA(ri)"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="grid justify-content-center gap-2 mt-5">
+                <!-- <p-button label="Cancel" styleClass="p-button-outlined"  (click)="visible = false" /> -->
+                <div>
+                    <p-button label="Save" (click)=" onSavePA('direct')" />
+                </div>
+            </div>
+        </ng-container>
+    </p-dialog>
+    <p-dialog header="Domestic Servant Details" [modal]="true" [(visible)]="domesticServantDialog"
+        [style]="{ width: '80rem','z-index': '1000 !important' }">
+        <ng-container class="mt-5">
+            <div class="grid justify-content-end">
+                <!-- <div class="col-12 md:col-6 lg:col-6"> -->
+                <!--  -->
+                <!-- <p-button label="Add" (click)="Addnew(TableRow)" /> -->
+                <!-- </div> -->
+                <!-- <div class="col-12 md:col-4 lg:col-4">
+                    <p-dropdown class="w-full"  styleClass="w-full" placeholder="Select Occupation"
+                    [options]="occupationList"
+                        appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="plOccupationId" />
+                        <div class="input-form-error" *ngIf="plOccupationError">
+                            <div class="error-text text-danger">
+                                Please Select Occupation
+                            </div>
+                        </div>
+                </div> -->
+                <div class="col-12 md:col-8 lg:col-8"></div>
+                <!-- <div class="col-12 md:col-2 lg:col-2" *ngIf="fields7">Total :{{getDSTotal() | commaseparator}}</div> -->
+                <div class="col-12 md:col-2 lg:col-2"><p-button label="Add New" icon="pi pi-plus"
+                        (click)="addRowDS()" /></div>
+            </div>
+        </ng-container>
+        <ng-container class="mt-5">
+            <p-table [value]="TableRowDS" dataKey="id" editMode="row" [rows]="5" [paginator]="false"
+                [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="column" *ngFor="let column of columnHeaderPersonalLiability">
+                            {{column}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product let-ri="rowIndex">
+                    <tr>
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Location"
+                                    [options]="TableRowBuilding" (onChange)="onChangeContentLocation(product)"
+                                    appendTo="body" optionLabel="LocationName" optionValue="RiskId"
+                                    [(ngModel)]="product.RiskId" />
+                            </ng-container>
+                            <ng-container *ngIf="currentDSRowIndex!=ri">
+                                {{product.LocationName}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.LocationNameError">
+                                <div class="error-text text-danger">
+                                    Please Select Location
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex==ri">
+                                <p-dropdown class="w-full" styleClass="w-full" placeholder="Select Occupation"
+                                    [options]="occupationList" appendTo="body" optionLabel="CodeDesc" optionValue="Code"
+                                    [(ngModel)]="product.OccupationId" />
+                            </ng-container>
+                            <ng-container *ngIf="currentDSRowIndex!=ri">
+                                {{getOccupationName(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.OccupationError">
+                                <div class="error-text text-danger">
+                                    Please Select Occupation
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex==ri">
+                                <input class="w-full p-button-outlined customInput" placeholder="Enter Name"
+                                    styleClass="w-full customInput" pInputText type="text" [(ngModel)]="product.Name" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentDSRowIndex!=ri"> {{ product.Name }}</ng-container>
+                            <div class="input-form-error" *ngIf="product.NameError">
+                                <div class="error-text text-danger">
+                                    Please Enter Name
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <ng-container *ngIf="currentPLRowIndex==ri">
+                                <p-dropdown class="w-full customInput"  styleClass="w-full customInput" placeholder="Select Nationality"
+                                [options]="countryList"
+                                    appendTo="body" optionLabel="CodeDesc" optionValue="Code"  [(ngModel)]="product.Nationality" />
+                            </ng-container>
+                            <ng-container *ngIf="currentPLRowIndex!=ri">
+                                {{getNationalityDesc(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.NationalityError">
+                                <div class="error-text text-danger">
+                                    Please Select Nationality
+                                </div>
+                            </div>
+                        </td> -->
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex==ri">
+                                <p-calendar class="w-full customZIndex customInput"
+                                    styleClass="w-full customZIndex customInput" appendTo="body" [maxDate]="minDate"
+                                    [(ngModel)]="product.Dob" [defaultDate]="minDate" dateFormat="dd/mm/yy"
+                                    placeholder="Select Date Of Birth"></p-calendar>
+                            </ng-container>
+                            <ng-container *ngIf="currentDSRowIndex!=ri">
+                                {{getProductDob(product)}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.DobError">
+                                <div class="error-text text-danger">
+                                    Please Select Date of Birth
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex==ri">
+                                <p-inputNumber class="customInput" styleClass="customInput"
+                                    [(ngModel)]="product.SumInsured" inputId="integeronly" />
+
+                            </ng-container>
+                            <ng-container *ngIf="currentDSRowIndex!=ri">
+                                {{product.SumInsured | commaseparator}}
+                            </ng-container>
+                            <div class="input-form-error" *ngIf="product.SumInsuredError">
+                                <div class="error-text text-danger">
+                                    Enter Valid Salary
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="currentDSRowIndex!=ri">
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-pencil" (click)="currentDSRowIndex=ri"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+
+                        <td>
+                            <ng-container>
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton type="button" icon="pi pi-trash" (click)="deleteProductDS(ri)"
+                                        styleClass="p-button-outlined">
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </td>
+                    </tr>
+
+                </ng-template>
+
+            </p-table>
+            <!-- <div class="flex justify-content-end gap-2 mt-5">
+                <p-button label="Cancel" styleClass="p-button-outlined"  (click)="visible = false" />
+                <p-button label="Save" (click)="saveProduct()" />
+            </div> -->
+            <div class="grid justify-content-center gap-2 mt-5">
+                <!-- <p-button label="Cancel" styleClass="p-button-outlined"  (click)="visible = false" /> -->
+                <div>
+                    <p-button label="Save" (click)="onSavePL('direct','DS')" />
+                </div>
+            </div>
+        </ng-container>
+    </p-dialog>

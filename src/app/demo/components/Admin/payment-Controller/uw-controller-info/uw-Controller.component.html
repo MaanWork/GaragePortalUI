@@ -1,0 +1,118 @@
+<div class="grid">
+    <div class="col-12 sm:col-12 md:col-12" style="padding-bottom: 0px !important;margin-bottom:0px !important">
+        <div class="card" *ngIf="customerDetails">
+            <h3 class="mr-3">Customer Information</h3>
+            <div class="grid">
+                <div class="col-12 sm:col-3 md:col-3">
+                    <h5>Customer Name</h5>
+                <b class="moto-text">{{customerDetails.ClientName}}</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Mobile No</h5>
+                    <b class="moto-text">{{customerDetails.MobileNo1}}</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Email</h5>
+                    <b class="moto-text">{{customerDetails.Email1}}</b>
+                </div>
+        
+                <!-- <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Address</h5>
+                    <b class="moto-text">Eldams Road</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3">
+                    <h5>City</h5>
+                    <b class="moto-text">Engineer</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Nationality</h5>
+                    <b class="moto-text">India</b>
+                </div> -->
+        
+                <div class="col-12 sm:col-3 md:col-3">
+                    <h5>Date Of Birth</h5>
+                    <b class="moto-text">{{customerDetails.DobOrRegDate}}</b>
+                </div>
+                <!-- <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>WhatsApp Code</h5>
+                    <b class="moto-text"></b>
+                </div> -->
+                
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>{{customerDetails.IdTypeDesc}}</h5>
+                    <b class="moto-text">{{customerDetails.IdNumber}}</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Prefered Notification</h5>
+                    <b class="moto-text">{{customerDetails.PreferredNotification}}</b>
+                </div>
+                <div class="col-12 sm:col-3 md:col-3 ">
+                    <h5>Policy HolderType</h5>
+                    <b class="moto-text">
+                        <ng-container *ngIf="customerDetails.PolicyHolderType=='2'">Corporate</ng-container>
+                        <ng-container *ngIf="customerDetails.PolicyHolderType=='1'">Individual</ng-container>
+                    </b> 
+                </div>
+            </div>
+            <hr>
+            <h3 class="mr-3">Premium Information</h3>
+            <div class="grid">
+                <div class="col-12 sm:col-2 md:col-2">
+                    <h5>Start Date</h5>
+                <b class="moto-text">{{quoteDetails.InceptionDate}}</b>
+                </div>
+                <div class="col-12 sm:col-2 md:col-2 ">
+                    <h5>End Date</h5>
+                    <b class="moto-text">{{quoteDetails.ExpiryDate}}</b>
+                </div>
+        
+                <div class="col-12 sm:col-2 md:col-2 ">
+                    <h5>Total Premium</h5>
+                    <b class="moto-text">{{quoteDetails.OverallPremiumLc}}</b>
+                </div>
+                <div class="col-12 sm:col-2 md:col-2">
+                    <h5>Currency</h5>
+                    <b class="moto-text">{{quoteDetails.Currency}}</b>
+                </div>
+            </div>
+            <hr>
+            <h3 class="mr-3">Vehicle Information</h3>
+            <hr>
+            <h3 class="mr-3">Quote Information</h3>
+            <hr>
+            <h3 class="mr-3">Payment Information</h3>
+            <hr>
+            <h3 class="mr-3">Payment Tracking Details</h3>
+            <hr>
+            <h3 class="mr-3" *ngIf="mainStatus!='SA' && mainStatus!='SR'">Confirmation Details</h3>
+            <div class="grid" *ngIf="mainStatus!='SA' && mainStatus!='SR'"> 
+                <div class="col-12 sm:col-4 md:col-4">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Status</label><span
+                            class="text-danger">*</span>
+                        <p-selectButton [options]="statusList" [(ngModel)]="statusValue" id="driverType2"
+                        optionLabel="CodeDesc" optionValue="Code"></p-selectButton>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-4 md:col-4">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Remarks</label><span
+                            class="text-danger">*</span>
+                        <textarea cols="120" rows="2" pInputTextarea  [(ngModel)]="remarks" class="w-full" maxlength="1000"></textarea>
+                        <div class="input-form-error" *ngIf="remarksError">
+                            <div class="error-text">
+                               Please Enter Valid Remarks
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-content-center">
+            <p-button  styleClass="p-button-outlined" label="Back" (click)="getBack()"
+                size="small"></p-button>&nbsp;
+            <p-button label="Proceed" size="small" *ngIf="mainStatus!='SA' && mainStatus!='SR'" (click)="onUpdateStatus()"></p-button>&nbsp;
+        </div>
+    </div>
+    
+</div>

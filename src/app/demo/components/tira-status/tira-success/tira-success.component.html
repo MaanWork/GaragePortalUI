@@ -1,0 +1,163 @@
+<div class="grid mt-1">
+    <div class="lg:col-3 md:col-3 col-12">
+        <label for="username">Start Date</label>
+        <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="StartDate" (onSelect)="search()" [maxDate]="maxDate" [ngModelOptions]="{standalone: true}"
+            dateFormat="dd/mm/yy" placeholder="Select Start Date">
+        </p-calendar>
+    </div>
+    <div class="lg:col-3 md:col-3 col-12">
+        <label for="username">End Date</label>
+        <p-calendar class="w-full" styleClass="w-full"  
+        [(ngModel)]="EndDate" (onSelect)="getalldetails()" [maxDate]="maxDate" [ngModelOptions]="{standalone: true}"
+         dateFormat="dd/mm/yy"  placeholder="Select End Date">
+        </p-calendar>
+    </div>
+</div>
+
+<ng-container *ngIf="issuerData.length!=0">
+    <p-table #dtEmployeeExist [value]="issuerData" 
+    [tableStyle]="{'min-width':'w-full'}" [paginator]="true" [rows]="5" dataKey="RequestReferenceNo" expanded
+    [globalFilterFields]="['QuoteNo','PolicyNo','ClientName','LoginId','TiraRequestId','ResponseStatusDesc']">
+      <ng-template pTemplate="caption">
+          <div class="flex flex wrap justify-content-end">
+            <div class="table-header">
+              <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" placeholder="GlobalSearch" />
+              </span>
+          </div>
+          </div>
+          
+      </ng-template>
+      <ng-template pTemplate="header">
+          <tr>
+              <th [pSortableColumn]="column" *ngFor="let column of issuerHeader">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+          </tr>
+      </ng-template>
+      <tr> 
+        <th *ngFor="let col of cols"> 
+            <input pInputText type="text" (input)= 
+            "tableref.filter($event.target.value, col.field, col.filterMatchMode)" /> 
+        </th> 
+      </tr> 
+      <ng-template pTemplate="body" let-success let-expanded="expanded">
+        <tr>
+          <!-- <td *ngIf="productId=='5' || productId=='46' || productId=='29'">
+            <a href="#" [pRowToggler]="customer">
+            <i [ngClass]="expanded ? 'pi pi-minus' : 'pi pi-plus'" (click)="onInnerData(customer)"></i>
+          </a>
+        </td> -->
+          <td>{{ success.QuoteNo }}</td>
+          <td>{{ success.ClientName }}</td>
+          <td>{{ success.PolicyNo }}</td>
+          <td>{{ success.ResponseStatusDesc }}</td>
+          <td>{{ success.ResponseStatusCode }}</td>
+          <td>{{ success.LoginId }}</td>
+          <td>{{ success.BranchName }}</td>
+          <td>{{ success.TiraRequestId }}</td>
+          <td>{{ success.TiraResponseId }}</td>
+          <!-- <td>
+            <button pButton pRipple icon="pi pi-spin pi-sync" (click)="onHit(success)" title="ReHit" class="p-button-outlined"></button>
+           </td> -->
+          <td>
+              <button pButton pRipple icon="pi pi-eye" title="View" (click)="onViews(success)" class="p-button-outlined"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-container *ngIf="issuerData.length==0">
+        <div class="flex flex-wrap justify-content-center mt-2">
+              No Quote Available
+        </div>
+  </ng-container>
+
+
+  <p-dialog  header="Tira View"   [modal]="true" [(visible)]="visible"  position="top"  [style]="{ width: 'w-10' }" [draggable]="false">
+
+    <ng-container>
+        <p-table #dtEmployeeExist [value]="tiradetails" expanded
+        [tableStyle]="{'min-width':'w-full'}" [paginator]="true" [rows]="5" dataKey="TiraTrackingId"
+        [globalFilterFields]="['RequestId','ResponseId','StatusCode','TiraTrackingId','EntryDate','MethodName']">
+          <ng-template pTemplate="caption">
+              <div class="flex flex wrap justify-content-end">
+                <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" placeholder="GlobalSearch" />
+                  </span>
+              </div>
+              </div>
+              
+          </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of tiraHeader">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+         
+          <ng-template pTemplate="body" let-success let-expanded="expanded">
+            <tr>
+              <td>{{ success.RequestId }}</td>
+              <td>{{ success.ResponseId }}</td>
+              <td>{{ success.StatusCode }}</td>
+              <td>{{ success.TiraTrackingId }}</td>
+              <td>{{ success.HitCount }}</td>
+              <td>{{ success.StatusDesc }}</td>
+              <td>{{ success.EntryDate }}</td>
+              <td>{{ success.MethodName }}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-cloud-download" (click)="onReqPathDownload(success)" title="RequestFilePath" class="p-button-outlined"></button>
+               </td>
+              <td>
+                  <button pButton pRipple icon="pi pi-cloud-download" title="ResponseFilePath" (click)="onResPathDownload(success)" class="p-button-outlined"></button>
+              </td>
+              <!-- <td>
+                <p-button type="button" pRipple [pRowToggler]="success" [text]="true" [rounded]="true" [plain]="true" (click)="onInnerData(success)" [icon]="expanded ? 'pi pi-minus' : 'pi pi-plus'" />
+            </td> -->
+            
+            </tr>
+          </ng-template>
+          <!-- <ng-template pTemplate="rowexpansion"  let-success >
+            <tr >
+                <td colspan="12">
+                    <div class="p-1 justify-content-center">
+                        <p-table [value]="innerdata" dataKey="TiraTrackingId">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th [pSortableColumn]="column" *ngFor="let column of innerColumnHeader">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-success>
+                            <tr>
+                            <td>{{ success.RequestId }}</td>
+                            <td>{{ success.ResponseId }}</td>
+                            <td>{{ success.StatusCode }}</td>
+                            <td>{{ success.TiraTrackingId }}</td>
+                            <td>{{ success.HitCount }}</td>
+                            <td>{{ success.StatusDesc }}</td>
+                            <td>{{ success.EntryDate }}</td>
+                            <td>{{ success.MethodName }}</td>
+                            <td>
+                                <button pButton pRipple icon="pi pi-cloud-download" (click)="onReqPathDownload(success)" title="RequestFilePath" class="p-button-outlined"></button>
+                                </td>
+                                <td>
+                                    <button pButton pRipple icon="pi pi-cloud-download" title="ResponseFilePath" (click)="onResPathDownload(success)" class="p-button-outlined"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        </p-table>
+                    </div>
+                </td>
+            </tr>
+          </ng-template> -->
+        </p-table>
+      </ng-container>
+      <ng-container *ngIf="tiradetails.length==0">
+            <div class="flex flex-wrap justify-content-center mt-2">
+                  No Quote Available
+            </div>
+      </ng-container>
+      
+
+</p-dialog>

@@ -1,0 +1,582 @@
+<div class="card">
+<div class="card-header">
+    <div class="flex flex-wrap justify-content-between">
+        <div><h4> Premia Integration View</h4></div>
+        <div>QuoteNO:{{quoteno}}</div>
+    </div>
+   
+</div>
+<div class="grid">
+    <div class="col-12 lg:col-6 md:col-6">
+        <p-accordion >
+            <p-accordionTab header="Policy Detail" (click)="Details('PolicyDetail')">
+                <ng-container *ngIf="PolicyData.length!=0">
+                    <div class="grid" *ngFor="let s of PolicyData" style="margin-left:10px !important;">
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b>Customer</b></div>
+                           <div>{{s?.Customer}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b>Request Time</b></div>
+                           <div>{{s?.RequestTime}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b>Response Time</b></div>
+                           <div>{{s?.ResponseTime}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div> <b>Status</b></div>
+                           <div>{{s?.Status}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> Occupation</b></div>
+                           <div>{{s?.InsuredOccupation}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> Premium</b></div>
+                           <div>{{s?.NetPremium}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> Policy Period</b></div>
+                           <div>{{s?.PolicyPeriod}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> Period From</b></div>
+                           <div>{{s?.PeriodFrom}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> PeriodTo</b></div>
+                           <div>{{s?.PeriodTo}}</div>
+                       </div>
+                       <div class="col-12 lg:col-3 md:col-3">
+                           <div><b> Policy Issue Date</b></div>
+                           <div>{{s?.PolicyIssueDt}}</div>
+                       </div>
+                       <p-divider *ngIf="PolicyData.length>1" class="w-full"></p-divider>
+                    </div>
+                    </ng-container>
+                    <ng-container *ngIf="PolicyData.length==0">
+                       No Records Found
+                       </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Section" (click)="Details('Section')">
+                <ng-container *ngIf="SectionData.length!=0">
+                    <div class="grid" *ngFor="let s of SectionData" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Request ReferenceNo</b></div>
+                            <div>{{s?.RequestReferenceNo}}</div>
+                        </div>
+                        <div class="col-12 lg:col-5 md:col-5">
+                            <div><b> Policy No</b></div>
+                            <div>{{s?.quotationPolicyNo}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Request Time</b></div>
+                            <div>{{s?.requestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Response Time</b></div>
+                            <div>{{s?.responseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> PWs ResponseType</b></div>
+                            <div>{{s?.pWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> PWs Error </b></div>
+                            <div>{{s?.pWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Product Code</b></div>
+                            <div>{{s?.productCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Iteration No</b></div>
+                            <div>{{s?.iterationNo}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Scheme Desc</b></div>
+                            <div>{{s?.schemeDesc}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> ServiceId</b></div>
+                            <div>{{s?.serviceId}}</div>
+                        </div>
+                        <p-divider *ngIf="SectionData.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                    <ng-container *ngIf="SectionData.length==0">
+                        No Records Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Risk Details" (click)="Details('Risk')">
+                <ng-container *ngIf="riskData.length!=0">
+                    <div class="grid" *ngFor="let s of riskData" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Risk Id</b></div>
+                            <div>{{s?.RiskId}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.Status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error</b> </div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.PraiProdCode}}</div>
+                        </div>
+                        <p-divider *ngIf="riskData.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                    <ng-container *ngIf="riskData.length==0">
+                        No Records Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Driver Details" (click)="Details('Driver')">
+                <ng-container *ngIf="DriverDetail.length!=0">
+                    <div class="grid" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Name</b></div>
+                             <div><b>{{s.Name}}</b></div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.Status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error</b> </div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.ProductCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Date Of Birth</b></div>
+                             <div>{{s.DateOfBirth | date: 'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Entry Date</b></div>
+                             <div>{{s.EntryDate}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Id ResidentNo</b></div>
+                             <div>{{s.IdResidentNo}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Iteration No</b></div>
+                             <div>{{s.IterationNo}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Section Code</b></div>
+                             <div>{{s.SecCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Type Of Class</b></div>
+                             <div>{{s.TypeOfClass}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Service Id</b></div>
+                             <div>{{s.ServiceId}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>License IssuedOn</b></div>
+                             <div>{{s.LicenseIssuedOn}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>L1s2Id</b></div>
+                             <div>{{s.L1s2Id}}</div>
+                        </div>
+                        <p-divider *ngIf="DriverDetail.length>1" class="w-full"></p-divider>
+                     </div>
+                </ng-container>
+                 <ng-container *ngIf="DriverDetail.length==0">
+                          No Records Found
+                 </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Cover Details" (click)="Details('Cover')">
+                <ng-container *ngIf="CoverData.length!=0">
+                    <div  *ngFor="let s of CoverData">
+                        <div class="grid" style="margin-left:10px !important;">
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Cover Desc</b></div>
+                                 <div>{{s.CoverDesc}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Cover Code</b></div>
+                                 <div>{{s.CoverCode}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Cover Id</b></div>
+                                 <div>{{s.CvrId}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Request Time </b></div>
+                                <div>{{s?.RequestTime}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                               <div><b>Response Time</b></div>
+                                <div>{{s?.ResponseTime}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div> <b>Status</b></div>
+                                <div>{{s?.Status}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>PWs ResponseType</b></div>
+                                <div>{{s?.PWsResponseType}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>PWs Error </b></div>
+                                <div>{{s?.PWsError}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Product Code</b></div>
+                                <div>{{s?.ProdCode}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Rate</b></div>
+                                 <div>{{s?.Rate}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Sum Insured</b></div>
+                                 <div>{{s?.SumInsured}}</div>
+                            </div>
+                            <div class="col-12 lg:col-3 md:col-3">
+                                <div><b>Premium</b></div>
+                                 <div>{{s?.Premium}}</div>
+                            </div>
+                         </div>
+                         <p-divider *ngIf="CoverData.length>1" class="w-full"></p-divider>
+                    </div>
+                    </ng-container>
+                    <ng-container *ngIf="CoverData.length==0">
+                        No Record Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Discount Detail" (click)="Details('Discount')">
+                <ng-container *ngIf="DiscountDetail.length!=0">
+                    <div *ngFor="let s of DiscountDetail">
+                            <div class="grid" style="margin-left:10px !important;">
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div><b>Request Time</b></div>
+                                    <div>{{s?.RequestTime}}</div>
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div><b>Response Time</b></div>
+                                    <div>{{s?.ResponseTime}}</div>
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div> <b>Status</b></div>
+                                    <div>{{s?.Status}}</div>
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div><b>PWs ResponseType</b></div>
+                                    <div>{{s?.PWsResponseType}}</div>
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div><b>PWs Error</b> </div>
+                                    <div>{{s?.PWsError}}</div>
+                                </div>
+                                <div class="col-12 lg:col-3 md:col-3">
+                                    <div><b>Product Code</b></div>
+                                    <div>{{s?.ProdCode}}</div>
+                                </div>
+                             </div>
+                             <p-divider *ngIf="DiscountDetail.length>1" class="w-full"></p-divider>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="DiscountDetail.length==0">
+                        No Record Found
+                    </ng-container>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+    <div class="col-12 lg:col-6 md:col-6">
+        <p-accordion>
+            <p-accordionTab header="Charge Details" (click)="Details('Charge')">
+                <ng-container *ngIf="ChargeDetail.length!=0">
+                    <div class="grid" *ngFor="let s of ChargeDetail" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Charge Code</b></div>
+                            <div>{{s?.ChargeCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Charge Amount</b></div>
+                            <div>{{s?.ChargeAmount}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Charge Rate</b></div>
+                            <div>{{s?.ChargeRate}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Status</b> </div>
+                            <div>{{s?.Status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error </b></div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.ProdCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>RateModified Yn</b></div>
+                            <div>{{s?.RateModifiedYn}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>RateModified Yn</b></div>
+                            <div>{{s?.RateModifiedYn}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>ChargeModified Yn</b></div>
+                            <div>{{s?.ChargeModifiedYn}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Charge Id</b></div>
+                            <div>{{s?.ChgId}}</div>
+                        </div>
+                        <p-divider *ngIf="ChargeDetail.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                     <ng-container *ngIf="ChargeDetail.length==0">
+                        No Record Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Vat Details" (click)="Details('vat')">
+                <ng-container *ngIf="VatDetail.length!=0">
+                    <div class="grid" *ngFor="let s of VatDetail" style="margin-left:10px !important;">
+                      
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.requestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.responseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.pWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error </b></div>
+                            <div>{{s?.pWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.prodCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Vat Amount</b></div>
+                            <div>{{s?.vatAmount}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Vat Percentage</b></div>
+                            <div>{{s?.vatPerc}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Vat ApplyOn</b></div>
+                            <div>{{s?.vatApplyOn}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Vat Id</b></div>
+                            <div>{{s?.vatId}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Vat ModifiedYn</b></div>
+                            <div>{{s?.vatModifiedYn}}</div>
+                        </div>
+                        <p-divider *ngIf="VatDetail.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                     <ng-container *ngIf="VatDetail.length==0">
+                        No Record Found
+              </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Premia Calculation" (click)="Details('precal')">
+                <ng-container *ngIf="issuerData.length!=0">
+                    <div class="grid" *ngFor="let s of issuerData" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Risk Id</b></div>
+                            <div>{{s?.RiskId}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Cover Code</b></div>
+                            <div>{{s?.CoverCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Cover Description</b></div>
+                            <div>{{s?.CoverDescription}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Cover Premium</b></div>
+                            <div>{{s?.CoverPremium}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Status</b> </div>
+                            <div>{{s?.status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error</b> </div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.ProductCode}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Sum Insured</b></div>
+                            <div>{{s?.SumInsured}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Product Code</b></div>
+                            <div>{{s?.ProductCode}}</div>
+                        </div>
+                        <p-divider *ngIf="issuerData.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                    <ng-container *ngIf="issuerData.length==0">
+                              No Record Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Policy Approval" (click)="Details('Approval')">
+                <ng-container *ngIf="PolicyDetail.length!=0">
+                    <div class="grid" *ngFor="let s of PolicyDetail" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.Status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error </b></div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div> <b>Renewal CurrentStatus</b></div>
+                            <div>{{s?.RenewalCurrentStatus}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Appr Description</b></div>
+                            <div>{{s?.ApprDesc}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Document No</b></div>
+                            <div>{{s?.DocNo}}</div>
+                        </div>
+                        <p-divider *ngIf="PolicyDetail.length>1" class="w-full"></p-divider>
+                     </div>
+                    </ng-container>
+                    <ng-container *ngIf="PolicyDetail.length==0">
+                        No Records Found
+                    </ng-container>
+            </p-accordionTab>
+            <p-accordionTab header="Credit Details" (click)="Details('Credit')">
+                <ng-container *ngIf="CreditDetail.length!=0">
+                    <div class="row" *ngFor="let s of CreditDetail" style="margin-left:10px !important;">
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Request Time</b></div>
+                            <div>{{s?.RequestTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>Response Time</b></div>
+                            <div>{{s?.ResponseTime}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b> Status</b></div>
+                            <div>{{s?.Status}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs ResponseType</b></div>
+                            <div>{{s?.PWsResponseType}}</div>
+                        </div>
+                        <div class="col-12 lg:col-3 md:col-3">
+                            <div><b>PWs Error </b></div>
+                            <div>{{s?.PWsError}}</div>
+                        </div>
+                        <p-divider *ngIf="CreditDetail.length>1" class="w-full"></p-divider>
+                     </div>
+                </ng-container>
+                <ng-container *ngIf="CreditDetail.length==0">
+                    No Records Found
+                </ng-container>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+</div>
+</div>

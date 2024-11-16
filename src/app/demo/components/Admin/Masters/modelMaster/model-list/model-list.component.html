@@ -1,0 +1,175 @@
+
+<div class="card">
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+            <h3 class="mr-3">Existing Model</h3>
+          </div>
+          <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3">Existing Model</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddModel()" ></p-button>
+          </div>
+        </div>
+      </div>
+                <div class="grid">
+                    <div class="col-12 lg:col-4 xl:col-4 md:col-4 ">
+                        <label for="username">Insurance Company*</label>
+                        <p-dropdown inputId="insuranceId" 
+                            class="w-full" 
+                            styleClass="w-full" 
+                            (onChange)="getBranchList('change')"
+                            [options]="insuranceList" 
+                            [(ngModel)]="insuranceId" 
+                            optionLabel="CodeDesc" 
+                            optionValue="Code" 
+                            placeholder="Select Insurance Company">
+                        </p-dropdown>
+                    </div>
+                    <div class="col-12 lg:col-4 xl:col-4 md:col-4 ">
+                        <label for="username">Branch*</label>
+                        <p-dropdown inputId="branchList" 
+                            class="w-full" 
+                            styleClass="w-full" 
+                            [options]="branchList" 
+                            [(ngModel)]="branchValue" 
+                            optionLabel="CodeDesc" 
+                            optionValue="Code" >
+                        </p-dropdown>
+                    </div>
+                    <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+                      <label for="username">Make*</label>
+                      <p-dropdown inputId="productValue" 
+                          class="w-full" 
+                          styleClass="w-full" 
+                          (onChange)="getExistingModel()"
+                          [options]="ModelList" 
+                          [(ngModel)]="MakeId" 
+                          optionLabel="CodeDesc" 
+                          optionValue="Code" >
+                      </p-dropdown>
+                  </div>
+                </div>
+                <ng-container *ngIf="ModelData" class="mt-5">
+                    <p-table [value]="ModelData" #dtEmployee 
+                             [globalFilterFields]="['ModelNameEn','CoreAppCode',
+                                                    'Effective Date Start','Status']"
+                             [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                             <ng-template pTemplate="caption">
+                                <div class="flex flex wrap justify-content-end">
+                                  <div class="table-header">
+                                      <span class="p-input-icon-left">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')"
+                                          placeholder="Global Search" />
+                                      </span>
+                                  </div>
+                                </div>
+                                
+                              </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          
+                          <th [pSortableColumn]="column" *ngFor="let column of columnHeader">
+                            {{column}}
+                            <p-sortIcon [field]="column"></p-sortIcon> 
+                          </th>
+                        </tr>
+                      </ng-template>
+                          <ng-template pTemplate="body" let-Model>
+                            <tr>
+                              <td>{{ Model.ModelNameEn }}</td>
+                              <td>{{ Model.CoreAppCode }}</td>
+                              <td>{{ Model.CodeDescLocal }}</td>
+                              <td>{{ Model.EffectiveDateStart }}</td>
+                              <td>
+                                <ng-container *ngIf="Model?.Status=='N'">DeActive</ng-container>
+                                <ng-container *ngIf="Model?.Status=='Y'">Active</ng-container>
+                                <ng-container *ngIf="Model?.Status=='P'">Pending</ng-container>
+                            </td>
+                            <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" (click)="onEditModel(Model)" ></button></td>
+                              </tr>
+                              </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-container *ngIf="ModelData.length==0">
+                    <div class="text-center">
+                        No Data Available
+                    </div>
+            </ng-container>
+        </div>
+    
+
+<!-- <div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <div>Existing Model</div>
+            <div *ngIf="MakeId && branchValue">
+                <button class="btn btn-warning" (click)="onAddModel()">Add New</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="row mt-2">
+            <div class="col-md-4 col-lg-4 col-xl-4 ml-3">
+                <div class="input-control-container">
+                    <label class="input-form-label">Insurance Company<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" appendTo="body" 
+                    [(ngModel)]="insuranceId"
+                     (change)="getBranchList('change')"
+                      [items]="insuranceList" bindValue="Code"
+                       bindLabel="CodeDesc">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-xl-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Branch<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" 
+                    appendTo="body" [items]="branchList"
+                     bindValue="Code" [(ngModel)]="branchValue"
+                      bindLabel="CodeDesc">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-xl-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Make<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select"
+                     appendTo="body" [items]="ModelList" 
+                     [(ngModel)]="MakeId" bindValue="Code"
+                      bindLabel="CodeDesc" (change)="getExistingModel()">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="ModelData">
+            <app-grid-table [cols]="columnHeader"changeStatus="true" (OnStatus)="EditStatus($event)" [data]="ModelData" [filterValue]="filterValue" (onEdit)="onEditModel($event)">
+            </app-grid-table>
+        </ng-container> -->
+        <!--<div class="text-center">
+            <button class="btn btn-danger" (click)="ongetBack()">Back</button>
+        </div>-->
+
+
+        <!-- <ng-container *ngIf="branchData && branchValue">
+            <app-grid-table [cols]="columnHeader" [data]="branchData" [filterValue]="filterValue" (onEdit)="onEditOccupation($event)" (onConfigure)="onConfigure($event)">
+            </app-grid-table>
+        </ng-container>-->
+    <!-- </div>
+</div> -->

@@ -1,0 +1,117 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+            <h3 class="mr-3">Bank Details</h3>
+          </div>
+          <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3">Bank Details</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div> -->
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Bank Full Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="BankDetails.BankFullName"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Bank Full Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Bank Short Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="BankDetails.BankShortName"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Bank Short Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="BankDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4 ">
+            <label for="Bankname">Regulatory Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="BankDetails.RegulatoryCode" 
+            class="w-full" styleClass="w-full" 
+            placeholder="Enter Regulatory Code"/>
+        </div>
+                
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core App Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="BankDetails.CoreAppCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Branch Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="BankDetails.BranchCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter BranchCode"/>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="BankDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="P" [(ngModel)]="BankDetails.Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="BankDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="BankDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="BankDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="BankDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()" ></p-button>
+    </div>
+</div>
+

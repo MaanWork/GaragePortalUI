@@ -1,0 +1,600 @@
+ <div class="card">
+      <div class="grid justify-content-end">
+
+
+        <div class="col-12 sm:col-6 md:col-4">
+          <h3 class="mr-3">Followup Details</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button label="Add New" (click)="showDialog()" ></p-button>
+          </div>
+        </div>
+
+
+        
+    </div>
+    <div class="grid">
+
+      <div class="col-12 lg:col-3 md:col-3">
+        <h3 style="font-weight:200px;color: gray;font-size:16px;">Reference No</h3>
+        <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;">{{mailRequestno}}</h3>
+        <!-- <div><h4 style="text-align: center;"> Customer Info</h4></div> -->
+        </div>
+        <div class="col-12 lg:col-3 md:col-3">
+          <h3 style="font-weight:200px;color: gray;font-size:16px;">Quote No</h3>
+          <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;">{{quoteno}}</h3>
+          <!-- <div><h4 style="text-align: center;"> Customer Info</h4></div> -->
+        </div>
+
+          <div class="col-12 lg:col-3 md:col-3">
+            <h3 style="font-weight:200px;color: gray;font-size:16px;">Customer Name</h3>
+            <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;">{{CusName}}</h3>
+        </div>
+        <div class="col-12 lg:col-3 md:col-3">
+          <h3 style="font-weight:200px;color: gray;font-size:16px;">Product Name:</h3>
+          <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;">{{proname}}</h3>
+      </div>
+
+            <div class="col-12 lg:col-3 md:col-3">
+              <h3 style="font-weight:200px;color: gray;font-size:16px;">Mobile No</h3>
+              <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;"></h3>
+          </div>
+          <div class="col-12 lg:col-3 md:col-3">
+            <h3 style="font-weight:200px;color: gray;font-size:16px;">Email Id</h3>
+            <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;"></h3>
+        </div>
+            <div class="col-12 lg:col-3 md:col-3">
+                <h3 style="font-weight:200px;color: gray;font-size:16px;">Start Date:</h3>
+                <h3 style="font-weight:200px;color: rgb(0, 0, 0);font-size:14px;">{{Sttartdate}}</h3>
+            </div>
+            
+  </div>
+           
+
+    <div class="grid mt-2" *ngIf="showGrids && Addnew">
+      <!-- <app-grid-table [cols]="MailHeader" [data]="NotifiList" (onViews)="getMailTemplate($event,SmCard)" (onEdit)="getMailTemplate($event,follow_Up)">
+      </app-grid-table> -->
+    </div>
+
+    <ng-container *ngIf="NotifiList.length!=0 && showGrids && Addnew" class="mt-5">
+      <p-table [value]="NotifiList"  #dtEmployee
+               [globalFilterFields]="['FollowupDesc','Status',
+                                      'Remarks','StartDate']"
+               [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+               <ng-template pTemplate="caption">
+                  <div class="flex flex wrap justify-content-end">
+                    <div class="table-header">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                        </span>
+                    </div>
+                  </div>
+                  
+                </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            
+            <th [pSortableColumn]="column" *ngFor="let column of MailHeader">
+              {{column}}
+              <p-sortIcon [field]="column"></p-sortIcon> 
+            </th>
+          </tr>
+        </ng-template>
+            <ng-template pTemplate="body" let-NoteList>
+              <tr>
+                <td>{{ NoteList.FollowupDesc }}</td>
+                <td>{{ NoteList.StartDate }}</td>
+                <td>
+                  <ng-container *ngIf="NoteList?.Status=='CO'">Completed</ng-container>
+                  <ng-container *ngIf="NoteList?.Status=='CA'">Cancelled</ng-container>
+                  <ng-container *ngIf="NoteList?.Status=='PE'">Pending</ng-container>
+                </td>
+                <td>{{ NoteList.Remarks }}</td>
+                <td> <button pButton pRipple icon="pi pi-eye"  class="p-button-outlined" (click)="getMailTemplate(NoteList,'view')" ></button></td>
+              <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" (click)="showDialog2(NoteList,'update')" ></button></td>
+                </tr>
+                </ng-template>
+                <ng-container *ngIf="NotifiList.length==0">
+                  <div class="text-center">
+                      No Data Available
+                  </div>
+                </ng-container>
+      </p-table>
+    </ng-container>
+
+  <div class="grid mt-2">
+
+    <div class="col-12">
+        <div class="text-center my-3">
+         
+            <!-- <p-button label="Back" (click)="smsBack()"> </p-button>
+            <button label="Submit" class="custom-btn btn-6 maan-button-data mx-2"  *ngIf="!showGrids && !Addnew && followupId" (click)="send(modal)"> </button> -->
+            <div class="flex justify-content-center mt-3" >
+              <p-button  styleClass="p-button-outlined" label="Back"
+                  size="small"  (click)="smsBack()"></p-button>&nbsp;
+              <!-- <p-button label="Submit" size="small" (click)="send()" ></p-button> -->
+          </div>
+        </div>
+    </div>
+</div>
+<p-dialog 
+    header="Header" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    
+    [style]="{ width: '35rem',height:'60rem' }">
+        <ng-template pTemplate="header">
+            <div class="inline-flex align-items-center justify-content-center gap-2">
+                <p-avatar 
+                    shape="circle" />
+                <span class="font-bold white-space-nowrap">
+                   Followup Details
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-container  style="text-align:center" >
+          <div class=" grid">
+              <!-- <div class="col-12 md:col-3">
+                  <span class="p-float-label">
+                  </span>
+              </div> -->
+         
+                <div class="col-12 lg:col-12 md:col-12" >
+                    <label >FollowupDesc*</label>
+                        <textarea  pInputTextarea  class="w-full" 
+                        styleClass="w-full"   [(ngModel)]="FollowupDesc"  ></textarea>
+                </div>
+              </div>
+          <div class="grid " style="justify-content: center;">
+              <div class="col-12 lg:col-8 md:col-8"> 
+                <label for="username">Start Date*</label>
+      
+                      <p-calendar class="w-full" 
+                          styleClass="w-full" 
+                          [(ngModel)]="EntryDate"
+                          dateFormat="dd/mm/yy"
+                          placeholder="Enter Start Date">
+              </p-calendar>
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+              <label for="username">StartTime*</label>
+              <p-calendar class="w-full"
+              inputId="calendar-timeonly"  
+                  styleClass="w-full" 
+                  [(ngModel)]="StartTime"
+                  dateFormat="h:mm"
+                  [timeOnly]="true"
+                  (onChange)="trans(StartTime)"
+                  placeholder="Enter Start Time">
+          </p-calendar>
+          </div>
+        <div class="col-12 lg:col-8 md:col-8">
+          <label for="username">End Date*</label>
+          <mat-form-field class="example-full-width">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="EndDate" >
+             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <!-- <p-calendar class="w-full" 
+              styleClass="w-full" 
+              [(ngModel)]="EndDate"
+              dateFormat="dd/mm/yy"
+              placeholder="Enter End Date">
+      </p-calendar> -->
+      </div>
+      
+      <div class="col-12 lg:col-4 md:col-4">
+        <label for="username">EndTime*</label>
+          <p-calendar class="w-full"
+          inputId="calendar-timeonly"  
+              styleClass="w-full" 
+              [(ngModel)]="EndTime"
+              dateFormat="h:mm"
+              [timeOnly]="true"
+              placeholder="Enter End Time">
+      </p-calendar>
+    </div>
+           
+    </div>
+          <div class="grid">
+          
+          <div class="col-12 lg:col-12 md:col-12">
+              <label>Remarks*</label> <textarea pInputTextarea   class="w-full" 
+                  styleClass="w-full"  [(ngModel)]="Remarks"  ></textarea>
+        </div>
+        <div class="col-12 lg:col-12 md:col-12">
+          <label for="username">Status  *</label>
+                  <p-dropdown inputId="make" 
+                      class="w-full" 
+                      styleClass="w-full" 
+                      [options]="TemplateList" 
+                      [(ngModel)]="Status" 
+                      optionLabel="CodeDesc"
+                      optionValue="Code" 
+                      placeholder="Select District">
+                  </p-dropdown>
+      </div>
+    </div>
+    <div class="flex justify-content-center mt-5 gap-2">
+      <p-button label="Cancel" styleClass="p-button-outlined" (click)="visible = false" />
+      <p-button label="Submit" (click)="send()" />
+  </div>
+      </ng-container>
+
+</p-dialog>
+
+<p-dialog 
+    header="Header" 
+    [(visible)]="visible1" 
+    [modal]="true" 
+    [style]="{ width: '35rem' }">
+        <ng-template pTemplate="header">
+            <div class="inline-flex align-items-center justify-content-center gap-2">
+                <p-avatar 
+                    shape="circle" />
+                <span class="font-bold white-space-nowrap">
+                   Followup Details
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-container  style="text-align:center" >
+          <div class=" grid">
+              <!-- <div class="col-12 md:col-3">
+                  <span class="p-float-label">
+                  </span>
+              </div> -->
+         
+                <div class="col-12 lg:col-12 md:col-12" >
+                    <label ><b>FollowupDesc*</b></label><br>
+                    <label >{{FollowupDesc}}</label>
+                </div>
+          
+              <div class="col-12 lg:col-4 md:col-4"> 
+                <label ><b>Start Date*</b></label><br>
+                <label >{{EntryDate | date:'shortDate'}}</label>
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+              <label ><b>StartTime*</b></label><br>
+                <label >{{StartTime}}</label>
+          </div>
+        <div class="col-12 lg:col-4 md:col-4">
+          <label ><b>End Date*</b></label><br>
+                <label >{{EndDate | date:'shortDate'}}</label>
+         
+      </div>
+      
+      <div class="col-12 lg:col-4 md:col-4">
+        <label ><b>EndTime*</b></label><br>
+        <label >{{EndTime }}</label>
+        
+    </div>
+          <div class="col-12 lg:col-4 md:col-4">
+            <label ><b>Remarks*</b></label><br>
+            <label >{{Remarks}}</label>
+              
+        </div>
+        <div class="col-12 lg:col-4 md:col-4">
+          <label ><b>Status*</b></label><br>
+          <label >{{Status}}</label>
+      </div>
+    </div>
+    <div class="flex justify-content-center mt-5 gap-2">
+      <p-button label="Cancel" styleClass="p-button-outlined" (click)="visible1 = false" />
+      <!-- <p-button label="Submit" (click)="send()" /> -->
+  </div>
+      </ng-container>
+
+</p-dialog>
+
+
+
+
+
+</div>
+<p-dialog 
+    header="Header" 
+    [(visible)]="visible2" 
+    [modal]="true" 
+    
+    [style]="{ width: '35rem',height:'60rem' }">
+        <ng-template pTemplate="header">
+            <div class="inline-flex align-items-center justify-content-center gap-2">
+                <p-avatar 
+                    shape="circle" />
+                <span class="font-bold white-space-nowrap">
+                   Followup Details
+                </span>
+            </div>
+        </ng-template>
+
+        <ng-container  style="text-align:center" >
+          <div class=" grid">
+              <!-- <div class="col-12 md:col-3">
+                  <span class="p-float-label">
+                  </span>
+              </div> -->
+         
+                <div class="col-12 lg:col-12 md:col-12" >
+                    <label >FollowupDesc*</label>
+                        <textarea  pInputTextarea  class="w-full" 
+                        styleClass="w-full"   [(ngModel)]="FollowupDesc"  ></textarea>
+                </div>
+              </div>
+          <div class="grid " style="justify-content: center;">
+              <div class="col-12 lg:col-8 md:col-8"> 
+                <label for="username">Start Date*</label>
+                <mat-form-field class="example-full-width">
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="EntryDate" >
+                   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                      <!-- <p-calendar class="w-full" 
+                          styleClass="w-full" 
+                          [(ngModel)]="EntryDate"
+                          dateFormat="dd/mm/yy"
+                          placeholder="Enter Start Date">
+              </p-calendar> -->
+            </div>
+            <div class="col-12 lg:col-4 md:col-4">
+              <label for="username">StartTime*</label>
+              <p-calendar class="w-full"
+              inputId="calendar-timeonly"  
+                  styleClass="w-full" 
+                  [(ngModel)]="StartTime"
+                  dateFormat="h:mm"
+                  [timeOnly]="true"
+                  (onChange)="trans(StartTime)"
+                  placeholder="Enter Start Time">
+          </p-calendar>
+          </div>
+        <div class="col-12 lg:col-8 md:col-8">
+          <label for="username">End Date*</label>
+          <!-- <mat-form-field class="example-full-width">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="EndDate" >
+             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field> -->
+          <p-calendar class="w-full" 
+              styleClass="w-full" 
+              [(ngModel)]="EndDate"
+              dateFormat="dd/mm/yy"
+              placeholder="Enter End Date">
+      </p-calendar>
+      </div>
+      
+      <div class="col-12 lg:col-4 md:col-4">
+        <label for="username">EndTime*</label>
+          <p-calendar class="w-full"
+          inputId="calendar-timeonly"  
+              styleClass="w-full" 
+              [(ngModel)]="EndTime"
+              dateFormat="h:mm"
+              [timeOnly]="true"
+              placeholder="Enter End Time">
+      </p-calendar>
+    </div>
+           
+    </div>
+          <div class="grid">
+          
+          <div class="col-12 lg:col-12 md:col-12">
+              <label>Remarks*</label> <textarea pInputTextarea   class="w-full" 
+                  styleClass="w-full"  [(ngModel)]="Remarks"  ></textarea>
+        </div>
+        <div class="col-12 lg:col-12 md:col-12">
+          <label for="username">Status  *</label>
+                  <p-dropdown inputId="make" 
+                      class="w-full" 
+                      styleClass="w-full" 
+                      [options]="TemplateList" 
+                      [(ngModel)]="Status" 
+                      optionLabel="CodeDesc"
+                      optionValue="Code" 
+                      placeholder="Select District">
+                  </p-dropdown>
+      </div>
+    </div>
+    <div class="flex justify-content-center mt-5 gap-2">
+      <p-button label="Cancel" styleClass="p-button-outlined" (click)="visible = false" />
+      <p-button label="Submit" (click)="send2()" />
+  </div>
+      </ng-container>
+
+</p-dialog>
+
+<!--   
+  <ng-template #follow_Up let-modal>
+    <div class="modal-header" style="height: 48px;">
+      <h4 class="modal-title" id="modal-basic-title"><span class="spancommon span_font_size">Update Followup Details</span></h4>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+      </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="maan-grid-item popover-card customTemplatess shawdowcustom" style="display: block;" data-keyboard="false" data-bs-backdrop="static">
+
+      <div class="maan-grid-item-body">
+
+    
+            <div class="row ml-2">
+            <div class="col-12 col-md-5">
+              <div class="input-control-container">
+                <label class="input-form-label">FollowupDesc
+                  <span class="text-required">*</span></label>
+                <div class="input-form-box">
+                    <input type="text" class="input-form-control without-icon"  [(ngModel)]="FollowupDesc" maxlength="100">
+                </div>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-md-5">
+            <div class="input-control-container">
+              <label class="input-form-label">Status</label><span class="text-danger">*</span>
+              <ng-select class="input-form-select" appendTo="body" [items]="TemplateList" [(ngModel)]="followupId" bindValue="Code" bindLabel="CodeDesc">
+              </ng-select>
+            
+
+          </div>
+        </div>
+        </div>
+        <div class="row ml-2">
+
+        <div class="col-12 col-md-5">
+          <div class="input-control-container">
+            <label class="input-form-label">StartTime
+              <span class="text-required">*</span></label>
+            <div class="input-form-box">
+                <input type="text" class="input-form-control without-icon"  [(ngModel)]="StartTime" maxlength="100">
+            </div>
+
+        </div>
+      </div>
+ 
+      <div class="col-12 col-md-5">
+        <div class="input-control-container">
+          <label class="input-form-label">EndTime<span class="text-required">*</span></label>
+          <div class="input-form-box">
+              <input type="text" class="input-form-control without-icon"  [(ngModel)]="EndTime" maxlength="100">
+          </div>
+
+      </div>
+    </div>
+
+      </div>
+
+
+    <div class="row ml-2">
+
+  <div class="col-12 col-md-5">
+    <label class="input-form-label mt-2">Entry Date</label>
+    <mat-form-field appearance="fill">
+      
+        <input matInput [matDatepicker]="picker6" [min]="minDate" [max]="maxDate"  [(ngModel)]="EntryDate">
+        <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+        <mat-datepicker #picker6></mat-datepicker>
+    </mat-form-field>
+</div>
+
+
+<div class="col-12 col-md-5">
+  <div class="input-control-container">
+  <label class="input-form-label mt-2">End Date<span class="text-required">*</span></label>
+<mat-form-field appearance="fill">
+<input matInput [matDatepicker]="picker7" [min]="minDate"  [(ngModel)]="EndDate">
+  <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+  <mat-datepicker #picker7></mat-datepicker>
+</mat-form-field>
+</div>
+</div>
+
+<div class="col-12 col-md-5">
+  <div class="input-control-container">
+    <label class="input-form-label">Remarks
+      <span class="text-required">*</span></label>
+    <div class="input-form-box">
+        <input type="text" class="input-form-control without-icon"  [(ngModel)]="Remarks" maxlength="100">
+    </div>
+
+</div>
+</div>
+
+ </div>
+
+
+    <div class="row ml-2">
+     
+
+    
+    </div>
+
+  </div>
+  
+  <div class="row">
+
+    <div class="col-12">
+        <div class="text-center my-3">
+            <button class="custom-btn btn-6 maan-button-data mx-2" matRipple (click)="send(modal)">Submit</button>
+           
+        </div>
+    </div>
+</div>
+ 
+    </div>
+           </div>
+  </ng-template> 
+
+  <ng-template #SmCard let-modal>
+    <div class="modal-header" style="height: 48px;">
+      <h4 class="modal-title" id="modal-basic-title"><span class="spancommon span_font_size">View Followup Details</span></h4>
+
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">×</span>
+      </button>
+  </div>
+
+  <div class="modal-body">
+    <div style="font-family: 'Inter', sans-serif !important;">
+    
+  <div class="row p-5 ml-4 mr-4">
+      <div class="col-5">
+          <div>
+              <div><h1 style="font-weight:500!important;font-size:16px!important;color:lightcoral;">Followup Details</h1></div>
+              <div class="Personal Details mt-2 pl-5 pr-5">
+                <div class="row mt-2">
+                  <div class="col-4 mt-2">
+
+                     <div class="heading1">Description</div>
+                     <div class="heading2">{{templist?.FollowupDesc}}</div>
+                  </div>
+                  <div class="col-4 mt-2">
+                      <div class="heading1">StartDate</div>
+                      <div class="heading2">{{templist?.StartDate}}</div>
+                  </div>
+                  <div class="col-4 mt-2">
+                      <div class="heading1">StatusDesc</div>
+                      <div class="heading2">{{templist?.StatusDesc}}</div>
+                  </div>
+                  
+              </div>
+                 
+              </div>
+           </div>
+      </div>
+          
+      <div class="line-in-middle"></div>
+      <div class="col-6">
+                  <div>
+                      <div class="Personal Details">
+                          <div><h1 style="font-weight:500!important;font-size:16px!important;color:lightcoral">Additional Information</h1></div>
+                         </div>
+                         <div class="row mt-2">
+                   
+                          <div class="col-4 mt-2">
+                              <div class="heading1">Remarks</div>
+                              <div class="heading2">{{templist?.Remarks}}</div>
+                          </div>
+                          <div class="col-4 mt-2">
+                              <div class="heading1">StartTime</div>
+                              <div class="heading2" ></div>
+                          </div>
+                          <div class="col-4 mt-2">
+                              <div class="heading1">EndTime</div>
+                              <div class="heading2"></div>
+                          </div>
+              </div>
+          </div>
+      </div> 
+  </div>
+</div>
+           </div>
+  </ng-template>
+
+ -->

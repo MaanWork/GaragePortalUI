@@ -1,0 +1,123 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 sm:col-6 md:col-4">
+        <h3 class="mr-3">{{'Search.Search' | translate}}</h3>
+        <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      </div>
+      <div class="col-12 sm:col-6 md:col-8">
+        <!-- <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+          <span class="p-input-icon-right mr-3 mb-3">
+            <i class="pi pi-search"></i>
+            <input type="text" placeholder="Search" pInputText/>
+          </span> -->
+          <!-- <p-button icon="pi pi-cloud-download" label="Export" styleClass="p-button-outlined" class="mr-3" size="small"></p-button>
+          <p-button icon="pi pi-plus" label="Add New Quote" severity="warning" size="small"></p-button> -->
+        <!-- </div> -->
+      </div>
+    </div>
+    
+    <p-divider></p-divider>
+    <div class="grid mt-4">
+      <div class="col-12 py-0">
+        <div class=" flex justify-content-start flex-wrap w-full form-container">
+            <div class="flex flex-column m-3">
+              <label for="username">{{'Search.SearchBy' | translate}}</label>
+                <p-dropdown inputId="make" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [optionLabel]="getDisplayName()" 
+                    [options]="SearchList" 
+                    optionValue="Code" 
+                    [(ngModel)]="search">
+                </p-dropdown>
+            </div>
+            <div class="m-3">
+              <label for="username">{{'Search.SearchValue' | translate}}</label><br>
+                <div class="table-header">
+                  <span class="p-input-icon-left">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" [placeholder]="'DASHBOARD.GlobalSearch' | translate" [(ngModel)]="searchValue" />
+                  </span>
+              </div>
+              </div>
+              <div class="col-12 md:col-2 lg:col-2" *ngIf="searchValue.length > 2 ? '...' : '' || dob">
+                <p-button (click)="onCustomerSearch()" [label]="'Search.Search' | translate" size="small"></p-button>
+            </div>
+        </div>
+      </div>
+      <!-- <div class="col-12 mx-auto flex flex-wrap justify-content-center">
+        <p-button class="mr-4 mb-4" label="Search" (click)="onCustomerSearch()"></p-button>
+      </div> -->
+      
+    </div>
+    <div class="grid ml-7 mt-2">
+      <ng-container *ngIf="customerData.length!=0">
+        <p-table #dtEmployee [value]="customerData" 
+        [paginator]="true" dataKey= "id"
+        [globalFilterFields]="['QuoteNo','RequestReferenceNo','ClientName','OverallPremiumLc']" [rows]="5">
+        <ng-template pTemplate="caption">
+          <!--[tableStyle]="{'min-width':'50rem'}" -->
+          <div class="flex flex wrap justify-content-end">
+            <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                </span>
+            </div>
+          </div>
+        </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th [pSortableColumn]="column" *ngFor="let column of columns">{{'Search.'+column | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-customer let-index="rowIndex"  let-expanded="expanded">
+            <tr>
+              <td>
+                  <a href="#" [pRowToggler]="customer">
+                      <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                    </a>
+              </td>
+              <td>{{ customer.RequestReferenceNo }}</td>
+              <td>{{ customer.QuoteNo}}</td>
+              <td>{{ customer.PolicyNo}}</td>
+              <td>{{ customer.CustomerName}}</td>
+              <td>{{ customer.BranchName}}</td>
+              <td>{{ customer.LoginId}}</td>
+              <td>{{ customer.Status}}</td>
+              <td>{{ customer.MobileNumber}}</td>
+            </tr>
+          </ng-template>
+      
+          <ng-template pTemplate="rowexpansion" let-customer let-columns="columns">
+              <tr>
+                  <td colspan="7">
+                      <div class="p-p-3">
+                          <p-table [value]="customerData" dataKey="name">
+                              <ng-template pTemplate="header">
+                                  <tr>
+                                      <th style="width:4rem">{{'PREMIUM.Premium' | translate}}</th>
+                                      <th style="width:4rem">{{'QUOTEGRID.PolicyStartDate' | translate}}</th>
+                                      <th style="width:4rem">{{'QUOTEGRID.PolicyEndDate' | translate}}</th>
+                                      <th style="width:4rem">{{'Search.QuoteDate' | translate}}</th>
+                                  </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-customers>
+                                  <tr>
+                              
+              <td>{{customers.OverallPremiumLc}}</td>
+              <td>{{customers.PolicyStartDate}}</td>
+              <td>{{customers.PolicyEndDate}}</td>
+              <td>{{customers.QuoteDate}}</td>
+                                  </tr>
+                              </ng-template>
+                          </p-table>
+          
+                      </div>
+                  </td>
+              </tr>
+          </ng-template>
+        </p-table>
+        </ng-container>
+    </div>
+  </div> 

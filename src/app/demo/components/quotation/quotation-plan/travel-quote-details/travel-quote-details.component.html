@@ -1,0 +1,312 @@
+<!-- <div class="card"> -->
+    <div class="grid">
+        <div class="col-12 sm:col-6 md:col-4">
+          <h3 class="mr-3 p-0 m-0">Quote Details</h3>
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex flex-wrap justify-content-end">
+                  <div *ngIf="quoteNo"><b>QuoteNo- <span class="primaryTextColor">
+                    {{quoteNo}}
+                </span></b>&nbsp;|&nbsp;</div>
+                  <div *ngIf="quoteRefNo">RefNo- <span class="primaryTextColor">
+                    {{quoteRefNo}}
+                </span></div>
+          </div>
+        </div>
+      </div>
+  
+    <div class="grid justify-content-between">
+        <div class="col-12 sm:col-5 md:col-5 lg:col-5 card m-5">
+            <h3>Customer & Product Details</h3>
+            <hr>
+        <div class="grid">   
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Customer Name</h5>
+                <!-- {{PolicyNo}} -->{{titleValue}}.{{clientName}}
+            </div>
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Customer ID</h5>
+                <!-- {{CustomerName}} -->{{idNumber}}
+            </div>
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Mobile Number</h5>
+                <!-- {{ProductName}} -->{{mobileNumber}}
+            </div>
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Departure Date</h5>
+                <!-- {{quoteNo}} -->{{policyStartDate}}
+            </div>
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Arrival Date</h5>
+                <!-- {{PolicyNo}} -->{{policyEndDate}}
+            </div>
+            <!-- <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Departure Date</h5>
+                
+            </div>
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Arrival Date</h5>
+              
+            </div> -->
+            <div class="col-12 sm:col-4 md:col-4 ">
+                <h5>Total Premium</h5>
+                <!-- {{quoteNo}} -->{{OverallPremium}}
+            </div>
+            
+        </div>
+        </div>
+
+        <div class="col-12 sm:col-6 md:col-6 lg:col-6 card m-5">
+            <h3> Passenger Details</h3>
+            <hr>
+            <p-table  [value]="passengerCountList" [tableStyle]="{'min-width':'25rem','justify-content':'center'}" >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Type</th>
+                        <th>Passenger Count</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-group let-i="rowIndex">
+                    <tr>
+                        <td>{{i+1}}</td>
+                        <td>{{group.GroupDesc}}</td>
+                        <td>{{group.GroupCount}}</td>
+                    </tr>
+                </ng-template>
+            </p-table> 
+        </div>
+    </div>
+    <div class="card m-5">
+        <h4> Passenger Information</h4>
+        <hr>
+        <div class="grid justify-content-end mt-2">
+            <div>
+                <p-button label="Add Passenger" icon="pi pi-plus" (click)="addPassenger()"/>&nbsp;
+            </div>
+            <div>
+                <p-button label="Upload" icon="pi pi-upload" (click)="UploadOpen()"/>
+            </div>
+        </div>
+       <ng-container  *ngIf="visible">
+        <div class="grid">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="grid">
+                <!-- <div class=" col-12 sm:col-4 md:col-4 lg:col-4" >
+                    <label for="FirstName">First Name*</label>
+                    <input pInputText class="w-full" placeholder="Enter First Name" />
+                </div>
+                <div class=" col-12 sm:col-4 md:col-4 lg:col-4" >
+                    <label for="LastName">Last Name</label>
+                    <input pInputText class="w-full"  placeholder="Enter Last Name" />
+                </div>
+                <div class=" col-12 sm:col-4 md:col-4 lg:col-4 mt-5" >
+                    <div class="grid gap-3 ">
+                        <label for="">Gender*</label><br>
+                        <div class="flex align-items-center">
+                            
+                            <p-radioButton 
+                                inputId="ingredient1" />
+                            <label for="ingredient1" class="mr-3">
+                                Male
+                            </label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton 
+                                inputId="ingredient2" />
+                            <label for="ingredient2" class="mr-3">
+                                Female
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 sm:col-4 md:col-4 lg:col-4" >
+                    <label >RelationShip*</label>&nbsp;
+                    <p-dropdown  class="w-full" styleClass="w-full" >
+                    </p-dropdown>
+                </div>
+                <div class="col-12 sm:col-4 md:col-4 lg:col-4" >
+                <label >DOB*</label>
+                <p-calendar  
+                    [showIcon]="true" 
+                    class="w-full" styleClass="w-full" />
+                </div>
+                <div class="col-12 sm:col-4 md:col-4 lg:col-4" >
+                    <label >Nationality*</label>&nbsp;&nbsp;
+                    <p-dropdown  class="w-full" styleClass="w-full" >
+                    </p-dropdown>
+                </div>
+
+                <div class="col-12 sm:col-4 md:col-4 lg:col-4" >
+                    <label for="PassportNo">Passport No*</label>
+                    <input  pInputText class="w-full" />
+                </div> -->
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="AddPassengerField" [options]="options" [model]="addPassengerItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        
+        </div>
+        <div class="flex flex-wrap justify-content-center">
+            <p-button  label="Close" styleClass="p-button-outlined" (click)="close('Add')" ></p-button>&nbsp;
+            <p-button label="Save" (click)="passengerSave()" [disabled]="!form.valid"></p-button>
+        </div>
+        </ng-container>
+        <ng-container *ngIf="visibleUp" >
+        <div class="grid justify-content-center">
+            <div class="col-12 md:col-6 lg:col-6 px-5 " >
+                <input style="display: none;" type="file" (change)="onUploadListDocuments($event,null,'direct','select')" #doc>
+                <div class="imag-card my-3" style="width:250px !important;height:80px !important;width:100% !important;border:1px dashed;background-color: whitesmoke;" appDragDropFileUpload (fileDropped)="onUploadListDocuments($event,null,'direct','drag')" (click)="doc.click()">
+                    <div>
+                        <div class="center">
+                            <b class="text-dark" style="font-size:1rem;position: relative;top:25px">
+                                <i class="far fa-images"></i> Drag or Click</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="uploadListDoc.length!=0">
+            <h5>Selected Documents</h5><br>
+            <p-table  [value]="uploadListDoc" [tableStyle]="{'min-width':'25rem','justify-content':'center'}" [paginator]="true" [rows]="5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th >S.No</th>
+                        <th >File Name</th>
+                        <th >Delete</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-doc let-i="rowIndex">
+                <tr>
+                    <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+                    <td>{{ i+1 }}</td>
+                    <td>{{ doc.filename }}</td>
+                    <td >
+                    <span class="p-buttonset">
+                        <!-- <button pButton pRipple icon="pi pi-upload" title="Upload" class="p-button-outlined" (click)="onFileUploadVehicleList(i)"></button> -->
+                        <button pButton pRipple icon="pi pi-trash" title="Delete" (click)="onDeleteSelectedDocument(i)" class="p-button-outlined"></button>
+                    </span>
+                    </td>
+                </tr>
+                </ng-template>
+            </p-table>
+            <!-- <ng-template #cardTableView>
+                <div class="grid">
+                <div class="card w-25rem mr-4" *ngFor="let quotation of quotations">
+                    <table>
+                    <tr>
+                        <td><p-chip label="Category" styleClass="bg-orange-500 text-white"></p-chip></td>
+                        <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span> Status</td>
+                    </tr>
+                    <tr>
+                        <td><h5>Customer Number</h5></td>
+                    </tr>
+                    <tr>
+                        <td><b>Reference No</b></td>
+                        <td class="text-right"><b>VirTin No</b></td>
+                    </tr>
+                    <tr>
+                        <td>Jared</td>
+                        <td class="text-right">William</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                        <span class="p-buttonset">
+                            <button pButton pRipple icon="pi pi-envelope" class="p-button-outlined"></button>
+                            <button pButton pRipple icon="pi pi-inbox" class="p-button-outlined"></button>
+                            <button pButton pRipple icon="pi pi-user" class="p-button-outlined"></button>
+                        </span>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+                </div>
+            </ng-template> -->
+        </ng-container>
+
+
+
+        <!-- <div class="flex flex-wrap justify-content-center">
+            <div class="col-12 sm:col-12 md:col-12 lg:col-12 ">
+                <p-button label="Cancel" class="p-button-outlined" />
+            </div>
+        </div> -->
+        <div class="flex flex-wrap justify-content-center mt-3">
+            <p-button  label="Close" styleClass="p-button-outlined" (click)="close('Update')" ></p-button>&nbsp;
+            <p-button label="Proceed" (click)="passengerSave()" ></p-button>
+        </div>
+        </ng-container>
+        <ng-container  class="mt-5" *ngIf="passengerGrid && historyRecordsList.length!=0">
+            <p-table   #dtEmployee [value]="historyRecordsList"
+                    [globalFilterFields]="['BankFullName','BankShortName',
+                                            'EffectiveDateStart','Status']"
+                    [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                    <ng-template pTemplate="caption">
+                        <div class="flex flex wrap justify-content-end">
+                        <div class="table-header">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                            </span>
+                        </div>
+                        </div>
+                        
+                    </ng-template>
+            <ng-template pTemplate="header" >
+                <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Relation</th>
+                <th>Date Of Birth</th>
+                <th>PassportNo</th>
+                <th>Action</th>
+                <!-- <th 
+                [pSortableColumn]="column" *ngFor="let column of columnHeader">
+                    {{column}}
+                    <p-sortIcon [field]="column"></p-sortIcon> 
+                </th> -->
+                </tr>
+            </ng-template>
+                <ng-template pTemplate="body" let-passenger let-i="rowIndex">
+                    <tr>
+                    <td>{{ passenger.PassengerFirstName }}</td>
+                    <td>{{ passenger.PassengerLastName }}</td>
+                    <td>{{ passenger.RelationDesc }}</td>
+                    <td>{{ passenger.Dob}}</td>
+                    <td>{{ passenger.PassportNo }}</td>
+                    <!-- <td>
+                        <ng-container *ngIf="Bank?.Status=='N'">DeActive</ng-container>
+                        <ng-container *ngIf="Bank?.Status=='Y'">Active</ng-container>
+                        <ng-container *ngIf="Bank?.Status=='P'">Pending</ng-container>
+                    </td> -->
+                    <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" (click)="passengerEdit(passenger)"></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button pButton pRipple icon="pi pi-trash"  class="p-button-outlined" (click)="passengerDelete(i)"></button>
+                    </td>
+                    </tr>
+                    </ng-template>
+            </p-table>
+            
+            <!-- <button pButton pRipple   class="p-button-outlined" >Proceed</button> -->
+        </ng-container>
+        <ng-container *ngIf="!visible && !visibleUp && historyRecordsList.length==0">
+            <div class="text-center mt-2">
+                <b>No Passengers Available</b>
+            </div>
+        </ng-container>
+        <div class="flex flex-wrap justify-content-center mt-3">
+            <p-button label="Back" (click)="ongetBack()"></p-button>&nbsp;
+            <p-button label="Save & Proceed" (click)="ProceedToDoc('save')" *ngIf="passengerGrid && historyRecordsList.length!=0"></p-button>&nbsp;
+            <!-- <p-button  label="Close" styleClass="p-button-outlined" (click)="close('Update')" ></p-button>&nbsp; -->
+            <p-button label="Proceed" (click)="ProceedToDoc('proceed')" *ngIf="passengerGrid && historyRecordsList.length!=0"></p-button>
+        </div>
+</div>
+
+<!-- <ng-container *ngIf="BankData.length==0">
+    <div class="text-center">
+        No Data Available
+    </div>
+</ng-container> -->
+<!-- </div> -->

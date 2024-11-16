@@ -1,0 +1,212 @@
+<!--  -->
+
+<form action="" method="post">
+<div class="card customHeight grid">
+    <div class="col-1 md:col-1 lg:col-1 xl:col-1 p-0" ></div>
+    <div class="col-12 md:col-4 lg:col-4 xl:col-4 p-0" >
+        <div  class="rightSide mt-5" *ngIf="vehicleDetailsList.length!=0">
+            <div class="flex flex-wrap justify-content-between">
+                <div><h4>Premium Information</h4></div>
+                <div></div>
+            </div>
+        <ng-container *ngFor="let menu of vehicleDetailsList;let i = index">
+            <div class="card p-3 ">
+                <h2 class="optiontxt1">Option {{i+1}}</h2>
+                
+                <span class="greentxt">{{menu.SectionName}}</span><br>
+                <span class="redtxt">*Indicative Quote. It may change at the time of Full Quotation.</span>
+                <hr class="hr new4">
+                <ng-container *ngFor="let cover of menu.CoverList">
+                <ng-container *ngIf="((cover.isSelected=='D' &&  cover.CoverageType!='A') && !endorseCovers)">
+                <div class="flex flex-warp" [ngClass]="cover.isReferal=='Y' ? 'customBg' : 'planeBg'">
+                <div class="col-12 md:col-9 lg:col-9 xl:col-9 t-a-l">     
+                    <h5>{{cover.CoverName}}</h5>
+                    <ng-container *ngIf="cover.isReferal=='Y'"><span class="redtxt">* {{cover.ReferalDescription}}</span></ng-container>
+                </div>
+                <div class="col-12 md:col-3 lg:col-3 xl:col-3 t-a-r">
+                    <h4 class="optiontxt1">
+                        <ng-container *ngIf="cover.PremiumIncludedTax!=null && cover.PremiumIncludedTax!='' && cover.PremiumIncludedTax!=0">
+                            {{cover.PremiumIncludedTax | commaseparator}}
+                        </ng-container>
+                        <ng-container *ngIf="cover.PremiumIncludedTax==null || cover.PremiumIncludedTax=='' || cover.PremiumIncludedTax==0">
+                                0
+                        </ng-container>
+                    </h4>
+                </div>
+                </div>
+                </ng-container>
+                </ng-container>
+            </div>
+            <hr class="hr new4">
+        <div class="grid mt-2 justify-content-end" style="padding: 12px;">
+            <div class="custom-grid text-white  p-0 text-end" *ngIf="vehicleDetailsList[i].totalPremium!=null && vehicleDetailsList[i].totalPremium!=0 && vehicleDetailsList[i].totalPremium!='0'" >
+                <div class="col-12 md:col-4 lg:col-4 xl:col-4" style="width:100%;background-color: #000;border-radius: 5px;padding: 5px !important;">
+                <label>Total Premium</label>
+                <p class="text-white mt-0">{{vehicleDetailsList[i].totalPremium | commaseparator}}&nbsp;({{currencyCode}})</p>
+                </div>
+            </div>
+        </div>
+        </ng-container>
+        
+        <!-- <h3>After discount (MUR)</h3>
+        <h2 class="optiontxt1">RS.3,456</h2> -->
+        <p-button label="Buy" severity="warning" (click)="onBuyQuote()" class="mb-3"></p-button>
+        <!-- <button type="button" class="input bluebtn buybtn" (click)="onBuyQuote()">Buy</button> -->
+        </div>
+    </div>
+    <div class="col-1 md:col-1 lg:col-1 xl:col-1 p-0" ></div>
+    <div class="col-12 md:col-6 lg:col-6 xl:col-6">
+        <div class="flex flex-wrap justify-content-end" *ngIf="quoteRefNo">
+            <div>Reference No &nbsp;~&nbsp;</div>
+            <div>{{quoteRefNo}}</div>
+        </div>
+        <div class="card grid p-0" *ngIf="issuerSection">
+            <div class="lg:col-12 md:col-12 col-12">
+                <h3>{{'MOTORQUOTE.PolicyDetails' | translate}}</h3>
+                <div class="flex flex-wrap">
+                    <div class="lg:col-6 md:col-6 col-12">
+                        <label for="username">{{'MOTORQUOTE.SourceType' | translate}} *</label>
+                        <p-dropdown inputId="sourceType" class="w-full" styleClass="w-full"
+                            [options]="sourceTypeList" [(ngModel)]="Code" [ngModelOptions]="{standalone: true}" (onChange)="onSourceTypeChange('change')"
+                            [optionLabel]="getDisplayName()" optionValue="Code" [placeholder]="'MOTORQUOTE.SelectSourceType' | translate">
+                        </p-dropdown>
+                        <div class="input-form-error" *ngIf="sourceCodeError">
+                            <div class="error-text">
+                                {{'MOTORQUOTE.PleaseSelectSourceType' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-6 md:col-6 col-12"
+                        *ngIf="issuerSection && (sourceCodeDesc=='Premia Agent' || sourceCodeDesc=='Premia Broker' || sourceCodeDesc=='Premia Direct')">
+                        <label for="username">{{'MOTORQUOTE.SourceCode' | translate}} *</label>
+                        <!-- <p-autoComplete [(ngModel)]="customerCode" [suggestions]="customerList" field="CustomerName" (completeMethod)="onGetCustomerList('change',$event.query)"></p-autoComplete> 
+                        <p-autoComplete  class="w-full" styleClass="w-full" [suggestions]="customerList"  (onSelect)="onCommonDetailsChange();onChangeCustomer($event)"
+                            (completeMethod)="onGetCustomerList('change',$event.query)" [field]="CustomerCode+'-'+CustomerName">
+                                <ng-container *ngIf="customer">
+                                        <ng-template let-customer pTemplate="item">
+                                            <ng-container *ngIf="customer.CustomerName!=null">
+                                                {{customer.CustomerName}}&nbsp;-&nbsp;{{customer.CustomerCode}}
+                                            </ng-container>
+                                            <ng-container *ngIf="customer.CustomerName==null">
+                                                No Data Found
+                                            </ng-container>
+                                        </ng-template>
+                                </ng-container>
+                                
+                        </p-autoComplete>-->
+                        <input pInputText id="username" class="w-full" maxlength="50" (change)="onCommonDetailsChange();"
+                            [(ngModel)]="customerCode" [ngModelOptions]="{standalone: true}"
+                            type="text" (keyup)="onGetCustomerList('change',$event.target.value)" autocomplete="off"
+                            [placeholder]="'MOTORQUOTE.Search' | translate" data-toggle="dropdown" />
+                            <ul class="dropdown-menu dropdown-list-style CustomerInput" appendTo="body"
+                                [ngClass]="{dropdownDisplay: showCustomerList, dropdownNotDisplay: !showCustomerList}">
+                                <li *ngFor="let item of customerList"
+                                    (click)="setCustomerValue(item.Code, item.Name,'change')">
+                                    {{item.Code}} - {{ item.Name }}
+                                </li>
+                                <div class="text-center" *ngIf="customerList.length == 0">
+                                    <p>{{'MOTORQUOTE.EnteranycodetoSearch' | translate}} ...</p>
+                                </div>
+                            </ul> 
+                        <div class="input-form-error" *ngIf="customerCodeError">
+                            <div class="error-text text-danger">
+                                {{'MOTORQUOTE.PleaseEnterValidSourceCode' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-6 md:col-6 col-12"
+                        *ngIf="issuerSection && (sourceCodeDesc=='Premia Agent' || sourceCodeDesc=='Premia Broker' || sourceCodeDesc=='Premia Direct')">
+                        <label for="username">{{'MOTORQUOTE.SourceName' | translate}} *</label>
+                        <input pInputText id="username" class="w-full" [(ngModel)]="customerName" [ngModelOptions]="{standalone: true}" disabled type="text"
+                            placeholder="Source Name" />
+                    </div>
+                    <div class="lg:col-6 md:col-6 col-12"
+                        *ngIf="issuerSection && (sourceCodeDesc=='agent' || sourceCodeDesc=='Agent' || sourceCodeDesc=='broker' || sourceCodeDesc=='direct' || sourceCodeDesc=='Direct' || sourceCodeDesc=='bank' || sourceCodeDesc=='Bank' || sourceCodeDesc=='Broker' || sourceCodeDesc=='whatsapp' || sourceCodeDesc=='Whatsapp')">
+                        <label for="username">{{'MOTORQUOTE.SourceCode' | translate}} *</label>
+                        <ng-container *ngIf="sourceCodeDesc!='broker' && sourceCodeDesc!='Broker'">
+                            <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                                [options]="brokerList" [(ngModel)]="brokerCode" [ngModelOptions]="{standalone: true}" (onChange)="onBrokerChange()"
+                                optionLabel="Name"
+                                optionValue="Code" placeholder="Select Source Code">
+                            </p-dropdown>
+                            <!-- <ng-select class="input-form-select" appendTo="body" [(ngModel)]="brokerCode"  [disabled]="endorsementSection || finalizeYN=='Y'" [items]="brokerList" (change)="onBrokerChange()" bindValue="Code" bindLabel="Name">
+                        </ng-select> -->
+                        </ng-container>
+                        <ng-container *ngIf="sourceCodeDesc=='broker' || sourceCodeDesc=='Broker'">
+                            <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                                [options]="brokerList" [(ngModel)]="brokerCode" [ngModelOptions]="{standalone: true}" (onChange)="onBrokerChange()"
+                                optionLabel="Name"
+                                optionValue="Code" placeholder="Select Source Code">
+                            </p-dropdown>
+                            <!-- <ng-select class="input-form-select" appendTo="body" [(ngModel)]="brokerCode"  [disabled]="endorsementSection || finalizeYN=='Y'" (change)="onBrokerChange()">
+                            <ng-option *ngFor="let item of brokerList" [value]="item.Code">{{item.Name}}</ng-option>
+                        </ng-select> -->
+                        </ng-container>
+                        <div class="input-form-error" *ngIf="brokerCodeError">
+                            <div class="error-text text-danger">
+                                Please Select Source Code
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-6 md:col-6 col-12"
+                        *ngIf="issuerSection && brokerCode && (sourceCodeDesc=='agent' || sourceCodeDesc=='Agent' || sourceCodeDesc=='broker' || sourceCodeDesc=='direct' || sourceCodeDesc=='Direct' || sourceCodeDesc=='bank' || sourceCodeDesc=='Bank' || sourceCodeDesc=='Broker' || sourceCodeDesc=='whatsapp' || sourceCodeDesc=='Whatsapp')">
+                        <label for="username">Broker Branch *</label>
+                        <p-dropdown inputId="sourceCode" class="w-full" styleClass="w-full"
+                            [options]="brokerBranchList" [(ngModel)]="brokerBranchCode" [ngModelOptions]="{standalone: true}"
+                            (onChange)="onBrokerBranchChange()" 
+                            optionLabel="CodeDesc" optionValue="Code" placeholder="Select Broker Branch">
+                        </p-dropdown>
+                        <div class="input-form-error" *ngIf="brokerBranchCodeError">
+                            <div class="error-text text-danger">
+                                Please Select BrokerBranchCode
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card ">
+        <h4>Customer Information</h4>
+            <div class="grid">
+                <div class="col-12 lg:col-12 md:col-12 xl:col-12">
+                    <form [formGroup]="form">
+                        <formly-form [form]="form" [fields]="fields2" [model]="productItem"></formly-form>
+                    </form>
+                </div>
+            </div>
+            <!-- <div class="flex flex-wrap"> 
+                <div class="lg:col-12 md:col-12 col-12">
+                    <label for="username">Customer Name</label><span class="text-danger">*</span>{{clientName}}
+                    <input pInputText [(ngModel)]="clientName" class="w-full" styleClass="w-full" maxlength="25" placeholder="Enter Customer Name"/>
+                </div>
+                <div class="lg:col-4 md:col-4 col-4">
+                    <label for="username">Mobile Code</label><span class="text-danger">*</span>
+                    <p-dropdown inputId="make" class="w-full" styleClass="w-full" [options]="mobileCodeList"  (onChange)="onCodeChange()" [(ngModel)]="countryCode"
+                        optionLabel="CodeDesc" optionValue="Code" placeholder="Select">
+                    </p-dropdown>
+                </div>
+                <div class="lg:col-8 md:col-8 col-8">
+                    <label for="mobileNumber">Mobile No</label><span class="text-danger">*</span>
+                    <input pInputText class="w-full" id="mobileNumber" maxlength="50" [(ngModel)]="mobileNo"  placeholder="Enter Mobile No" />
+                </div>
+            </div> -->
+        </div>
+        <div class="card ">
+            <h4>{{ 'MOTORQUOTE.VehicleInformation' | translate}}</h4>
+            <div class="grid">
+                <div class="col-12 lg:col-12 md:col-12 xl:col-12">
+                    <form [formGroup]="form">
+                        <formly-form [form]="form" [fields]="fields" [model]="productItem"></formly-form>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+        <div class="flex flex-wrap mt-5 justify-content-center">
+            <p-button label="Back" styleClass="p-button-outlined" class="mr-3" [routerLink]="['/quotation']"></p-button>&nbsp;
+            <p-button label="Submit" severity="warning" (click)="onSaveVehicleData()"
+                class="mb-3"></p-button>
+        </div>
+    </div>
+</div>
+</form>

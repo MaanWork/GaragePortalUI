@@ -1,0 +1,112 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+        <h3 class="mr-3">Country Master</h3>
+      </div>
+      <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+        <label for="username">Select Master*</label>
+        <p-dropdown inputId="title" 
+            class="w-full" 
+            styleClass="w-full" 
+            (onChange)="getMenu(activeMenu)"
+            [options]="MenuMasterList" 
+            [(ngModel)]="activeMenu" 
+            optionLabel="title" 
+            optionValue="title" >
+        </p-dropdown>
+    </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3">Country Master</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap"  *ngIf="InsuranceId">
+            <p-button icon="pi pi-plus" label="Add New Country" severity="warning" size="small" (click)="onAddNew()"></p-button>
+          </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="flex flex-wrap md:col-4 lg:col-4">
+            <label >Insurance Company Based Country?*</label><br>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" (onChange)="onChangeYN()" [(ngModel)]="companyYn" value="Y" inputId="orginwarehouse1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Yes</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" (onChange)="onChangeYN()" [(ngModel)]="companyYn" value="N" inputId="orginwarehouse2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">No</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3" *ngIf="companyYn=='Y'">
+            <label for="username">Insurance Company*</label>
+            <p-dropdown inputId="InsuranceId" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getExistingCountry()"
+                [options]="insuranceList" 
+                [(ngModel)]="InsuranceId" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="Select Insurance Company">
+            </p-dropdown>
+        </div>
+    </div>
+        <!-- <app-grid-table [cols]="countryHeader" onChangeStatus="true" (OnStatus)="EditStatus($event)" [data]="countryData" [filterValue]="filterValue" (onEdit)="onEdit($event)" (onConfigure)="onConfigure($event)">
+        </app-grid-table> *ngIf="countryData.length!=0"-->
+        <ng-container  class="mt-5"  *ngIf="countryData.length!=0">
+            <p-table [value]="countryData" #dtEmployee
+                     [globalFilterFields]="['CountryName','CountryShortCode',
+                                            'EffectiveDateStart','Status']"
+                     [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                     <ng-template pTemplate="caption">
+                        <div class="flex flex wrap justify-content-end">
+                          <div class="table-header">
+                              <span class="p-input-icon-left">
+                                  <i class="pi pi-search"></i>
+                                  <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')"
+                                  placeholder="Global Search" />
+                                  <!-- (input)="dtEmployeeActive.filterGlobal($event.target.value, 'contains')" -->
+                              </span>
+                          </div>
+                        </div>
+                        
+                      </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  
+                  <th [pSortableColumn]="column" *ngFor="let column of countryHeader">
+                    {{column}}
+                    <p-sortIcon [field]="column"></p-sortIcon> 
+                  </th>
+                </tr>
+              </ng-template>
+                  <ng-template pTemplate="body" let-Country>
+                    <tr>
+                      <td>{{ Country.CountryName }}</td>
+                      <td>{{ Country.CountryShortCode }}</td>
+                      <td>{{ Country.CodeDescLocal }}</td>
+                      <td>{{ Country.EffectiveDateStart }}</td>
+                      <td>
+                        <ng-container *ngIf="Country?.Status=='N'">DeActive</ng-container>
+                        <ng-container *ngIf="Country?.Status=='Y'">Active</ng-container>
+                        <ng-container *ngIf="Country?.Status=='P'">Pending</ng-container>
+                    </td>
+                    <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined"  (click)="onEdit(Country)"></button></td>
+                      <!-- <td>{{ customer.PolicyStartDate }}</td>
+                      <td>{{ customer.PolicyEndDate }}</td>
+                      <td>{{ customer.OverallPremiumLc }}</td> -->
+                      </tr>
+                      </ng-template>
+            </p-table>
+        </ng-container>
+    <ng-container *ngIf="countryData.length==0">
+        <div class="text-center">
+            No Country Available
+        </div>
+    </ng-container>
+</div>
+
+
+
+
+

@@ -1,0 +1,114 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-12 md:col-12">
+          <h3 class="mr-3">Portfolio</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="ol-12 md:col-3 lg:col-3">
+            <label for="username">Start Dat</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="StartDate"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+        <div class="ol-12 md:col-3 lg:col-3">
+            <label for="username">End Date</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="EndDate"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Branch*</label>
+            <p-dropdown inputId="branchList" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getBussinessType('change')"
+                [options]="branchList" 
+                [(ngModel)]="branchValue" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Business Type*</label>
+            <p-dropdown inputId="TemplateList" 
+                class="w-full" 
+                styleClass="w-full"
+                [options]="TemplateList" 
+                [(ngModel)]="bussinesstype" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+    </div>  
+    <div class="grid justify-content-center mt-5" *ngIf="!show">
+        <p-button label="Submit" size="small" icon="pi pi-search" (click)="getsearchlist(bussinesstype)" ></p-button>
+    </div>
+<div class="grid mt-3">
+    <!-- <div class="col-12 lg:col-2 xl:col-2 md:col-2"></div> -->
+    <ng-container *ngFor="let s of tableData">
+    <div class="col-12 lg:col-6 xl:col-6 md:col-6 ">
+        
+            <h4>{{s.ProductName}}</h4>
+        <p-table [value]="s.BrokerList" #dtEmployee [globalFilterFields]="['Broker','Channel',
+        'Count','Premium']" styleClass="w-full" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="caption">
+        <div class="flex flex wrap justify-content-end">
+          <div class="table-header">
+              <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder=" Search" />
+              </span>
+          </div>
+        </div>
+        
+      </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Broker</th>
+                    <th>Channel</th>
+                    <th>Count</th>
+                    <th>Premium({{Currency}})</th>
+                    <!-- <th>AfterDiscount</th>
+                    <th>Excess</th> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-CoverInfo >
+                <tr >
+                    <td>{{ CoverInfo.BrokerName }}</td>
+                    <td >{{ CoverInfo.SourceType }}</td>
+                    <td (click)="onTotal(CoverInfo,s.ProductName,s.ProductId)"><p-button label="{{ CoverInfo.TotalCount}}"/></td>
+                    <td>{{ CoverInfo.TotalPremiumLc}}</td>
+                    <!-- <td *ngIf="CoverInfo.SumInsured==0">0</td>
+                    <td>{{ CoverInfo.PremiumIncludedTax|commaseparator }}</td>
+                    <td *ngIf="CoverInfo.PremiumBeforeDiscount!=0">{{ CoverInfo.PremiumBeforeDiscount|commaseparator }}</td>
+                    <td *ngIf="CoverInfo.PremiumBeforeDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                    <td *ngIf="CoverInfo.PremiumAfterDiscount!=0">{{ CoverInfo.PremiumAfterDiscount|commaseparator }}</td>
+                    <td *ngIf="CoverInfo.PremiumAfterDiscount==0">{{ CoverInfo.VehicleType }}</td>
+                   <td>{{CoverInfo.ExcessAmount}}</td> -->
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <ng-container *ngIf="s.BrokerList.length==0">
+            No Data Available
+        </ng-container>
+    
+    </div>
+</ng-container>
+    <!-- <div class="col-12 lg:col-1 xl:col-1 md:col-1"></div> -->
+</div>
+   
+
+</div>

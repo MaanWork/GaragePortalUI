@@ -1,0 +1,39 @@
+<div class="layout-topbar customColor" [ngClass]="insuranceid!='100028' ? 'customColor':'customColor2'">
+    <a style="height: 34px !important;padding: 10px;" (click)="onRedirect()">
+        <img src="./assets/images/logo.PNG" width="170" height="45" style="cursor: pointer !important;"  />
+    </a>
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+        <i class="pi pi-ellipsis-v"></i>
+    </button>
+    
+    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        
+      
+        <p-button  [label]="userType" shape="circle" severity="danger" />
+         &nbsp;&nbsp;
+        <!-- <p-splitButton [label]="typeValue" [model]="typeList"  styleClass="mr-4 my-auto"></p-splitButton> -->
+        <!-- <p-splitButton [label]="branchName" [model]="branchList" (onClick)="finaliseBranchValue(null,null)" styleClass="mr-4 my-auto"></p-splitButton> -->
+        <div class="flex justify-content-center align-items-center username-section">
+            <p-overlayPanel #op>
+                <p-button *ngFor="let userOption of userOptions" [icon]="userOption.icon" [label]="userOption.label" styleClass="p-button-text" (click)="userOption.command()" [style]="{'width':'15rem'}"></p-button>
+            </p-overlayPanel>
+            <p-avatar image="assets/demo/images/login/userIcon.png" styleClass="mr-2" size="medium" shape="circle"></p-avatar>
+            <p-button (click)="op.toggle($event)" [label]="loginId"></p-button> 
+        </div>
+        <!-- <p-chip [label]="userType" /> -->
+
+         
+        <!--mat-icon-button [matMenuTriggerFor]="menu"
+          <mat-menu #menu="matMenu">
+            <ng-container *ngFor="let obj of langList">
+                <button mat-menu-item (click)="setLanguage(obj.Code)">
+                    <span>{{getLangCodeDesc(obj)}}</span>
+                </button>
+            </ng-container>
+        </mat-menu> -->
+    </div>
+</div>

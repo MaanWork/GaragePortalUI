@@ -1,0 +1,149 @@
+<div class="card">
+  <div class="grid">
+    <div class="col-12 sm:col-6 md:col-4">
+      <h3 class="mr-3">{{'PolicyGrid.Portfolio' | translate}}</h3>
+      <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+    </div>
+    <div class="col-12 sm:col-6 md:col-8">
+      <!-- <div class="flex justify-content-start sm:justify-content-end  flex-wrap"> -->
+        <!-- <span class="p-input-icon-right mr-3 mb-3">
+          <i class="pi pi-search"></i>
+          <p-dropdown [options]="branches" [(ngModel)]="selectedBranch" optionLabel="label" placeholder="Select a Branch"></p-dropdown>
+        </span> -->
+        <!-- <p-selectButton [options]="quoteOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+      </div> -->
+    </div>
+  </div>
+  
+  <p-divider></p-divider>
+      <div class="flex justify-content-end mb-4">
+        <p-button icon="pi pi-table" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
+        <p-button icon="pi pi-list" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
+      </div>
+  <div class="grid">
+  <div class="col-12 lg:col-3 xl:col-3 md:col-3">
+      <span ><b style="font-size:15px !important;font-feature-settings: 'liga' 0;">Product Name</b></span>:<b><span style="font-family: 'TimesNewRoman';font-size:14px !important;font-feature-settings: 'liga' 0;font-weight: bold;color:var(--primary-color)">{{ProductName}}</span></b>
+   </div>
+   <div class="col-12 lg:col-3 xl:col-3 md:col-3">
+      <span ><b style="font-size:15px !important;font-feature-settings: 'liga' 0;">Broker Name</b></span>:<b><span style="font-family: 'TimesNewRoman';font-size:14px !important;font-feature-settings: 'liga' 0;font-weight: bold;color:var(--primary-color)">{{BrokerName}}</span></b>
+   </div>
+   <div class="col-12 lg:col-3 xl:col-3 md:col-3">
+      <span ><b style="font-size:15px !important;font-feature-settings: 'liga' 0;">Start Date</b></span>:<b><span style="font-family: 'TimesNewRoman';font-size:14px !important;font-feature-settings: 'liga' 0;font-weight: bold;color:var(--primary-color)">{{startDate}}</span></b>
+   </div>
+   <div class="col-12 lg:col-3 xl:col-3 md:col-3">
+      <span ><b style="font-size:15px !important;font-feature-settings: 'liga' 0;">End Name</b></span>:<b><span style="font-family: 'TimesNewRoman';font-size:14px !important;font-feature-settings: 'liga' 0;font-weight: bold;color:var(--primary-color)">{{enddate}}</span></b>
+   </div>
+  </div>
+  <ng-container *ngIf="quoteData.length!=0">
+    <p-table #dtEmployeeActive *ngIf="tableView == 'table' else cardTableView" [value]="quoteData" dataKey="PolicyNo" 
+    [globalFilterFields]="['PolicyNo','QuoteNo','ClientName','PolicyStartDate','PolicyEndDate','OverallPremiumLc']" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+    <ng-template pTemplate="caption">
+      <div class="flex flex wrap justify-content-end">
+        <div class="table-header">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dtEmployeeActive.filterGlobal($event.target.value, 'contains')"  [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+            </span>
+        </div>
+      </div>
+      
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+          <th [pSortableColumn]="column" *ngFor="let column of columns">{{'PolicyGrid.'+column | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+          
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer >
+    <tr>
+      <td>{{ customer.PolicyNo }}</td>
+      <td>{{ customer.QuoteNo }}</td>
+      <td>{{ customer.CustomerName }}</td>
+      <td>{{ customer.CurrencyCode }}</td>
+      <td>{{ customer.PolicyStartDate }}</td>
+      <td>{{ customer.PolicyEndDate }}</td>
+      <td>{{ customer.OverallPremiumLc }}</td>
+          <td>
+            <span class="p-buttonset">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <i class="fas fa-cog"></i>
+              </button>
+              <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="onGetSchedule(customer)">
+                      <span>{{'PolicyGrid.Schedule' | translate}}</span>
+                  </button>
+                  <button mat-menu-item (click)="onDebitdownload(customer)">
+                      <span>{{'PolicyGrid.DebitNote' | translate}}</span>
+                  </button>
+                  <button mat-menu-item (click)="onCreditdownload(customer)">
+                      <span>{{'PolicyGrid.CreditNote' | translate}}</span>
+                  </button>
+                  <button mat-menu-item (click)="onViews(customer)">
+                      <span>{{'PolicyGrid.ViewQuoteDetails' | translate}}</span>
+                  </button>
+              </mat-menu>
+            </span>
+          </td>
+          </tr>
+      </ng-template>
+  </p-table>
+
+  <ng-template #cardTableView>
+    <div class="grid ml-3">
+      <div class="card col-12 lg:col-4 md:col-4" *ngFor="let quote of quoteData">
+        <div class="col-12 lg:col-12 md:col-12">
+          <h5>{{quote.ClientName}}</h5>
+        </div>
+        <div class="col-12 lg:col-12 md:col-12">
+             <ng-container *ngIf="quote.PolicyNo">
+                <b>PolicyNo No</b>
+                <p>{{quote.PolicyNo}}</p>
+              </ng-container>
+        </div>
+        <div class="grid">
+        <div class="col-12 lg:col-4 md:col-4">
+            <b>Reference No</b>
+            <p> {{ quote.RequestReferenceNo }}</p>
+        </div>
+        <div class="col-12 lg:col-4 md:col-4">
+          <ng-container *ngIf="quote.QuoteNo">
+            <b>Quote No</b>
+            <p>{{quote.QuoteNo}}</p>
+          </ng-container>
+      </div>
+      <div class="col-12 lg:col-4 md:col-4">
+        <b>Start Date</b>
+            <p>{{quote.PolicyStartDate}}</p>
+    </div>
+    <div class="col-12 lg:col-4 md:col-4">
+      <b>End Date</b>
+            <p>{{quote.PolicyEndDate}}</p>
+  </div>
+  <div class="col-12 lg:col-4 md:col-4">
+    <b>Premium Amount</b>
+    {{quote.OverallPremiumLc}}&nbsp;({{quote.currencyCode}})
+    </div></div>
+    <div class="grid justify-content-end">
+    <div class="col-12 lg:col-6 md:col-6 ">
+    <span class="p-buttonset">
+             
+      <button pButton pRipple icon="pi pi-file-pdf" (click)="onGetSchedule(quote)" title="Schedule" class="p-button-outlined"></button>
+        <button pButton pRipple icon="pi pi-file-pdf" (click)="onDebitdownload(quote)" title="Debit Note" class="p-button-outlined"></button>
+        <button pButton pRipple icon="pi pi-file-pdf" title="Credit Note" (click)="onCreditdownload(quote)" class="p-button-outlined"></button>
+        <button pButton pRipple icon="pi pi-eye" title="View Quote Details" (click)="onViews(quote)" class="p-button-outlined"></button>
+    </span></div></div>
+       
+      </div>
+    </div>
+  </ng-template>
+<ng-container *ngIf="quoteData.length==0">
+  <div class="flex flex-wrap justify-content-center mt-2">
+        No Quote Available
+  </div>
+</ng-container>
+  
+</ng-container>
+</div>
+  <div style="text-align: center;">
+      <p-button  (click)="ongetBack()" label="Back"></p-button>
+  </div>

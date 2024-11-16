@@ -1,0 +1,231 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-9 md:col-9">
+          <h3 class="mr-3">Color Master</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div>   [(ngModel)]="exchangeDetails.CurrencyId" [items]="currencyList" -->
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div class="grid mt-2">
+        <!-- <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">Currency Name*</label>
+            <p-dropdown inputId="currencyList" 
+                class="w-full" 
+                styleClass="w-full" 
+                [options]="currencyList" 
+                [(ngModel)]="exchangeDetails.CurrencyId" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="">
+            </p-dropdown>
+        </div> -->
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Color Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="ColorDetails.ColorCode"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Color Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="ColorDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Regulatory Code*</label><br>
+            <input pInputText type="text" [(ngModel)]="ColorDetails.RegulatoryCode"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Regulatory Code"/>
+        </div>
+       
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Color Description*</label><br>
+            <input pInputText 
+            [(ngModel)]="ColorDetails.ColorDesc"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="ColorDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="ColorDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="ColorDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="ColorDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="P" [(ngModel)]="ColorDetails.Status" inputId="ingredient1"></p-radioButton>
+                <span for="ingredient1" class="ml-1">Pending</span>
+            </div>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="ColorDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="dismiss()"></p-button>&nbsp;
+        <p-button label="Save" size="small" (click)="onSaveColor()" ></p-button>
+    </div>
+</div>
+
+
+
+<!-- <div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <div>
+                Color Master
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Color Name<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" 
+                        class="input-form-control without-icon"
+                         [(ngModel)]="ColorDetails.ColorCode" maxlength="100">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Regulatory Code</label>
+                    <div class="input-form-box">
+                        <input type="text"
+                        
+class="input-form-control without-icon" maxlength="20" 
+[(ngModel)]="ColorDetails.RegulatoryCode">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Color Description<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text"
+                         class="input-form-control without-icon"
+                          maxlength="20" [(ngModel)]="ColorDetails.ColorDesc">
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core App Code<span class="text-required" >*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" [(ngModel)]="sectionDetails.CoreAppCode" maxlength="20">
+                    </div>
+                </div>
+            </div> -->
+           
+        <!-- </div>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-4">
+                <label class="input-form-label">Effective Date<span class="text-danger">*</span></label>
+                <mat-form-field appearance="fill">
+                    <input matInput [matDatepicker]="picker" [min]="minDate" (dateChange)="onDateFormatInEdit" [(ngModel)]="ColorDetails.EffectiveDateStart">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field> -->
+                <!-- <div class="input-control-container">
+                    <label class="input-form-label">Effective Date Start<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="productDetails.EffectiveDateStart">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <mat-form-field appearance="fill">
+                        <mat-label>End Date</mat-label>
+                        <input matInput [matDatepicker]="picker1" [min]="sectionDetails.EffectiveDateStart" [(ngModel)]="sectionDetails.EffectiveDateEnd">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Remarks</label>
+                    <div class="input-form-box">
+                        <textarea cols="60" ros="3" class="input-form-select" [(ngModel)]="ColorDetails.Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Status<span class="text-required">*</span></label>
+                    <div class="input-form-radio-box">
+                        <div class="radio-toolbar">
+                            <input id="orginwarehouse_Pending" type="radio" name="originatingWarehouse" [(ngModel)]="ColorDetails.Status" value="P">
+                            <label for="orginwarehouse_Pending">Pending</label>
+                            <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="ColorDetails.Status" value="Y">
+                            <label for="orginwarehouse_Yes">Active</label>
+                            <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="ColorDetails.Status" value="N">
+                            <label for="orginwarehouse_No">DeActive</label>
+                            <input type="radio" id="orginwarehouse_Referral" name="originatingWarehouse" [(ngModel)]="ColorDetails.Status"  value="R">
+                                <label for="orginwarehouse_Referral">Referral</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+    <div>
+        <div class="d-flex justify-content-center">
+            <div>
+
+            </div>
+            <div>
+                <button class="btn btn-danger" (click)="dismiss()">Cancel</button>&nbsp;
+                <button class="btn btn-success ml-2" (click)="onSaveColor()">Save</button>
+            </div>
+        </div>
+    </div>
+  </div> -->

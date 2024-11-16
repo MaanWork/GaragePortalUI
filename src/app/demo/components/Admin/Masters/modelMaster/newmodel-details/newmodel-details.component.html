@@ -1,0 +1,745 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-9 md:col-9">
+          <h3 class="mr-3">Model Details</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div>   [(ngModel)]="exchangeDetails.CurrencyId" [items]="currencyList" -->
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+    </div>
+    
+    <div class="grid mt-2">
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">Make Name*</label>
+            <p-dropdown inputId="branchList" 
+                class="w-full" 
+                styleClass="w-full" 
+                [options]="ModelList" 
+                [(ngModel)]="MakeId" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="">
+            </p-dropdown>
+        </div> 
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="ModelDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">Regulatory Code*</label><br>
+            <input pInputText type="text" [(ngModel)]="ModelDetails.RegulatoryCode"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Bank Full Name"/>
+        </div>
+       
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Batch Id*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.BatchId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Batch Id"/>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">BranchCode*</label>
+            <p-dropdown inputId="branchList" 
+                class="w-full" 
+                styleClass="w-full" 
+                [options]="branchList" 
+                [(ngModel)]="branchValue" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="">
+            </p-dropdown>
+        </div> 
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Body Name En*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.BodyNameEn"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Body Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core Make Id*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.CoreMakeId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core Make Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core Model Id*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.CoreModelId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core Model Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Model Name*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.ModelNameEn"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Model Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Net Rate*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.NetRate"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Net Rate "/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Body Id*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.BodyId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Body Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Body Id1*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherBodyId1"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Body Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Body Id2*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherBodyId2"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Body Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Make Id1*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherMakeId1"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Make Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Make Id2*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherMakeId2"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Make Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Model Id1*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherModelId1"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Model Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Other Model Id2*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.OtherModelId2"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Model Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Prima Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.PrimaCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Prima Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core BodyId*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.CoreBodyId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core BodyId"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core Ref No*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.CoreRefNo"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core Ref No"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Ref No*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.RefNo"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Ref No"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Core App Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.CoreAppCode"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Rop Body Id*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.RopBodyId"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Rop Body Id"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Tpl Rate*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.TplRate"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Tpl Rate"/>
+        </div>
+
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Uploaded By*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.UploadedBy"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">VehCc*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehCc"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Class*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehClass"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Class En*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehClassEn"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">Veh Fuel type*</label>
+            <p-dropdown inputId="FuelList" 
+                class="w-full" 
+                styleClass="w-full" 
+                [options]="FuelList" 
+                [(ngModel)]="ModelDetails.VehFueltype" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="">
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Manf Country*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehManfCountry"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Manf CountryEn*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehManfCountryEn"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Manf Region*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehManfRegion"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Veh Manf Region En*</label><br>
+            <input pInputText 
+            [(ngModel)]="ModelDetails.VehManfRegionEn"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder=""/>
+        </div>
+
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full"
+             (onDateChange)="onDateFormatInEdit" 
+            [(ngModel)]="ModelDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="ModelDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Base Rate*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="ModelDetails.BaseRate"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter BaseRate"></textarea>
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="ModelDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="ModelDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="R" [(ngModel)]="ModelDetails.Status" inputId="ingredient4"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Referral</span>
+            </div>
+        </div>
+       
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="dismiss()"></p-button>&nbsp;
+        <p-button label="Save" size="small" (click)="onSaveModel()" ></p-button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <div>
+                Model Details
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Make Name <span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" 
+                    appendTo="body" disabled [items]="ModelList"
+                     [(ngModel)]="MakeId" bindValue="Code" bindLabel="CodeDesc">
+                    </ng-select> -->
+                    <!--<div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.MakeNameEn">
+                    </div>-->
+                <!-- </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Regulatory Code<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text"
+                         class="input-form-control without-icon" 
+                         maxlength="20" [(ngModel)]="ModelDetails.RegulatoryCode">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Batch Id<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" 
+                        class="input-form-control without-icon"
+                         [(ngModel)]="ModelDetails.BatchId" maxlength="100">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Branch Code<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" 
+                    disabled appendTo="body" [items]="branchList"
+                     bindValue="Code" [(ngModel)]="branchValue" 
+                     bindLabel="CodeDesc">
+                    </ng-select> -->
+                    <!--<div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="branchValue">
+                    </div>-->
+                <!-- </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Body Name En<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" 
+                        maxlength="20" [(ngModel)]="ModelDetails.BodyNameEn">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core Make Id<span class="text-required" >*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" 
+                        [(ngModel)]="ModelDetails.CoreMakeId" maxlength="100">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core Model Id<span class="text-required" >*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" [(ngModel)]="ModelDetails.CoreModelId" maxlength="100">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Model Name<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.ModelNameEn">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Body Id<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.BodyId">
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Net Rate<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.NetRate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Body Id1<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.OtherBodyId1">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Body Id2<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.OtherBodyId2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Make Id1<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.OtherMakeId1">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Make Id2<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.OtherMakeId2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Model Id1<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.OtherModelId1">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Other Model Id2<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.OtherModelId2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Prima Code<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.PrimaCode">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core BodyId<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.CoreBodyId">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core Ref No<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text"
+                         class="input-form-control without-icon"
+                          maxlength="20" [(ngModel)]="ModelDetails.CoreRefNo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Ref No<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" 
+                        class="input-form-control without-icon" 
+                        maxlength="20" [(ngModel)]="ModelDetails.RefNo">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Core App Code<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" 
+                        class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.CoreAppCode">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Rop Body Id<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text"
+                         class="input-form-control without-icon"
+                          maxlength="20" [(ngModel)]="ModelDetails.RopBodyId">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Tpl Rate<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" 
+                        [(ngModel)]="ModelDetails.TplRate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Uploaded By<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.UploadedBy">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">VehCc<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehCc">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Class<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehClass">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Class En<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehClassEn">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Fuel type<span class="text-required">*</span></label>
+                    <ng-select class="input-form-select" appendTo="body"
+                     [items]="FuelList" [(ngModel)]="ModelDetails.VehFueltype"
+                      bindValue="Code" bindLabel="CodeDesc">
+                    </ng-select> -->
+                    <!-- <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" maxlength="20" [(ngModel)]="ModelDetails.VehFueltype">
+                    </div> -->
+                <!-- </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Manf Country<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehManfCountry">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Manf CountryEn<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon" 
+                        maxlength="20" [(ngModel)]="ModelDetails.VehManfCountryEn">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Manf Region<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehManfRegion">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Veh Manf Region En<span class="text-required">*</span></label>
+                    <div class="input-form-box">
+                        <input type="text" class="input-form-control without-icon"
+                         maxlength="20" [(ngModel)]="ModelDetails.VehManfRegionEn">
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Core App Code<span class="text-required" >*</span></label>
+                  <div class="input-form-box">
+                      <input type="text" class="input-form-control without-icon" [(ngModel)]="sectionDetails.CoreAppCode" maxlength="20">
+                  </div>
+              </div>
+          </div> -->
+            <!--<div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Status<span class="text-required">*</span></label>
+                  <div class="input-form-radio-box">
+                      <div class="radio-toolbar">
+                          <input id="orginwarehouse_Pending" type="radio" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="P">
+                          <label for="orginwarehouse_Pending">Pending</label>
+                          <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="Y">
+                          <label for="orginwarehouse_Yes">Active</label>
+                          <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="sectionDetails.Status" value="N">
+                          <label for="orginwarehouse_No">DeActive</label>
+                      </div>
+                  </div>
+              </div>
+          </div>-->
+        <!-- </div>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-4">
+                <label class="input-form-label">Effective Date<span class="text-required">*</span></label>
+                <mat-form-field appearance="fill">
+                    <input matInput [matDatepicker]="picker" [min]="minDate" 
+                    (dateChange)="onDateFormatInEdit" [(ngModel)]="ModelDetails.EffectiveDateStart">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field> -->
+                <!-- <div class="input-control-container">
+                  <label class="input-form-label">Effective Date Start<span class="text-required">*</span></label>
+                  <div class="input-form-box">
+                      <input matInput [matDatepicker]="picker" [(ngModel)]="productDetails.EffectiveDateStart">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                  </div>
+              </div> -->
+            <!-- </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <mat-form-field appearance="fill">
+                      <mat-label>End Date</mat-label>
+                      <input matInput [matDatepicker]="picker1" [min]="sectionDetails.EffectiveDateStart" [(ngModel)]="sectionDetails.EffectiveDateEnd">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+              </div>
+          </div> -->
+            <!-- <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Remarks<span class="text-required" >*</span></label>
+                    <div class="input-form-box">
+                        <textarea cols="60" ros="3" class="input-form-select" [(ngModel)]="ModelDetails.Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="input-control-container">
+                    <label class="input-form-label">Base Rate<span class="text-required" >*</span></label>
+                    <div class="input-form-box">
+                        <textarea cols="60" ros="3" class="input-form-select"
+                         [(ngModel)]="ModelDetails.BaseRate"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg-4">
+              <div class="input-control-container">
+                  <label class="input-form-label">Status<span class="text-required">*</span></label>
+                  <div class="input-form-radio-box">
+                      <div class="radio-toolbar">
+                          <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="ModelDetails.Status" value="Y">
+                          <label for="orginwarehouse_Yes">Active</label>
+                          <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="ModelDetails.Status" value="N">
+                          <label for="orginwarehouse_No">DeActive</label>
+                          <input id="orginwarehouse_Pending" type="radio" name="originatingWarehouse" [(ngModel)]="ModelDetails.Status" value="R">
+                          <label for="orginwarehouse_Pending">Referral</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+    <div>
+        <div class="text-center">
+            <button class="btn btn-danger" (click)="dismiss()">Cancel</button>&nbsp;
+                <button  class="ml-2 btn btn-success" (click)="onSaveModel()">Save</button>
+        </div>
+    </div>
+</div> -->

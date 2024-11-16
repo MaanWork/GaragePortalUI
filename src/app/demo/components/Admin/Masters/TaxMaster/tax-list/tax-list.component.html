@@ -1,0 +1,167 @@
+<div class="card">
+    <div class="grid">
+      <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+        <h3 class="mr-3">Existing Tax </h3>
+      </div>
+      <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+        <label for="username">Select Master*</label>
+        <p-dropdown inputId="title" 
+            class="w-full" 
+            styleClass="w-full" 
+            (onChange)="getMenu(activeMenu)"
+            [options]="MenuMasterList" 
+            [(ngModel)]="activeMenu" 
+            optionLabel="title" 
+            optionValue="title" >
+        </p-dropdown>
+    </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3"> Existing Tax</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap" *ngIf="TypeValue!=null">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddDropdowns()" ></p-button>
+          </div>
+        </div>
+      </div>
+                <div class="grid">
+                    <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                        <label for="username">Insurance Company*</label>
+                        <p-dropdown inputId="insurance" 
+                            class="w-full" 
+                            styleClass="w-full" 
+                            (onChange)="getList('change')"
+                            [options]="insuranceList" 
+                            [(ngModel)]="insuranceId" 
+                            optionLabel="CodeDesc" 
+                            optionValue="Code" 
+                            placeholder="Select Insurance Company">
+                        </p-dropdown>
+                    </div>
+    
+                    <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                        <label for="username">Country*</label>
+                        <p-dropdown inputId="branchList" 
+                            class="w-full" 
+                            styleClass="w-full" 
+                            (onChange)="getExistingDropdown()"
+                            [options]="TypeList" 
+                            [(ngModel)]="TypeValue" 
+                            optionLabel="CodeDesc" 
+                            optionValue="Code" >
+                        </p-dropdown>
+                    </div>
+                    <!-- <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                      <label for="username">Insurance Type*</label>
+                      <p-dropdown inputId="SectionId" 
+                          class="w-full" 
+                          styleClass="w-full" 
+                          (onChange)="getExistingBodyType()"
+                          [options]="insuranceTypeList" 
+                          [(ngModel)]="SectionId" 
+                          optionLabel="CodeDesc" 
+                          optionValue="Code" >
+                      </p-dropdown>
+                  </div> -->
+                </div>
+                <ng-container *ngIf="TaxData" class="mt-5">
+                    <p-table [value]="TaxData" 
+                             [globalFilterFields]="['CountryId','TaxName','TaxDesc',
+                                                    'EffectiveDateStart','Status']"
+                             [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                             <ng-template pTemplate="caption">
+                                <div class="flex flex wrap justify-content-end">
+                                  <div class="table-header">
+                                      <span class="p-input-icon-left">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText type="text"  placeholder="Global Search" />
+                                      </span>
+                                  </div>
+                                </div>
+                                
+                              </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          
+                          <th [pSortableColumn]="column" *ngFor="let column of dropdownHeader">
+                            {{column}}
+                            <p-sortIcon [field]="column"></p-sortIcon> 
+                          </th>
+                        </tr>
+                      </ng-template>
+                          <ng-template pTemplate="body" let-Tax>
+                            <tr>
+                              <td>{{ Tax.CountryId }}</td>
+                              <td>{{ Tax.TaxName }}</td>
+                              <td>{{ Tax.TaxDesc }}</td>
+                              <td>{{ Tax.CodeDescLocal }}</td>
+                              <td>{{ Tax.EffectiveDateStart }}</td>
+                              <td>
+                                <ng-container *ngIf="Tax?.Status=='N'">DeActive</ng-container>
+                                <ng-container *ngIf="Tax?.Status=='Y'">Active</ng-container>
+                                <ng-container *ngIf="Tax?.Status=='P'">Pending</ng-container>
+                            </td>
+                            <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined"  (click)="onEditDrop(Tax)"></button></td>
+                              </tr>
+                              </ng-template>
+                    </p-table>
+                </ng-container>
+                <ng-container *ngIf="TaxData.length==0">
+                    <div class="text-center">
+                        No Data Available
+                    </div>
+            </ng-container>
+        </div>
+    
+    
+
+
+
+
+
+<!-- <div class="vision-grid-item">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <div>
+                  Existing Tax
+                </div>
+                <div>
+                    <button class="btn btn-warning" (click)="onAddDropdowns()" *ngIf="TypeValue!=null">Add New</button>
+                </div>
+            </div>
+        </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-4 col-lg-4 col-xl-4 ml-3">
+                        <div class="input-control-container">
+                            <label class="input-form-label">Insurance Company<span class="text-required">*</span></label>
+                            <ng-select class="input-form-select" appendTo="body" [(ngModel)]="insuranceId" (change)="getList('change')"
+                             [items]="insuranceList" bindValue="Code" bindLabel="CodeDesc">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-4">
+                        <div class="input-control-container">
+                            <label class="input-form-label">Country<span class="text-required">*</span></label>
+                            <ng-select class="input-form-select" appendTo="body" 
+                            [items]="TypeList" (change)="getExistingDropdown()"
+                             [(ngModel)]="TypeValue" bindValue="Code" bindLabel="CodeDesc">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="TaxData.length!=0">
+                    <app-grid-table [cols]="dropdownHeader" changeStatus="true" (OnStatus)="EditStatus($event)" [data]="TaxData" [filterValue]="filterValue" (onEdit)="onEditDrop($event)">
+                    </app-grid-table>
+                </ng-container>
+                <ng-container *ngIf="TaxData.length==0">
+                        <div class="text-center">
+                                No Data Available
+                        </div>
+                </ng-container>
+
+            </div>
+        </div>
+</div> -->

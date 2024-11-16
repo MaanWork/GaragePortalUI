@@ -1,0 +1,180 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 sm:col-9 md:col-9">
+          <h3 class="mr-3">Tax Details</h3>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div> -->
+        <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="grid mt-2">
+        <div class="col-12 lg:col-4 xl:col-4 md:col-4">
+            <label for="username">Country*</label>
+            <p-dropdown inputId="TypeList" 
+                class="w-full" 
+                styleClass="w-full" 
+                [options]="TypeList" 
+                [(ngModel)]="CountryId" 
+                optionLabel="CodeDesc" 
+                optionValue="Code" >
+            </p-dropdown>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="username">TaxName*</label><br>
+            <input pInputText type="text" [(ngModel)]="taxDetails.TaxName"  class="w-full" 
+            styleClass="w-full"   maxlength="20"
+            placeholder="Enter Bank Full Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CodeDescLocal">Local Name*</label><br>
+            <input pInputText type="text" 
+            [(ngModel)]="taxDetails.CodeDescLocal"  maxlength="100"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Local Name Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Tax Description*</label><br>
+            <textarea pInputTextarea type="text" 
+            [(ngModel)]="taxDetails.TaxDesc"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Bank Short Name"></textarea>
+        </div>
+        
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="taxDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select  Date">
+            </p-calendar>
+            <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                <div class="error-text text-danger" *ngIf="policyEndDateError">
+                    <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                </div>
+            </div> -->
+        </div>
+     
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+       
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="taxDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="taxDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+           
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="taxDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+    </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onProceed()" ></p-button>
+    </div>
+</div>
+
+
+
+
+
+<!-- <div class="vision-grid-item">
+    <div class="card">
+        <div class="card-header">Tax Details</div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Country<span class="text-required">*</span></label>
+                        <ng-select class="input-form-select" appendTo="body"
+                         [items]="TypeList" [(ngModel)]="CountryId" 
+                         bindValue="Code" bindLabel="CodeDesc">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">TaxName<span class="text-required">*</span></label>
+                        <div class="input-form-box">
+                            <input type="text"
+                             class="input-form-control without-icon"
+                              [(ngModel)]="taxDetails.TaxName" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Tax Description<span class="text-required">*</span></label>
+                        <div class="input-form-box">
+                            <textarea cols="120" rows="2"
+                             class="input-form-control without-icon"
+                              [(ngModel)]="taxDetails.TaxDesc" maxlength="200"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 mt-2">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Effective Date<span class="text-required">*</span></label>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Effective Date<span class="text-danger">*</span></mat-label>
+                            <input matInput [matDatepicker]="picker"
+                             [min]="minDate" [(ngModel)]="taxDetails.EffectiveDateStart">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Remarks<span class="text-required">*</span></label>
+                        <div class="input-form-box">
+                            <textarea cols="120" rows="2" class="input-form-control without-icon" [(ngModel)]="taxDetails.Remarks" maxlength="200"></textarea>
+                        </div>
+                    </div>
+                </div>
+              
+              
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="input-control-container">
+                        <label class="input-form-label">Status<span class="text-required">*</span></label>
+                        <div class="input-form-radio-box">
+                            <div class="radio-toolbar">
+                                <input id="orginwarehouse_Yes" type="radio" name="originatingWarehouse" [(ngModel)]="taxDetails.Status" value="Y">
+                                <label for="orginwarehouse_Yes">Active</label>
+                                <input type="radio" id="orginwarehouse_No" name="originatingWarehouse" [(ngModel)]="taxDetails.Status" value="N">
+                                <label for="orginwarehouse_No">DeActive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+        <div class="text-center mt-2 mb-2">
+            <button class="btn btn-danger" (click)="ongetBack()">Cancel</button>
+            <button class="btn btn-success" style="margin-left:10px;" (click)="onProceed()">Submit</button>
+        </div>
+    </div>
+</div> -->

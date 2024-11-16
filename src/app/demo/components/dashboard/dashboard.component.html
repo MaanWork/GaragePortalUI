@@ -1,0 +1,212 @@
+    <div class="grid">
+        <ng-container *ngFor="let count of countList">
+            <ng-container *ngIf="count.Type=='QUOTE'">
+                <div class="col-12 lg:col-6 xl:col-3">
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">{{ 'DASHBOARD.Quotes' | translate }}</span>
+                                <div class="text-900 font-medium text-xl">{{count.TotalCount}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <!-- <span class="text-green-500 font-medium">24 new </span>
+                        <span class="text-500">since last visit</span> -->
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="count.Type=='POLICY'">
+                <div class="col-12 lg:col-6 xl:col-3">
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">{{ 'DASHBOARD.Policies' | translate }}</span>
+                                <div class="text-900 font-medium text-xl">{{count.TotalCount}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <!-- <span class="text-green-500 font-medium">%52+ </span>
+                        <span class="text-500">since last week</span> -->
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="count.Type=='RENEWAL QUOTE'">
+                <div class="col-12 lg:col-6 xl:col-3">
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">{{ 'DASHBOARD.RenewalQuotes' | translate }}</span>
+                                <div class="text-900 font-medium text-xl">{{count.TotalCount}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-purple-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-comment text-purple-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <!-- <span class="text-green-500 font-medium">85 </span>
+                        <span class="text-500">responded</span> -->
+                    </div>
+                </div>  
+                
+            </ng-container>
+            <ng-container *ngIf="count.Type=='RENEWAL POLICY'">
+                <div class="col-12 lg:col-6 xl:col-3">
+                    <div class="card mb-0">
+                        <div class="flex justify-content-between mb-3">
+                            <div>
+                                <span class="block text-500 font-medium mb-3">{{ 'DASHBOARD.RenewalPolicies' | translate }}</span>
+                                <div class="text-900 font-medium text-xl">{{count.TotalCount}}</div>
+                            </div>
+                            <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                                <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+                            </div>
+                        </div>
+                        <!-- <span class="text-green-500 font-medium">520  </span>
+                        <span class="text-500">newly registered</span> -->
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <div class="flex flex-warp justify-content-between">
+                     <div><h5>{{ 'DASHBOARD.RecentPolicies/Quotes' | translate }}</h5></div>
+                     <div>
+                        <p-dropdown inputId="rangeSearch" class="w-full" styleClass="w-full" [options]="rangeList"
+                            [(ngModel)]="rangeValue" [optionLabel]="getDisplayName()" optionValue="Code"
+                            (onChange)="getQuoteOverview()" placeholder="---Select---">
+                        </p-dropdown>
+                     </div>
+                </div>
+                
+                <p-chart height="250" type="line" [responsive]="true" [data]="chart2Data" [options]="chartOptions"></p-chart>
+                <!-- <p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Image</th>
+                            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                            <th>View</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td class="customCellWidth1">
+                                <img src="assets/demo/images/product/{{product.image}}" class="shadow-4" alt="{{product.name}}" width="50">
+                            </td>
+                            <td class="customCellWidth2" >{{product.name}}</td>
+                            <td class="customCellWidth3">{{product.price | currency:'USD'}}</td>
+                            <td class="customCellWidth4">
+                                <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table> -->
+            </div>
+            <div class="card">
+                <div class="flex flex-warp justify-content-between">
+                    <div><h5>{{ 'DASHBOARD.RecentEndorsements' | translate}}</h5></div>
+                    <div>
+                       <p-dropdown inputId="rangeSearch" class="w-full" styleClass="w-full" [options]="rangeList"
+                           [(ngModel)]="rangeEndtValue" [optionLabel]="getDisplayName()" optionValue="Code"
+                           (onChange)="getEndorsementRecordList()" placeholder="---Select---">
+                       </p-dropdown>
+                    </div>
+               </div>
+               <ul class="list-none p-0 mt-3">
+                    <ng-container *ngIf="endorsementList.length!=0">
+                        <ng-container *ngFor="let endorse of endorsementList">
+                            <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-2 mt-2">
+                                <div>
+                                    <span class="text-900 font-medium mr-2 mb-1 md:mb-0">{{endorse.EndorsementDesc}}</span>
+                                    <!-- <div class="mt-1 text-600">Clothing</div> -->
+                                </div>
+                                <div class="mt-2 md:mt-0 flex align-items-center">
+                                    <p-button [label]="endorse.Count" [rounded]="true" severity="info" [outlined]="true" />
+                                </div>
+                            </li>
+                            <hr class="m-0 p-0">
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="endorsementList.length==0">
+                        <div class="text-center">
+                            {{ 'DASHBOARD.NoEndorsementAvailable' | translate}}
+                        </div>
+                    </ng-container>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <div class="flex flex-warp justify-content-between">
+                    <div><h5>{{ 'DASHBOARD.QuotesOverView' | translate}}</h5></div>
+                    <div>
+                       <p-dropdown inputId="rangeSearch" class="w-full" styleClass="w-full" [options]="rangeList"
+                           [(ngModel)]="rangeValue" [optionLabel]="getDisplayName()" optionValue="Code"
+                           (onChange)="getQuoteOverview()" placeholder="---Select---">
+                       </p-dropdown>
+                    </div>
+               </div>
+                <p-chart height="250" type="line" [responsive]="true" [data]="chartData" [options]="chartOptions"></p-chart>
+                <!-- <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart> -->
+            </div>
+
+            <div class="card">
+                <div class="flex flex-warp justify-content-between">
+                    <div><h5>{{ 'DASHBOARD.Notifications' | translate}}</h5></div>
+                    <div>
+                       <p-dropdown inputId="rangeSearch" class="w-full" styleClass="w-full" [options]="rangeList"
+                           [(ngModel)]="rangeNotifyValue" [optionLabel]="getDisplayName()" optionValue="Code"
+                           (onChange)="getQuoteOverview()" placeholder="---Select---">
+                       </p-dropdown>
+                    </div>
+               </div>
+               <p-table #dtEmployee [value]="notificationList" 
+                    [paginator]="true" dataKey= "id"
+                    [globalFilterFields]="['Email','PhoneNo','EndDate','StatusMessage']" [rows]="5">
+                    <ng-template pTemplate="caption">
+                        <!--[tableStyle]="{'min-width':'50rem'}" -->
+                        <div class="flex flex wrap justify-content-end">
+                        <div class="table-header">
+                            <span class="p-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" [placeholder]="'DASHBOARD.GlobalSearch' | translate" />
+                            </span>
+                        </div>
+                        </div>
+                    </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th [pSortableColumn]="column" *ngFor="let column of columns">{{'DASHBOARD.'+column | translate}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-data let-index="rowIndex"  let-expanded="expanded">
+                            <tr>
+                                <td>{{data.Email}}</td>
+                                <td>{{data.PhoneNo}}</td>
+                                <td>{{data.EndDate}}</td>
+                                <td>{{data.StatusMessage}}</td>
+                            </tr>
+                        </ng-template>
+                </p-table>
+                
+            </div>
+
+            <!-- <div class="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3" [ngStyle]="{borderRadius: '1rem', background: 'linear-gradient(0deg, rgba(0, 123, 255, 0.5), rgba(0, 123, 255, 0.5)), linear-gradient(92.54deg, #1C80CF 47.88%, #FFFFFF 100.01%)'}">
+           <div>
+               <div class="text-blue-100 font-medium text-xl mt-2 mb-3">TAKE THE NEXT STEP</div>
+               <div class="text-white font-medium text-5xl">Try PrimeBlocks</div>
+           </div>
+           <div class="mt-4 mr-auto md:mt-0 md:mr-0">
+               <a target="_blank" href="https://www.primefaces.org/primeblocks-ng" class="p-button font-bold px-5 py-3 p-button-warning p-button-rounded p-button-raised">
+                   Get Started
+               </a>
+           </div>
+            </div> -->
+    </div>
+</div>
+<!-- <p-toast position="top-right"></p-toast> -->

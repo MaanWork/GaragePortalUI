@@ -1,0 +1,140 @@
+<div class="card">
+    <div class="grid">
+        <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+            <h3 class="mr-3">Currency Details</h3>
+          </div>
+          <!-- <div class="col-12 lg:col-3 xl:col-3 md:col-3 " >
+            <label for="username">Select Master*</label>
+            <p-dropdown inputId="title" 
+                class="w-full" 
+                styleClass="w-full" 
+                (onChange)="getMenu(activeMenu)"
+                [options]="MenuMasterList" 
+                [(ngModel)]="activeMenu" 
+                optionLabel="title" 
+                optionValue="title" >
+            </p-dropdown>
+        </div> -->
+        <div class="col-12 sm:col-6 md:col-4">
+          <!-- <h3 class="mr-3">Bank Details</h3> -->
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        </div>
+        <!-- <div class="col-12 sm:col-6 md:col-8">
+          <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+            <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="onAddSection()" ></p-button>
+          </div>
+        </div> -->
+    </div>
+  <div class="grid mt-2">
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CurrencyName">Currency Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.CurrencyName"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Currency Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="ShortName">Short Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.ShortName"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Short Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="LocalName">Local Name*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.CodeDescLocal"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Local Name"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="SubCurrency">SubCurrency*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.SubCurrency"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter SubCurrency"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="CoreAppCode">Core App Code*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.CoreAppCode"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Core App Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Regulatory Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="CurrencyDetails.RegulatoryCode" maxlength="6"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Regulatory Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Currency Short Code*</label><br>
+            <input pInputText 
+            [(ngModel)]="CurrencyDetails.CurrencyShortCode" maxlength="6"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Currency Short Code"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="MinimumLimit">Minimum Limit*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.ExMinlmt"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Minimum Limit"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="MaximumLimit">Maximum Limit*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.ExMaxlmt"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Maximum Limit"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="MinimumDiscount">Minimum Discount*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.MinDiscount"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Minimum Discount"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="MaximumLoading">Maximum Loading*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.MaxLoading"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter Maximum Loading"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="RFactor">RFactor*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.Rfactor"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter RFactor"/>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="DecimalDigit">DecimalDigit*</label><br>
+            <input pInputText type="text" [(ngModel)]="CurrencyDetails.DecimalDigit"  class="w-full" 
+            styleClass="w-full"   maxlength="100"
+            placeholder="Enter DecimalDigit"/>
+        </div>
+        <div class="flex flex-wrap md:col-4 lg:col-4 ">
+            <label for="username">Status</label>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="No" value="Y" [(ngModel)]="CurrencyDetails.Status" inputId="ingredient2"></p-radioButton>
+                <span for="ingredient2" class="ml-1">Active</span>
+            </div>
+            <div class="flex align-items-center mr-1">
+                <p-radioButton name="Yes" value="N" [(ngModel)]="CurrencyDetails.Status" inputId="ingredient3"></p-radioButton>
+                <span for="ingredient1" class="ml-1">DeActive</span>
+            </div>
+        </div>
+        <div class="ol-12 md:col-4 lg:col-4">
+            <label for="username">Effective Date</label>
+            <p-calendar class="w-full" styleClass="w-full" [(ngModel)]="CurrencyDetails.EffectiveDateStart"
+            dateFormat="dd/mm/yy"
+                placeholder="Select End Date">
+            </p-calendar>
+        </div>
+        <div class="col-12 md:col-4 lg:col-4">
+            <label for="Bankname">Remarks*</label><br>
+            <textarea pInputTextarea  type="text" 
+            [(ngModel)]="CurrencyDetails.Remarks"  maxlength="200"
+            class="w-full" styleClass="w-full"
+            placeholder="Enter Remarks"></textarea>
+        </div>
+        </div>
+    <div class="flex justify-content-center mt-3" >
+        <p-button  styleClass="p-button-outlined" label="Cancel"
+            size="small"  (click)="ongetBack()"></p-button>&nbsp;
+        <p-button label="Submit" size="small" (click)="onSaveCurrency()"></p-button>
+    </div>                
+</div>

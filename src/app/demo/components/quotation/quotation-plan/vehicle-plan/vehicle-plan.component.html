@@ -1,0 +1,148 @@
+<p-tabView>
+    <p-tabPanel header="Vehicle 1">
+        <div class="flex flex-wrap">
+            <p class="mr-5"><i class="pi pi-tag mr-2"></i>Toyoto Landcruser hard top</p>
+            <p class="mr-5"><i class="pi pi-tag mr-2"></i>Comprehensive</p>
+            <p><i class="pi pi-tag mr-2"></i>JTERB</p>
+        </div>
+        <p class="mt-1">According to your budget you can pay monthly or one time* with %10 discount.</p>
+        
+        <div class="flex flex-wrap justify-content-between">
+            <div class="card p-3 w-25rem" *ngFor="let plan of plans">
+                <div class="flex align-items-center justify-content-between">
+                    <p-checkbox class="mr-4" [binary]="true" inputId="binary"></p-checkbox>
+                    <h5 class="my-0 mr-4">{{ plan.title }}</h5>
+                    <span class="pi pi-info-circle align-self-end"></span>
+                </div>
+                <div class="flex flex-wrap mt-3 justify-content-between">
+                    <div class="mb-3">
+                        <p class="mb-0"><span class="pi pi-check-circle mr-2"></span> {{plan.excess}} % Excess</p>
+                        <p class="mb-0"><span class="pi pi-check-circle mr-2"></span> Total Sum of {{plan.totalSum}} TSZ</p>
+                        <p><s><span class="pi pi-check-circle mr-2"></span> {{plan.year}} Years Freemium</s></p>
+                    </div>
+                    <h4 class="mt-0 bg-orange-500 border-round-lg py-2 px-4 text-white">{{plan.discount}}/ <br><span class="text-base">Discount</span></h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap justify-content-between">
+            <div class="flex flex-wrap col-12 md:col-6">
+                <b>Do you finalize this quote?</b>
+                <div class="flex align-items-center ml-3">
+                    <p-radioButton name="Yes" value="Yes" inputId="ingredient1"></p-radioButton>
+                    <label for="ingredient1" class="ml-2">Yes</label>
+                </div>
+                <div class="flex flex-wrap align-items-center ml-3">
+                    <p-radioButton name="No" value="No" inputId="ingredient1"></p-radioButton>
+                    <label for="ingredient1" class="ml-2">No</label>
+                </div>
+            </div>
+            <div class="col-12 md:col-6">
+                <div class="flex flex-wrap">
+                    <b>Do you like to choose EMI?</b>
+                    <div class="flex align-items-center ml-3">
+                        <p-radioButton name="Yes" value="Yes" inputId="ingredient1"></p-radioButton>
+                        <label for="ingredient1" class="ml-2">Yes</label>
+                    </div>
+                    <div class="flex align-items-center ml-3">
+                        <p-radioButton name="No" value="No" inputId="ingredient1"></p-radioButton>
+                        <label for="ingredient1" class="ml-2">No</label>
+                    </div>
+                </div>
+                <a href="">View Chart</a>
+            </div>
+        </div>
+        <div class="flex flex-wrap justify-content-between">
+            <div class="col-12 md:col-6">
+                <b>Do you like to move this quote to referall manually?</b>
+                <div class="flex flex-wrap">
+                    <div class="flex align-items-center mt-2 mr-2">
+                        <p-radioButton name="Yes" value="Yes" inputId="ingredient2"></p-radioButton>
+                        <label for="ingredient1" class="ml-2">Yes</label>
+                    </div>
+                    <div class="flex align-items-center mt-2">
+                        <p-radioButton name="No" value="No" inputId="ingredient2"></p-radioButton>
+                        <label for="ingredient1" class="ml-2">No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6">
+                <b>Remark</b>
+                <input type="text" pInputText class="md:w-full lg:w-25rem"/>
+            </div>
+        </div>
+        
+        <div class="flex flex-wrap justify-content-between mt-4">
+            <div class="mb-4">
+                <p-button label="Back" [routerLink]="['/customer/detail']" class="p-3 mr-4 text-l mr-0" styleClass="p-button-outlined mb-4" icon="pi pi-chevron-left"></p-button>
+                <p-button label="Proceed" [routerLink]="['/quotation/plan/main/quote-type']" class="p-3 text-l mr-0" styleClass="mb-4"></p-button>
+            </div>
+            <div class="card grid text-white surface-900 px-4 py-2" (click)="showSidebar()">
+                <div class="col-6">
+                    <p class="mb-0"><s>$455</s></p>
+                    <h6 class="text-white mt-0">$400/ yearly</h6>
+                </div>
+                <p-button class="col-6" styleClass="surface-900" label="View Cart" severity="primary"></p-button>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Vehicle 2">
+    </p-tabPanel>
+    <p-tabPanel header="Vehicle 3">
+    </p-tabPanel>
+</p-tabView>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="sm:20rem md:w-30rem">
+    <ng-template pTemplate="header">
+        <h3>Jared Black</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="flex flex-wrap justify-content-between">
+            <p-chip label="Customer ID" icon="pi pi-user"></p-chip>
+            <div class="button-group">
+                <p-button styleClass="p-button-outlined" icon="pi pi-phone"></p-button>
+                <p-button styleClass="p-button-outlined" icon="pi pi-whatsapp"></p-button>
+                <p-button styleClass="p-button-outlined" icon="pi pi-envelope"></p-button>
+            </div>
+        </div>
+        
+        <hr>
+        <div class="card w-full">
+            <h4>Cheque/ Cash etc</h4>
+            <div class="grid">
+                <div class="col-9">
+                    <p>JRED</p>
+                    <div class="flex flex-wrap mb-3">
+                        <p-dropdown class="mr-3 mb-3" [options]="years" optionLabel="label" [showClear]="true"></p-dropdown>
+                        <p-dropdown [options]="vehicles" optionLabel="label" [showClear]="true"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-3 text-right">
+                    <h4 class="text-orange-500 mb-0">$100</h4>
+                    <p><s>$140</s></p>
+                    <p class="text-orange-500">40% Off</p>
+                </div>
+            </div>
+            <div class="grid justify-content-between align-content-center px-3">
+                <p>40% discount is applied for Accessories</p>
+                <p-button icon="pi pi-trash" severity="danger" styleClass="p-button-outlined"></p-button>
+            </div>
+        </div>
+    </ng-template>
+    
+    
+    <ng-template pTemplate="footer">
+        <div class="flex flex-wrap justify-content-between">
+            <div class="mr-0">
+                <p-button class="p-3 text-l" styleClass="mb-4">Proceed</p-button>
+            </div>
+            <div class="text-white surface-900 px-6 py-3 border-round-lg flex" (click)="showSidebar()">
+                <h5 class="text-white mb-1 mr-3">Total</h5>
+                <div>
+                    <p class="mb-0"><s>$455</s></p>
+                    <h6 class="text-white my-0">$400/ yearly</h6>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-sidebar>

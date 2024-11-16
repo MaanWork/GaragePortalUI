@@ -1,0 +1,924 @@
+<div class="card">
+    <p-tabView>
+        <p-tabPanel header="Treaty Type Master">
+           
+                <div class="grid">
+                  <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+                    <h3 class="mr-3">Treaty Type Master</h3>
+                  </div>
+                    <div class="col-12 sm:col-3 md:col-3">
+                      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                        <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="openPopup('TTM')" ></p-button>
+                      </div>
+                    </div>
+                  </div>
+                            <!-- <div class="grid">
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Insurance Company*</label>
+                                    <p-dropdown inputId="companyId" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getBranchList('change')"
+                                        [options]="insuranceList" 
+                                        [(ngModel)]="companyId" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Branch*</label>
+                                    <p-dropdown inputId="branchList" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getExistingBank()"
+                                        [options]="branchList" 
+                                        [(ngModel)]="branchValue" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                            </div> -->
+                            <ng-container  class="mt-5">
+                                <p-table  [value]="treatyTypeMasterList"  #dtEmployee
+                                         [globalFilterFields]="['BankFullName','BankShortName',
+                                                                'EffectiveDateStart','Status']"
+                                         [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                                         <ng-template pTemplate="caption">
+                                            <div class="flex flex wrap justify-content-end">
+                                              <div class="table-header">
+                                                  <span class="p-input-icon-left">
+                                                      <i class="pi pi-search"></i>
+                                                      <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                                                  </span>
+                                              </div>
+                                            </div>
+                                            
+                                          </ng-template>
+                                  <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                      <th [pSortableColumn]="column" *ngFor="let column of columnHeader">
+                                        {{column}}
+                                        <p-sortIcon [field]="column"></p-sortIcon> 
+                                      </th>
+                                    </tr>
+                                  </ng-template>
+                                      <ng-template pTemplate="body" let-value>
+                                        <tr>
+                                          <td>{{ value.treatyName }}</td>
+                                          <td>{{ value.treatyNumber }}</td>
+                                          <td>{{ value.treatyType }}</td>
+                                          <td>{{ value.effectiveStartDate }}</td>
+                                           <td>
+                                            <ng-container *ngIf="value?.status=='N'">DeActive</ng-container>
+                                            <ng-container *ngIf="value?.status=='Y'">Active</ng-container>
+                                        </td>
+                                        <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" (click)="treatyTypeMasterEdit(value,i)" ></button></td>
+                                          </tr>
+                                          </ng-template>
+                                </p-table>
+                            </ng-container>
+                            <ng-container *ngIf="treatyTypeMasterList.length==0">
+                                <div class="text-center">
+                                    No Data Available
+                                </div>
+                        </ng-container>
+            
+                
+                
+        </p-tabPanel>
+        <p-tabPanel header="Treaty Master">
+                <div class="grid">
+                  <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+                    <h3 class="mr-3">Treaty Master</h3>
+                  </div>
+                    <div class="col-12 sm:col-3 md:col-3">
+                      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                        <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="openPopup('TM')"></p-button>
+                      </div>
+                    </div>
+                  </div>
+                            <!-- <div class="grid">
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Insurance Company*</label>
+                                    <p-dropdown inputId="companyId" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getBranchList('change')"
+                                        [options]="insuranceList" 
+                                        [(ngModel)]="companyId" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Branch*</label>
+                                    <p-dropdown inputId="branchList" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getExistingBank()"
+                                        [options]="branchList" 
+                                        [(ngModel)]="branchValue" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                            </div> -->
+                            <ng-container  class="mt-5">
+                                <p-table  [value]="treatyMasterList" #dtEmployee
+                                         [globalFilterFields]="['BankFullName','BankShortName',
+                                                                'EffectiveDateStart','Status']"
+                                         [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                                         <ng-template pTemplate="caption">
+                                            <div class="flex flex wrap justify-content-end">
+                                              <div class="table-header">
+                                                  <span class="p-input-icon-left">
+                                                      <i class="pi pi-search"></i>
+                                                      <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                                                  </span>
+                                              </div>
+                                            </div>
+                                            
+                                          </ng-template>
+                                  <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                      <th [pSortableColumn]="column" *ngFor="let column of columnHeader1">
+                                        {{column}}
+                                        <p-sortIcon [field]="column"></p-sortIcon> 
+                                      </th>
+                                    </tr>
+                                  </ng-template>
+                                      <ng-template pTemplate="body" let-value>
+                                        <tr>
+                                          <td>{{ value.treatyCode }}</td>
+                                          <td>{{ value.year }}</td>
+                                          <td>{{ value.product }}</td>
+                                          <td>{{ value.section }}</td>
+                                          <td>{{ value.cover }}</td>
+                                          <td>{{ value.treatyPercentage }}</td>
+                                          <td>{{ value.retentionPercentage }}</td>
+                                          <!-- <td>{{ value.CodeDescLocal }}</td> -->
+                                          <!-- <td>
+                                            <ng-container *ngIf="Bank?.Status=='N'">DeActive</ng-container>
+                                            <ng-container *ngIf="Bank?.Status=='Y'">Active</ng-container>
+                                            <ng-container *ngIf="Bank?.Status=='P'">Pending</ng-container>
+                                        </td> -->
+                                        <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" (click)="editTreatyMaster(value)"></button></td>
+                                          </tr>
+                                          </ng-template>
+                                </p-table>
+                            </ng-container>
+                            <ng-container *ngIf="treatyMasterList.length==0">
+                                <div class="text-center">
+                                    No Data Available
+                                </div>
+                        </ng-container>
+        </p-tabPanel>
+        <p-tabPanel header="ReInsurance Company Master">
+                <div class="grid">
+                  <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+                    <h3 class="mr-3">ReInsurance Company Master</h3>
+                  </div>
+                    <div class="col-12 sm:col-3 md:col-3">
+                      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                        <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="openPopup('RCM')"></p-button>
+                      </div>
+                    </div>
+                  </div>
+                            <!-- <div class="grid">
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Insurance Company*</label>
+                                    <p-dropdown inputId="companyId" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getBranchList('change')"
+                                        [options]="insuranceList" 
+                                        [(ngModel)]="companyId" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Branch*</label>
+                                    <p-dropdown inputId="branchList" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getExistingBank()"
+                                        [options]="branchList" 
+                                        [(ngModel)]="branchValue" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                            </div> -->
+                            <ng-container  class="mt-5">
+                                <p-table [value]="RCMList"  #dtEmployee
+                                         [globalFilterFields]="['BankFullName','BankShortName',
+                                                                'EffectiveDateStart','Status']"
+                                         [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                                         <ng-template pTemplate="caption">
+                                            <div class="flex flex wrap justify-content-end">
+                                              <div class="table-header">
+                                                  <span class="p-input-icon-left">
+                                                      <i class="pi pi-search"></i>
+                                                      <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                                                  </span>
+                                              </div>
+                                            </div>
+                                            
+                                          </ng-template>
+                                  <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                      <th [pSortableColumn]="column" *ngFor="let column of columnHeader2">
+                                        {{column}}
+                                        <p-sortIcon [field]="column"></p-sortIcon> 
+                                      </th>
+                                    </tr>
+                                  </ng-template>
+                                      <ng-template pTemplate="body" let-value>
+                                        <tr>
+                                          <td>{{ value.BankFullName }}</td>
+                                          <td>{{ value.BankShortName }}</td>
+                                          <td>{{ value.CodeDescLocal }}</td>
+                                          <td>{{ value.EffectiveDateStart }}</td>
+                                          <td>
+                                            <ng-container *ngIf="value?.Status=='N'">DeActive</ng-container>
+                                            <ng-container *ngIf="value?.Status=='Y'">Active</ng-container>
+                                        </td>
+                                        <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" ></button></td>
+                                          </tr>
+                                          </ng-template>
+                                </p-table>
+                            </ng-container>
+                            <ng-container >
+                                <div class="text-center">
+                                    No Data Available
+                                </div>
+                        </ng-container>
+        </p-tabPanel>
+        <p-tabPanel header="ReInsurance Master">
+                <div class="grid">
+                  <div class="col-12 lg:col-9 xl:col-9 md:col-9 " >
+                    <h3 class="mr-3">ReInsurance Master</h3>
+                  </div>
+                    <div class="col-12 sm:col-3 md:col-3">
+                      <div class="flex justify-content-start sm:justify-content-end  flex-wrap">
+                        <p-button icon="pi pi-plus" label="Add New" severity="warning" size="small" (click)="openPopup('RM')"></p-button>
+                      </div>
+                    </div>
+                  </div>
+                            <!-- <div class="grid">
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Insurance Company*</label>
+                                    <p-dropdown inputId="companyId" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getBranchList('change')"
+                                        [options]="insuranceList" 
+                                        [(ngModel)]="companyId" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                
+                                <div class="col-12 lg:col-4 xl:col-4 md:col-4 ml-3">
+                                    <label for="username">Branch*</label>
+                                    <p-dropdown inputId="branchList" 
+                                        class="w-full" 
+                                        styleClass="w-full" 
+                                        (onChange)="getExistingBank()"
+                                        [options]="branchList" 
+                                        [(ngModel)]="branchValue" 
+                                        optionLabel="CodeDesc" 
+                                        optionValue="Code" 
+                                        placeholder="Select Insurance Company">
+                                    </p-dropdown>
+                                </div>
+                            </div> -->
+                            <ng-container  class="mt-5">
+                                <p-table   #dtEmployee
+                                         [globalFilterFields]="['BankFullName','BankShortName',
+                                                                'EffectiveDateStart','Status']"
+                                         [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5" >
+                                         <ng-template pTemplate="caption">
+                                            <div class="flex flex wrap justify-content-end">
+                                              <div class="table-header">
+                                                  <span class="p-input-icon-left">
+                                                      <i class="pi pi-search"></i>
+                                                      <input pInputText type="text" (input)="dtEmployee.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                                                  </span>
+                                              </div>
+                                            </div>
+                                            
+                                          </ng-template>
+                                  <ng-template pTemplate="header">
+                                    <tr>
+                                      
+                                      <th [pSortableColumn]="column" *ngFor="let column of columnHeader3">
+                                        {{column}}
+                                        <p-sortIcon [field]="column"></p-sortIcon> 
+                                      </th>
+                                    </tr>
+                                  </ng-template>
+                                      <ng-template pTemplate="body" >
+                                        <tr>
+                                          <!-- <td>{{ Bank.BankFullName }}</td>
+                                          <td>{{ Bank.BankShortName }}</td>
+                                          <td>{{ Bank.CodeDescLocal }}</td>
+                                          <td>{{ Bank.EffectiveDateStart }}</td> -->
+                                          <!-- <td>
+                                            <ng-container *ngIf="Bank?.Status=='N'">DeActive</ng-container>
+                                            <ng-container *ngIf="Bank?.Status=='Y'">Active</ng-container>
+                                            <ng-container *ngIf="Bank?.Status=='P'">Pending</ng-container>
+                                        </td> -->
+                                        <td> <button pButton pRipple icon="pi pi-pencil"  class="p-button-outlined" ></button></td>
+                                          </tr>
+                                          </ng-template>
+                                </p-table>
+                            </ng-container>
+                            <ng-container >
+                                <div class="text-center">
+                                    No Data Available
+                                </div>
+                        </ng-container>
+        </p-tabPanel>
+    </p-tabView>
+    </div>
+    
+    <p-dialog header="Treaty Type Master" [modal]="true" [(visible)]="visible1" styleClass="w-10 md:w-5 lg:w-5">
+        <div class="grid mt-2">
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyType"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type Desc*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeDescList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyTypeDesc"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Name</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNameList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyName"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="TreatyNumber">Treaty Number</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNumberList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyNumber"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+           
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="LayerNo">LayerNo*</label>
+                <p-dropdown 
+                class="w-full" 
+                [options]="layerNoList"
+                styleClass="w-full"         
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                [(ngModel)]="LayerNo"
+                placeholder="Select Treaty Type">
+            </p-dropdown>
+            </div>
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective Start Date</label>
+                <p-calendar class="w-full" appendTo="body" styleClass="w-full"  [(ngModel)]="EffectiveStartDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select Start Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective End Date</label>
+                <p-calendar class="w-full" appendTo="body" styleClass="w-full" [minDate]="EffectiveStartDate" [(ngModel)]="EffectiveEndDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select End Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+         
+            <div class="flex flex-wrap md:col-6 lg:col-6 ">
+                <label for="username">Status</label>
+                
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="No" value="Y"  inputId="ingredient2" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient2" class="ml-1">Active</span>
+                </div>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="Yes" value="N"  inputId="ingredient3" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient1" class="ml-1">DeActive</span>
+                </div>
+               
+            </div>
+            
+        </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button label="Cancel" class="p-button-outlined" (click)="visible1 = false" />
+            <p-button label="Save" (click)="CommonTTM()" />
+        </div>
+    </p-dialog>
+    <p-dialog header="Treaty Master" [modal]="true" [(visible)]="visible2" styleClass="w-10 md:w-5 lg:w-5">
+        <div class="grid mt-2">
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyType"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type Desc*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeDescList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyTypeDesc"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Name</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNameList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyName"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="TreatyNumber">Treaty Number</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNumberList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyNumber"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="TreatyCode">Treaty Code</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="TreatyCode"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Treaty Code"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Year">Year</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Year"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Year"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Product">Product</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Product"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Product"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Section">Section</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Section"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Section"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Cover">Cover</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Cover"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Cover"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="LayerNo">LayerNo*</label>
+                    <p-dropdown 
+                    class="w-full" 
+                    [options]="layerNoList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="LayerNo"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Treaty Percentage">Treaty Percentage</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="TreatyPercentage"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Treaty Percentage"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Retention Percentage">Retention Percentage</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="RetentionPercentage"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Retention Percentage"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Overall Limit">Overall Limit</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="OverallLimit"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Overall Limit"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Number Of Lines">Number Of Lines</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="NumberOfLines"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Number Of Lines"/>
+            </div>
+
+            <!-- <div class="col-12 md:col-6 lg:col-6">
+                <label for="Amend Id">Amend Id</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="AmendId"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Amend Id"/>
+            </div> -->
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective  Date</label>
+                <p-calendar class="w-full" appendTo="body" styleClass="w-full" [(ngModel)]="EffectiveStartDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select  Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+            <!-- <div class="ol-12 md:col-6 lg:col-6">
+                <label for="Start"> Start Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body" [(ngModel)]="StartDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select Start Date">
+                </p-calendar> -->
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username"> End Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body" [minDate]="EffectiveStartDate" [(ngModel)]="EffectiveEndDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select End Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+         
+            <div class="flex flex-wrap md:col-6 lg:col-6 ">
+                <label for="username">Status</label>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="No" value="Y"  inputId="ingredient2" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient2" class="ml-1">Active</span>
+                </div>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="Yes" value="N"  inputId="ingredient3" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient1" class="ml-1">DeActive</span>
+                </div>
+            </div>
+            <div class="flex flex-wrap md:col-6 lg:col-6 ">
+                <label for="username">Leadership Yn</label>
+                
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="No" value="Y"  inputId="ingredient2" [(ngModel)]="LeadershipYn"></p-radioButton>
+                    <span for="ingredient2" class="ml-1">Yes</span>
+                </div>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="Yes" value="N"  inputId="ingredient3" [(ngModel)]="LeadershipYn"></p-radioButton>
+                    <span for="ingredient1" class="ml-1">No</span>
+                </div>
+               
+            </div>
+           
+            
+        </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button label="Cancel"  class="p-button-outlined" (onClick)="visible2 = false" />
+            <p-button label="Save" (onClick)="commonSaveTM()" />
+        </div>
+    </p-dialog>
+    <p-dialog header="ReInsurance Company Master" [modal]="true" [(visible)]="visible3" styleClass="w-10 md:w-5 lg:w-5">
+        <div class="grid mt-2">
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="ReinsuranceCompanyId">Reinsurance Company Id</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="ReinsuranceCompanyId"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Reinsurance Company Id"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="ReinsuranceCompanyName">Reinsurance Company Name</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="ReinsuranceCompanyName"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Reinsurance Company Name"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="CompanyShortCode">Company Short Code</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="CompanyShortCode"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Company Short Code"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Address1">Address1</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Address1"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Address1"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Address2">Address2</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Address2"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Address2"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="City">City</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="City"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter City"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Country">Country</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Country"
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Country"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="PhoneNo">Phone No</label><br>
+                <input pInputText type="text"  class="w-full" 
+                styleClass="w-full"   maxlength="100" [(ngModel)]="PhoneNo"
+                placeholder="Enter Phone No"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyType"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="Remarks">Remarks</label><br>
+                <input pInputText type="text"  class="w-full" [(ngModel)]="Remarks"
+                styleClass="w-full" maxlength="100"
+                placeholder="Enter Remarks"/>
+            </div>
+            <div class="flex flex-wrap md:col-6 lg:col-6 ">
+                <label for="username">Status</label>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="No" value="Y" inputId="ingredient2" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient2" class="ml-1">Active</span>
+                </div>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="Yes" value="N"  inputId="ingredient3" [(ngModel)]="Status"></p-radioButton>
+                    <span for="ingredient1" class="ml-1">DeActive</span>
+                </div>
+               
+            </div>
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective Start Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body" [(ngModel)]="EffectiveStartDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select Start Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective End Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body" [(ngModel)]="EffectiveEndDate"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select End Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+         
+            
+            <!-- <div class="col-12 md:col-6 lg:col-6">
+                <label for="Amend Id">Amend Id</label><br>
+                <input pInputText type="text"  class="w-full" 
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Amend Id"/>
+            </div> -->
+        </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button label="Cancel" class="p-button-outlined" (onClick)="visible3 = false" />
+            <p-button label="Save" (onClick)="visible3 = false" />
+        </div>
+    </p-dialog>
+    
+    <p-dialog header="ReInsurance Master" [modal]="true" [(visible)]="visible4" styleClass="w-10 md:w-5 lg:w-5">
+        <div class="grid mt-2">
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="RetentionPercentage">Retention Percentage</label><br>
+                <input pInputText type="text"  class="w-full" 
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Retention Percentage"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="CommissionPercentage">Commission Percentage</label><br>
+                <input pInputText type="text"  class="w-full" 
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Commission Percentage"/>
+            </div>
+            <!-- <div class="col-12 md:col-6 lg:col-6">
+                <label for="AmendId">Amend Id</label><br>
+                <input pInputText type="text"  class="w-full" 
+                styleClass="w-full"   maxlength="100"
+                placeholder="Enter Amend Id"/>
+            </div> -->
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username">Effective  Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select  Date">
+                </p-calendar>
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            </div>
+            <!-- <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username"> Start Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body"
+                dateFormat="dd/mm/yy" 
+                    placeholder="Select Start Date">
+                </p-calendar> -->
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            <!-- </div>
+            <div class="ol-12 md:col-6 lg:col-6">
+                <label for="username"> End Date</label>
+                <p-calendar class="w-full" styleClass="w-full" appendTo="body"
+                dateFormat="dd/mm/yy"
+                    placeholder="Select End Date">
+                </p-calendar> -->
+                <!--  (onSelect)="onChangeEndDate()"<div class="input-form-error bottomSpacing" *ngIf="policyEndDateError">
+                    <div class="error-text text-danger" *ngIf="policyEndDateError">
+                        <span class="spancommon span_font_size"> Please Enter Policy End Date</span>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+         
+            <div class="flex flex-wrap md:col-6 lg:col-6 ">
+                <label for="username">Status</label>
+                
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="No" value="Y"  inputId="ingredient2"></p-radioButton>
+                    <span for="ingredient2" class="ml-1">Active</span>
+                </div>
+                <div class="flex align-items-center mr-1">
+                    <p-radioButton name="Yes" value="N"  inputId="ingredient3"></p-radioButton>
+                    <span for="ingredient1" class="ml-1">DeActive</span>
+                </div>
+               
+            </div>
+            
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyType"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Type Desc*</label>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyTypeDescList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyTypeDesc"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="username">Treaty Name</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNameList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyName"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="TreatyNumber">Treaty Number</label><br>
+                <p-dropdown 
+                    class="w-full" 
+                    [options]="treatyNumberList"
+                    styleClass="w-full"         
+                    optionLabel="CodeDesc" 
+                    optionValue="Code" 
+                    [(ngModel)]="TreatyNumber"
+                    placeholder="Select Treaty Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="ReinsuranceName">Reinsurance Name</label><br>
+                <p-dropdown 
+                class="w-full" 
+                styleClass="w-full"            
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="Select Reinsurance Name">
+            </p-dropdown>
+            </div>
+            <div class="col-12 md:col-6 lg:col-6">
+                <label for="ReinsuranceId">Reinsurance Id</label><br>
+                <p-dropdown 
+                class="w-full" 
+                styleClass="w-full"            
+                optionLabel="CodeDesc" 
+                optionValue="Code" 
+                placeholder="Select Reinsurance Id">
+            </p-dropdown>
+            </div>
+        </div>
+        <div class="flex justify-content-center gap-2">
+            <p-button label="Cancel" class="p-button-outlined" (onClick)="visible4 = false" />
+            <p-button label="Save" (onClick)="visible4 = false" />
+        </div>
+    </p-dialog>

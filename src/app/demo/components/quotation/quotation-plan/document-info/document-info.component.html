@@ -1,0 +1,204 @@
+<div class="grid" >
+    <div class="lg:col-7 md:col-7 col-12">
+        <h2>{{'DOCUMENT.DocumentInfoforVerification' | translate}}</h2>
+        <p>{{'DOCUMENT.HiWeneedyourattentiontostartyourInsurance' | translate}}</p>
+    </div>
+    <div class="lg:col-5 md:col-5 col-12">
+        <div class="flex flex-wrap justify-content-start">
+            <div *ngIf="quoteNo"><b>{{'PREMIUM.QuoteNo' | translate}} - <span class="primaryTextColor">{{quoteNo}}</span></b>&nbsp;|&nbsp;</div>
+            <div *ngIf="quoteRefNo">{{'PREMIUM.ReferenceNo' | translate}}- <span class="primaryTextColor">{{quoteRefNo}}</span></div>
+        </div>
+    </div>
+    
+</div>
+<div class="flex flex-wrap justify-content-end">
+    <div class="card grid text-white surface-900 px-2 py-2" >
+        <div class="col-12">
+            <p class="mb-0">{{'PREMIUM.TotalPremium' | translate}}</p>
+            <h6 class="text-white mt-0">{{totalPremium | commaseparator}}&nbsp;({{currencyCode}})</h6>
+        </div>
+    </div>
+</div>
+<div class="grid" *ngIf="!endorsementSection || (endorsementSection && enableDocumentDetails)">
+    <div class="col-12 md:col-6 lg:col-8 px-5 offset-2">
+        <input style="display: none;" type="file" (change)="onUploadListDocuments($event,null,'direct','select')" #doc>
+        <div class="imag-card my-3" style="width:250px !important;height:80px !important;width:100% !important;border:1px dashed;background-color: whitesmoke;" appDragDropFileUpload (fileDropped)="onUploadListDocuments($event,null,'direct','drag')" (click)="doc.click()">
+            <div>
+                <div class="center">
+                    <b class="text-dark" style="font-size:1rem;position: relative;top:25px">
+                        <i class="far fa-images"></i> {{'DOCUMENT.DragorClick' | translate}}</b>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<ng-container *ngIf="uploadListDoc.length!=0">
+    <h5>{{'DOCUMENT.SelectedDocuments' | translate}}</h5><br>
+    <p-table *ngIf="tableView == 'table' else cardTableView" [value]="uploadListDoc" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+        <ng-template pTemplate="header">
+            <tr>
+                <th [pSortableColumn]="column" *ngFor="let column of columns">{{'DOCUMENT.'+column | translate}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-doc let-i="rowIndex">
+          <tr>
+            <!-- <td><p-checkbox [binary]="true"></p-checkbox></td> -->
+            <td>{{ i+1 }}</td>
+            <td>{{ doc.filename }}</td>
+            <td *ngIf="productId=='59'">
+                <p-dropdown inputId="section"
+                    appendTo="body" 
+                    class="w-full" styleClass="w-full" 
+                    [options]="individualDocumentList" [(ngModel)]="doc.locationId" 
+                    (onChange)="onChangeLocation(doc)"
+                    [optionLabel]="getLocationName()" 
+                    optionValue="LocationId" 
+                    [placeholder]="'DOCUMENT.SelectLocation' | translate">
+                </p-dropdown>
+            </td>
+            <td>
+                <p-dropdown inputId="section"
+                    appendTo="body" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="doc.sectionList" 
+                    [(ngModel)]="doc.sectionId" 
+                    (onChange)="onChangeSectionType(doc,i)"
+                    [optionLabel]="getSectionName()" 
+                    optionValue="SectionId" 
+                    [placeholder]="'DOCUMENT.SelectSection' | translate">
+                </p-dropdown>
+            </td>
+            <td>
+                <p-dropdown inputId="Id" 
+                    appendTo="body" class="w-full" 
+                    styleClass="w-full" [options]="doc.typeList" 
+                    [(ngModel)]="doc.Id" 
+                    (onChange)="onChangeIdType(doc)"
+                    [optionLabel]="getIdValue()" 
+                    optionValue="Id" 
+                    [placeholder]="'QUOTEGRID.Selectt' | translate">
+                </p-dropdown>
+            </td>
+            <td>
+                <p-dropdown inputId="docTypeId" 
+                appendTo="body" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="doc.docTypeList" 
+                    [(ngModel)]="doc.DocTypeId" 
+                    (onChange)="onChangeIdType(doc)"
+                    [optionLabel]="getDisplayName()" 
+                    optionValue="Code" 
+                    [placeholder]="'QUOTEGRID.Selectt' | translate">
+                </p-dropdown>
+            </td>
+            <!-- <td>{{ doc.PolicyEndDate }}</td> -->
+            <td >
+              <span class="p-buttonset">
+                <!-- <button pButton pRipple icon="pi pi-envelope" class="p-button-outlined"></button> -->
+                <button pButton pRipple icon="pi pi-upload" title="Upload" class="p-button-outlined" (click)="onFileUploadVehicleList(i)"></button>
+                <button pButton pRipple icon="pi pi-times" title="Delete" (click)="onDeleteSelectedDocument(i)" class="p-button-outlined"></button>
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+    </p-table>
+    <ng-template #cardTableView>
+        <div class="grid">
+          <div class="card w-25rem mr-4" *ngFor="let quotation of quotations">
+            <table>
+              <tr>
+                <td><p-chip label="Category" styleClass="bg-orange-500 text-white"></p-chip></td>
+                <td class="text-right"><span class="pi pi-circle-fill text-teal-600"></span> Status</td>
+              </tr>
+              <tr>
+                <td><h5>Customer Number</h5></td>
+              </tr>
+              <tr>
+                <td><b>Reference No</b></td>
+                <td class="text-right"><b>VirTin No</b></td>
+              </tr>
+              <tr>
+                <td>Jared</td>
+                <td class="text-right">William</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-envelope" class="p-button-outlined"></button>
+                    <button pButton pRipple icon="pi pi-inbox" class="p-button-outlined"></button>
+                    <button pButton pRipple icon="pi pi-user" class="p-button-outlined"></button>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+    </ng-template>
+</ng-container>
+<ng-container *ngIf="uploadedIndividualList.length!=0">
+    <h5>{{'DOCUMENT.UploadedDocuments' | translate}}</h5><br>
+    <div class="grid">
+        <div class="col-12 sm:col-12 md:col-12">
+            <p-table *ngIf="tableView == 'table' else cardTableView" [value]="uploadedIndividualList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="column" *ngFor="let column of uploadedColumns">{{'DOCUMENT.'+column | translate}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-doc let-i="rowIndex">
+                  <tr>
+                        <td>{{ i+1 }}</td>
+                        <td *ngIf="productId=='59'">{{doc.OriginalFileName}}</td>
+                        <td>{{doc.LocationName}}</td> 
+                        <td>{{doc.SectionName}}</td>
+                        <td>
+                            <ng-container *ngIf="doc.Id!='99999'">
+                                {{doc.Id}}
+                            </ng-container>
+                            <ng-container *ngIf="doc.Id=='99999'">
+                                ALL
+                            </ng-container>
+                        </td>
+                        <td>{{doc.DocumentDesc}}</td>
+                        <td>
+                            <span class="p-buttonset">
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-outlined" title="View" (click)="onViewListDocument(i,doc)"></button>
+                                <button pButton pRipple icon="pi pi-download" class="p-button-outlined" title="Download" (click)="onListDocumentDownload(i,doc)"></button>
+                                <button pButton pRipple icon="pi pi-trash" *ngIf="!endorsementSection || (endorsementSection && enableDocumentDetails)"  class="p-button-outlined" title="Delete" (click)="onDeleteListDocument(i,doc)"></button>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="uploadedIndividualList.length==0 && uploadListDoc.length==0">
+    <div class="text-center">
+        <b>No Document Available</b>
+    </div>
+</ng-container>
+<div class="flex flex-wrap justify-content-center">
+    <div>
+        <p-button [label]="'MOTORQUOTE.Back' | translate" (click)="getBacks()" class="mr-6" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
+    </div>
+    <div>
+        <p-button [label]="'QUOTEGRID.Proceed' | translate" (click)="onProceed()" class="text-l pi-button mt-6"></p-button>
+    </div>
+    
+</div>
+<p-dialog [header]="'DOCUMENT.ViewDocument' | translate" [(visible)]="viewImageSection" [modal]="true" styleClass="w-10 md:w-8 lg:w-6" [draggable]="false" [resizable]="false">
+    <div class="grid">
+        <div class="col-12 sm:col-12 md:col-12">
+            <div class="text-center">
+                {{viewImageFileName}}
+            </div>
+        </div>
+        <div class="col-12 sm:col-12 md:col-12">
+            <img [src]="viewImageUrl" width="600px">
+        </div>
+    </div>
+</p-dialog>

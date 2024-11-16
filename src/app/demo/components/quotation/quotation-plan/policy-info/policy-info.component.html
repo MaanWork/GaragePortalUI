@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-md-8 col-lg-8 col-xl-8 offset-md-2 offset-lg-2 offset-xl-2 col-12">
+        <!-- <button pButton pRipple icon="pi pi-trash"  class="p-button-outlined" title="Delete" (click)="displayPayment=!displayPayment"></button> -->
+        <div class="card w-full p-0 m-0 mt-1">
+            
+                <div class="inline-flex align-items-center justify-content-center gap-2 w-full">
+                    <h4 class="text-green-400 mt-1">{{'PolicyInfo.Hurray!!!' | translate}}
+                        <ng-container *ngIf="endorsementSection">{{'PolicyInfo.Endorsement' | translate}}</ng-container> {{'PolicyInfo.PolicyGeneratedSuccessfully' | translate}}</h4>
+                    </div>
+            <!-- <ng-container *ngIf="!">
+
+            </ng-container> -->
+            <div class="container p-3" *ngIf="!endorsementSection">
+                <div class="flex flex-wrap">
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="quoteRefNo">
+                        <span class="customFont">{{'PolicyInfo.ReferenceNumber' | translate}}</span><br>
+                        <span class="customFont2">{{quoteRefNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="quoteNo">
+                        <span class="customFont">{{'PolicyInfo.QuoteNumber' | translate}}</span><br>
+                        <span class="customFont2">{{quoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.PolicyNo">
+                        <span class="customFont">{{'PolicyInfo.PolicyNumber' | translate}}</span><br>
+                        <span class="customFont2">{{paymentDetails?.PolicyNo}}</span>
+                    </div>
+                </div>
+                <hr class="m-0 p-0">
+                <div class="flex flex-wrap">
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.DebitNoteNo">
+                        <span class="customFont">{{'PolicyInfo.DebitNoteNo' | translate}}</span><br>
+                        <span class="customFont2">{{paymentDetails?.DebitNoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.CreditNoteNo">
+                            <span class="customFont">{{'PolicyInfo.CreditNoteNo' | translate}}</span><br>
+                            <span class="customFont2">{{paymentDetails?.CreditNoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.MerchantReference">
+                        <span class="customFont">{{'PolicyInfo.MerchantReferenceNo' | translate}}</span><br>
+                        <span class="customFont2">{{paymentDetails?.MerchantReference}}</span>
+                    </div>
+                   
+                </div>
+                <hr class="m-0 p-0">
+                <div class="inline-flex align-items-center justify-content-center gap-2 w-full mt-2">
+                    <p-button [label]="'PolicyInfo.DebitNotePDF' | translate" styleClass="p-button-outlined" (click)="onDebitdownload(paymentDetails)" *ngIf="paymentDetails?.DebitNoteNo"></p-button>
+                    <p-button [label]="'PolicyInfo.CreditNotePDF' | translate" styleClass="p-button-outlined" (click)="onCreditdownload(paymentDetails)" *ngIf="paymentDetails?.CreditNoteNo"></p-button>
+                    <p-button [label]="'PolicyInfo.SchedulePDF' | translate" styleClass="p-button-outlined" (click)="onGetSchedule(paymentDetails)" *ngIf="paymentDetails?.PolicyNo"></p-button>
+                </div>
+            </div>
+            <div class="container p-3" *ngIf="endorsementSection">
+                <div class="flex flex-wrap">
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="quoteRefNo">
+                        <span class="customFont">{{'PolicyInfo.ReferenceNumber' | translate}}</span><br>
+                        <span class="customFont2">{{quoteRefNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="quoteNo">
+                        <span class="customFont">{{'PolicyInfo.QuoteNumber' | translate}}</span><br>
+                        <span class="customFont2">{{quoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="orgPolicyNo">
+                        <span class="customFont">{{'PolicyInfo.OriginalPolicyNumber' | translate}}</span><br>
+                        <span class="customFont2">{{orgPolicyNo}}</span>
+                    </div>
+                </div>
+                <hr class="m-0 p-0">
+                <div class="flex flex-wrap">
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="endorseCategory">
+                        <span class="customFont">{{'PolicyInfo.EndorsementCategory' | translate}}</span><br>
+                        <span class="customFont2">{{endorseCategory}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="endorsementName">
+                        <span class="customFont">{{'PolicyInfo.EndorsementName' | translate}}</span><br>
+                        <span class="customFont2">{{endorsementName}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="endorsePolicyNo">
+                        <span class="customFont">{{'PolicyInfo.EndorsementName' | translate}}</span><br>
+                        <span class="customFont2">{{endorsePolicyNo}}</span>
+                    </div>
+                </div>
+                <hr class="m-0 p-0">
+                <div class="flex flex-wrap">
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.DebitNoteNo">
+                        <span class="customFont">{{'PolicyInfo.DebitNoteNo' | translate}}</span><br>
+                        <span class="customFont2">{{paymentDetails?.DebitNoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.CreditNoteNo">
+                            <span class="customFont">{{'PolicyInfo.CreditNoteNo' | translate}}</span><br>
+                            <span class="customFont2">{{paymentDetails?.CreditNoteNo}}</span>
+                    </div>
+                    <div class="lg:col-4 md:col-4 col-4" *ngIf="paymentDetails?.MerchantReference">
+                        <span class="customFont">{{'PolicyInfo.MerchantReferenceNo' | translate}}</span><br>
+                        <span class="customFont2">{{paymentDetails?.MerchantReference}}</span>
+                    </div>
+                   
+                </div>
+                <hr class="m-0 p-0">
+                <div class="inline-flex align-items-center justify-content-center gap-2 w-full mt-2">
+                    <p-button [label]="'PolicyInfo.DebitNotePDF' | translate" styleClass="p-button-outlined" (click)="onDebitdownload(paymentDetails)" *ngIf="paymentDetails?.DebitNoteNo"></p-button>
+                    <p-button [label]="'PolicyInfo.CreditNotePDF' | translate" styleClass="p-button-outlined" (click)="onCreditdownload(paymentDetails)" *ngIf="paymentDetails?.CreditNoteNo"></p-button>
+                    <p-button [label]="'PolicyInfo.SchedulePDF' | translate" styleClass="p-button-outlined" (click)="onGetSchedule(paymentDetails)" *ngIf="paymentDetails?.PolicyNo"></p-button>
+                </div>
+            </div>
+        </div>
+        <div class="inline-flex align-items-center justify-content-center gap-2 w-full mt-2">
+            <p-button [label]="'PolicyInfo.Proceed' | translate" (click)="navigateTo()"></p-button>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="displayPayment" position="center" styleClass="lg:w-30rem">
+    <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-between gap-2 w-full">
+            <h4 class="text-green-400">{{'PolicyInfo.PolicyGeneratedSuccessfully' | translate}}</h4>
+        </div>
+    </ng-template>
+    <div class="container p-3">
+        <div class="grid">
+            <b class="col-12 md:col-6 p-0 mb-0">Reference Number</b>
+            <p class="col-12 md:col-6 md:text-right p-0 mb-0">test</p>
+            <b class="col-12 md:col-6 p-0 mb-0">Quote Number</b>
+            <p class="col-12 md:col-6 md:text-right p-0 mb-0">test</p>
+            <b class="col-12 md:col-6 p-0 mb-0">Policy Number</b>
+            <p class="col-12 md:col-6 md:text-right p-0 mb-0">test</p>
+            <b class="col-12 md:col-6 p-0 mb-0">Credit Quote Number</b>
+            <p class="col-12 md:col-6 md:text-right p-0 mb-0">test</p>
+            <b class="col-12 md:col-6 p-0 mb-0">Debit Quote Number</b>
+            <p class="col-12 md:col-6 md:text-right p-0 mb-0">test</p>
+        </div>
+        <div class="grid mt-5 justify-content-between">
+            <div>
+                <b>Need Help</b>
+                <p class="mt-2"><span class="pi pi-exclamation-circle"></span> Policy Issues</p>
+                <p><span class="pi pi-money-bill"></span> Payment Issues</p>
+                <p><span class="pi pi-box"></span> Others</p>
+            </div>
+            <div>
+                <b>Payment</b>
+                <p>Visa 90***</p>
+                <p-button label="Debit Note PDF" styleClass="p-button-outlined"></p-button>
+            </div>
+            <div>
+                <p-button label="Schedule PDF"></p-button>
+                <br>
+                <p-button label="Credit Note PDF" styleClass="p-button-outlined mt-4"></p-button>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="visible = false" label="Proceed" pAutoFocus [autofocus]="true"></p-button>
+    </ng-template>
+</p-dialog>
