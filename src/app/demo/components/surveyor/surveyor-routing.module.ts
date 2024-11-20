@@ -4,6 +4,7 @@ import { WorkOrderComponent } from './work-order/work-order.component';
 import { DamageDetailsComponent } from './damage-details/damage-details.component';
 import { TotalAmountComponent } from './total-amount/total-amount.component';
 import { SurveyorHomeComponent } from './surveyor-home/surveyor-home.component';
+import { CompareQuoteComponent } from './compare-quote/compare-quote.component';
 //import { RejectedQuotesComponent } from './rejected-quotes.component';
 // { VieQuoteDetailsComponent } from './viewquote-details.component';
 
@@ -26,7 +27,10 @@ const routes: Routes = [
     path: 'totalamount',
     component: TotalAmountComponent,
   },
-  
+  {
+    path: 'compareQuote/:ClaimNo',
+    component: CompareQuoteComponent,
+  },
 
 ];
 

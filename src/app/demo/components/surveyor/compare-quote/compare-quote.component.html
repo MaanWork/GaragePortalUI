@@ -1,0 +1,81 @@
+<div class="comparison-container">
+    <!-- Buttons to add/remove vehicles for comparison -->
+    <div class="vehicle-list">
+      <h3>Garage Quotes to compare:</h3>
+      <div *ngFor="let vehicle of vehicles" class="vehicle-card">
+        <p-card 
+        
+        [ngClass]="{'selected-vehicle': vehicle === selectedGarage}" 
+        styleClass="vehicle-card-item">
+        <div class="grid justify-content-between">
+          <div class="flex flex-warp justify-content-start"  [ngClass]="vehicle === selectedGarage ? '' : 'highlighted'">
+            <div class="col-12 lg:col-6 md:col-6">
+             <h3> <b>{{vehicle.GarageName}}</b></h3>
+            </div> 
+          </div>
+          <div class="flex flex-warp justify-content-start pr-5">
+            <div class="col-12 lg:col-6 md:col-6 w-full">
+              <button pButton label="Add" icon="pi pi-plus" class="mb-3 " (click)="saveSelected(vehicle)"></button>
+            </div>
+          </div>   
+        </div>
+        <!-- RadioButton to select vehicle -->
+       
+
+        <div class="vehicle-info">
+          <p><strong>Claim No. :</strong> {{ vehicle.ClaimNo }}</p>
+          <p><strong>Quotation No. :</strong> {{ vehicle.QuotationNo }}</p>
+          <p><strong>WorkOrder No. :</strong> {{ vehicle.WorkOrderNo }}</p>
+          <p><strong>Location :</strong> {{ vehicle.Location }}</p>
+        </div>
+          <p-footer>
+            <button pButton label="Add to Comparison" icon="pi pi-plus" (click)="addToComparison(vehicle)" *ngIf="!selectedVehicles.includes(vehicle)"></button>
+            <button pButton label="Remove" icon="pi pi-minus" (click)="removeFromComparison(vehicle)" *ngIf="selectedVehicles.includes(vehicle)"></button>
+          </p-footer>
+          
+        </p-card>
+      </div>
+    </div>
+  
+    <!-- Comparison Table for selected vehicles -->
+    <div *ngIf="selectedVehicles.length > 0" class="comparison-table">
+        <h3>Comparison</h3>
+        <p-table [value]="getComparisonRows()">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Details</th>
+              <th *ngFor="let vehicle of selectedVehicles">{{ vehicle.GarageName }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-feature>
+            <tr>
+              <td>{{ feature.name }}</td>
+              <td *ngFor="let vehicle of selectedVehicles">
+                <span *ngIf="feature.values === 'ClaimNo'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'QuotationNo'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'SparepartsDealerId'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'GarageName'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'ReplacementCost'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'TotalAmountReplacement'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'RepairLabour'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'TotalAmountRepairLabour'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'NetAmount'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'UnknownAccidentDeduction'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'AmountToBeRecovered'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'TotalAfterDeductions'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'VatRate'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'VatAmount'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'TotalWithVAT'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'SalvageDeduction'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'WorkOrderNo'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'WorkOrderDate'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'SettlementTo'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'Location'">{{ vehicle[feature.values] }}</span>
+                  <span *ngIf="feature.values === 'DeliveryDate'">{{ vehicle[feature.values] }}</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+  </div>
+</div>
+  

@@ -10,6 +10,7 @@ import { WorkOrder } from '../../quotation/quotation-plan/models/WorkOrder';
 import { FormGroup } from '@angular/forms';
 import * as Mydatas from '../../../../app-config.json';
 import { filter } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-work-order',
@@ -61,6 +62,7 @@ export class WorkOrderComponent {
   viewImageSection: boolean=false;
   GarageLoginId: any;
   DealerCondition: any;
+  errorMsg: string;
   constructor(private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
@@ -366,64 +368,96 @@ export class WorkOrderComponent {
       (err) => { },
     );
   }
+  validation(){
+    Swal.fire({
+      title: `<strong>
+        <ng-container>Errors!</ng-container>
+        </strong>`,
+      icon: 'info',
+      html:
+        `<ul class="list-group errorlist">
+         ${this.errorMsg}
+      </ul>`,
+      showCloseButton: true,
+      focusConfirm: false,
+      confirmButtonText:
+        `<i class="fa fa-thumbs-down"></i> <ng-container >Errors!</ng-container> `,
+      confirmButtonAriaLabel: 'Thumbs down, Errors!',
+    })
+  }
   onSubmit(){
-    let DeliveryDate,WorkOrderDate
-    if (this.productItem.DeliveryDate != undefined && this.productItem.DeliveryDate != null && this.productItem.DeliveryDate != '') {
-      if(String(this.productItem.DeliveryDate).includes('/')){
-        DeliveryDate = this.productItem.DeliveryDate;
-      }
-      else DeliveryDate = this.datePipe.transform(this.productItem.DeliveryDate,'dd/MM/yyyy')
+    if(this.productItem.WorkOrderType=='' || this.productItem.WorkOrderType==undefined || this.productItem.WorkOrderType==null){
+     this.errorMsg='Please Select Quotation Type '
+     this.validation() 
+   }
+   else if(this.productItem.WorkOrderNumber=='' || this.productItem.WorkOrderNumber==undefined || this.productItem.WorkOrderNumber==null){
+     this.errorMsg='Please Enter Quotation Number'
+     this.validation() 
+   }
+    else if(this.productItem.SettlementType=='' || this.productItem.SettlementType==undefined || this.productItem.SettlementType==null){
+      this.errorMsg='Please Select Settlement Type '
+      this.validation() 
     }
-    if (this.productItem.WorkOrderDate != undefined && this.productItem.WorkOrderDate != null && this.productItem.WorkOrderDate != '') {
-      if(String(this.productItem.WorkOrderDate).includes('/')){
-        WorkOrderDate = this.productItem.WorkOrderDate;
+    else{
+      let DeliveryDate,WorkOrderDate
+      if (this.productItem.DeliveryDate != undefined && this.productItem.DeliveryDate != null && this.productItem.DeliveryDate != '') {
+        if(String(this.productItem.DeliveryDate).includes('/')){
+          DeliveryDate = this.productItem.DeliveryDate;
+        }
+        else DeliveryDate = this.datePipe.transform(this.productItem.DeliveryDate,'dd/MM/yyyy')
       }
-      else WorkOrderDate = this.datePipe.transform(this.productItem.WorkOrderDate,'dd/MM/yyyy')
-    }
-    // if(this.userType=='Surveyor'){
-    //   this.GarageName='';
-    //   this.GarageId='';
-    let ReqObj = {
-        "ClaimNo": this.CliamNo,
-        "WorkOrderNo": this.productItem.WorkOrderNumber,
-        "WorkOrderType": this.productItem.WorkOrderType,
-        "WorkOrderDate": WorkOrderDate,
-        "SettlementType": this.productItem.SettlementType,
-        "SettlementTo": this.productItem.Settlement,
-        "GarageName": this.GarageName,
-        "GarageId": this.GarageId,
-        "Location": this.productItem.PrimaryLocation,
-        "RepairType": this.productItem.RepairType,
-        "QuotationNo": this.QuotationNo,
-        "DeliveryDate": DeliveryDate,
-        "JointOrderYn": this.productItem.JoinOrder,
-        "SubrogationYn": this.productItem.Subrogation,
-        "TotalLoss": this.productItem.TotalLoss,
-        "LossType": this.productItem.TotalLossType,
-        "Remarks": this.productItem.Remarks,
-        "CreatedBy": this.loginId,
-        "UpdatedBy": this.loginId,
-        "QuoteStatus": this.productItem.QuoteStatus,
-        "UserType": this.userType,
-        "SparepartsDealerId": this.DealerDrop,
-        "SettlementTypeDesc":this.SettlementTypeList.find(ele => ele.Code == this.productItem.SettlementType).CodeDesc,
-        "SettlementToDesc":this.productItem.Settlement,
-        "WorkOrderTypeDesc":this.productItem.WorkOrderType
+      if (this.productItem.WorkOrderDate != undefined && this.productItem.WorkOrderDate != null && this.productItem.WorkOrderDate != '') {
+        if(String(this.productItem.WorkOrderDate).includes('/')){
+          WorkOrderDate = this.productItem.WorkOrderDate;
+        }
+        else WorkOrderDate = this.datePipe.transform(this.productItem.WorkOrderDate,'dd/MM/yyyy')
+      }
+      // if(this.userType=='Surveyor'){
+      //   this.GarageName='';
+      //   this.GarageId='';
+      let ReqObj = {
+          "ClaimNo": this.CliamNo,
+          "WorkOrderNo": this.productItem.WorkOrderNumber,
+          "WorkOrderType": this.productItem.WorkOrderType,
+          "WorkOrderDate": WorkOrderDate,
+          "SettlementType": this.productItem.SettlementType,
+          "SettlementTo": this.productItem.Settlement,
+          "GarageName": this.GarageName,
+          "GarageId": this.GarageId,
+          "Location": this.productItem.PrimaryLocation,
+          "RepairType": this.productItem.RepairType,
+          "QuotationNo": this.QuotationNo,
+          "DeliveryDate": DeliveryDate,
+          "JointOrderYn": this.productItem.JoinOrder,
+          "SubrogationYn": this.productItem.Subrogation,
+          "TotalLoss": this.productItem.TotalLoss,
+          "LossType": this.productItem.TotalLossType,
+          "Remarks": this.productItem.Remarks,
+          "CreatedBy": this.loginId,
+          "UpdatedBy": this.loginId,
+          "QuoteStatus": this.productItem.QuoteStatus,
+          "UserType": this.userType,
+          "SparepartsDealerId": this.DealerDrop,
+          "SettlementTypeDesc":this.SettlementTypeList.find(ele => ele.Code == this.productItem.SettlementType).CodeDesc,
+          "SettlementToDesc":this.productItem.Settlement,
+          "WorkOrderTypeDesc":this.productItem.WorkOrderType
+      }
+      
+      let urlLink = `${this.CommonApiUrl}workOrder/surveyor/assign`;
+      this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+        (data: any) => {
+          console.log(data);
+          if(data.Response){
+            if(data.Message=='Success'){
+              sessionStorage.setItem("QuotationNo",data.Response.QuotationNo)
+              this.router.navigate(['/surveyor/damagedetail'])
+            }
+          }
+        },
+        (err) => { },
+      );
     }
     
-    let urlLink = `${this.CommonApiUrl}workOrder/surveyor/assign`;
-    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
-      (data: any) => {
-        console.log(data);
-        if(data.Response){
-          if(data.Message=='Success'){
-            sessionStorage.setItem("QuotationNo",data.Response.QuotationNo)
-            this.router.navigate(['/surveyor/damagedetail'])
-          }
-        }
-      },
-      (err) => { },
-    );
   }
   getGarageClaim(){
     let ReqObj = {
@@ -640,7 +674,7 @@ export class WorkOrderComponent {
       "ClaimNo": this.CliamNo,
       "UserType": this.userType,
       "LoginId": this.loginId,
-       "GarageLoginId": this.GarageLoginId
+      "GarageLoginId": this.GarageLoginId
     }
     let urlLink = `${this.CommonApiUrl}document/getByClaim`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
@@ -679,16 +713,6 @@ export class WorkOrderComponent {
     );
   }
   onListDocumentDownload(index,doc){
-    //let urlLink = `${this.CommonApiUrl}document/download/files/${doc.FileName}`;
-    // this.sharedService.onGetMethodSync(urlLink).subscribe(
-    //   (data: any) => {
-    //     console.log(data);
-    //     if(data.Result){
-        
-    //     }
-    //   },
-    //   (err) => { },
-    // );
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', doc?.ImgUrl);
@@ -703,7 +727,4 @@ export class WorkOrderComponent {
     this.viewImageFileName =  doc.FileName;
     this.viewImageSection = true;
   }
-
-
- 
 }

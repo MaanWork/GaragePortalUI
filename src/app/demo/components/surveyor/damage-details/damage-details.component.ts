@@ -160,7 +160,8 @@ export class DamageDetailsComponent {
 
     ReqObj = {
      "ClaimNo": this.CliamNo,
-     "QuotationNo": this.QuotationNo
+     "QuotationNo": this.QuotationNo,
+     "GarageId":this.loginId
    }
    urlLink = `${this.CommonApiUrl}damage/surveyor/view`;
   }
@@ -250,10 +251,6 @@ getRepairReplaceType(){
 }
 
 DamageDictDesc(rowData){
-  // //alert(rowData)
-  // let entry =this.DamageDirectionList.find(ele=>ele.Code == rowData.Code)
-  // alert(entry)
-  // return entry;
 }
 totalCalc(rowData){
   let ReplacementCharge
@@ -319,7 +316,7 @@ onSubmit(){
 validation(){
   Swal.fire({
     title: `<strong>
-      <ng-container *ngIf="this.lang=='en'">Errors!</ng-container>
+      <ng-container >Errors!</ng-container>
       </strong>`,
     icon: 'info',
     html:
@@ -329,7 +326,7 @@ validation(){
     showCloseButton: true,
     focusConfirm: false,
     confirmButtonText:
-      `<i class="fa fa-thumbs-down"></i> <ng-container *ngIf="this.lang=='en'">Errors!</ng-container> `,
+      `<i class="fa fa-thumbs-down"></i> <ng-container>Errors!</ng-container> `,
     confirmButtonAriaLabel: 'Thumbs down, Errors!',
   })
 }
@@ -602,6 +599,8 @@ saveToalAmount(){
     "VatAmount":this.productItem.VATAmount,
     "TotalWithVAT": this.productItem.VATAmount,
     "SalvageDeduction": this.productItem.salvageDeduction,
+    "GarageId":this.loginId,
+    "QuotationNo":this.QuotationNo
   }
   let urlLink = `${this.CommonApiUrl}damage/surveyor/save`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
@@ -618,6 +617,7 @@ saveToalAmount(){
 getTotalAmount(){
   let ReqObj = {
     "ClaimNo": this.CliamNo,
+    "QuotationNo":this.QuotationNo
   }
   let urlLink = `${this.CommonApiUrl}damage/surveyor/view/spareparts`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(

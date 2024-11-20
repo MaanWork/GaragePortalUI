@@ -198,6 +198,7 @@
                     <td>{{ vehicle.Type }}</td>
                     <td>{{ vehicle.VehicleRegno }}</td>
                     <td>{{ vehicle.AssignedTo }}</td>
+                    <td><button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" [routerLink]="['compareQuote',vehicle.ClaimNo]" routerLinkActive="router-link-active" ></button></td>
                   </tr>
                 </ng-template>
                 <ng-container>

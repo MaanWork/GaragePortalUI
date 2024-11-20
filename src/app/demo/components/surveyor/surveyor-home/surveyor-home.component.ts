@@ -78,7 +78,7 @@ export class SurveyorHomeComponent {
   }
   setHeaders(){
     if(this.lang=='en'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.',  'Type', 'Vehicle Reg #','Purchased by Where',];
+      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.',  'Type', 'Vehicle Reg #','Purchased by Where','Compare Quote'];
       this.columnsP = [ 'S.#','Claim No', 'Quotation No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
       this.columnsC = [ 'S.#','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Garage Price', 'Dealer Price','Garage Id','Dealer Id', 'Vehicle Reg #' ,'Entry Date'];
       this.columnsDealer = ['Claim No','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Dealer Price','Garage Price','Vehicle Reg #' ,'Entry Date'];
@@ -434,4 +434,5 @@ onCheckGarageCoverAll(){
     (err) => { },
   );
 }
+
 }

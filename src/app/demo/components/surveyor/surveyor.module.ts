@@ -54,11 +54,12 @@ import { DialogModule } from 'primeng/dialog';
 import { SurveyorHomeComponent } from './surveyor-home/surveyor-home.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { TotalAmountComponent } from './total-amount/total-amount.component';
+import { CompareQuoteComponent } from './compare-quote/compare-quote.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
 @NgModule({
-  declarations: [WorkOrderComponent, DamageDetailsComponent, SurveyorHomeComponent,TotalAmountComponent],
+  declarations: [WorkOrderComponent, DamageDetailsComponent, SurveyorHomeComponent,TotalAmountComponent, CompareQuoteComponent],
   imports: [
     CommonModule,
     TableModule,
