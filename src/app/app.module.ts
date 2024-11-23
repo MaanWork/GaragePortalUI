@@ -35,6 +35,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ChipModule } from 'primeng/chip';
 import { FnolHomeComponent } from './demo/components/Fnol/fnol-home/fnol-home.component';
+import { SparePartsHomeComponent } from './demo/components/spareparts/spare-parts-home/spare-parts-home.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
     return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }

@@ -298,7 +298,8 @@ export class AppMenuComponent implements OnInit {
               }
               else if(menu.CodeDesc=='fnol') entry["routerLink"] =  ['/fnol'];
               else if(menu.CodeDesc=='Overview') entry["routerLink"] =  ['/'];
-              else if(menu.CodeDesc=='Support') entry['routerLink'] = ['/']
+              else if(menu.CodeDesc=='Support') entry['routerLink'] = ['/'];
+              else if(menu.CodeDesc=='SpareParts') entry['routerLink'] = ['/spareparts']
               else entry["routerLink"] =  [menu.link]
               if (this.userType == 'Issuer' && this.typeValue=='high') {
                 if(menu.CodeDesc=='Portfolio') entry["routerLink"] =  ['/Home/ApproverPortfolio']

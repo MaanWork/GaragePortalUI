@@ -1,1 +1,80 @@
-<p>create-admin works!</p>
+<div class="grid ">
+    <div class="col-12 lg:col-4 md:col-4 lg:col-4">
+    </div>
+    <div class="col-12 lg:col-4 md:col-4 lg:col-4">
+    </div>
+    <div class="col-12 lg:col-2 md:col-2 lg:col-2 "></div>
+    <div class="flex flex-warp justify-content-end lg:col-2 md:col-2 lg:col-2 ">
+        <p-button label="Add New Admin" size="small" [routerLink]="['/loginCreation/AddNew/','Admin']" routerLinkActive="router-link-active" ></p-button>
+    </div>
+</div> 
+
+<ng-container >
+    <!-- <h5>Selected Documents</h5><br> -->
+    <p-table #dtEmployeeExist [value]="adminLoginList" [tableStyle]="{'min-width':'50rem'}" [paginator]="true" [rows]="5"
+    [globalFilterFields]="['LoginId','UserName','UserMail','CreatedBy','UserMobile']">
+        <ng-template pTemplate="caption">
+            <div class="flex flex wrap justify-content-end">
+            <div class="table-header">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dtEmployeeExist.filterGlobal($event.target.value, 'contains')" placeholder="Global Search" />
+                </span>
+            </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>S.No</th>
+                <th>Login Id </th>
+                <th>User Name </th>
+                <th>Email ID </th>
+                <th>Created Date</th>
+                <th>Mobile No</th>
+                <th>Status </th>
+                <th>Action </th>
+                <!-- <th>Configure </th>
+                <th>View </th> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data let-i="rowIndex">
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{data.LoginId}}</td>
+            <td>{{data.Loginname}}</td>
+            <td>{{data.Emailid}}</td>
+            <td>{{data.CreatedBy}}</td>
+            <td>{{data.Mobileno}}</td>
+            <td >
+                <ng-container *ngIf="data.Status=='Y'">Active</ng-container>
+                <ng-container *ngIf="data.Status=='N'">DeActive</ng-container>
+            <td>
+                <span class="p-buttonset">
+                    <button pButton pRipple icon="pi pi-pencil" title="Edit" class="p-button-outlined" (click)="EditDetailsView(data,'Admin')" ></button>
+                    <!-- <button pButton pRipple icon="pi pi-cog" title="Configure" (click)="op.toggle($event)" class="p-button-outlined" ></button> -->
+                    <!-- <button pButton pRipple icon="pi pi-eye" title="View" (click)="brokerDetailsView(data)"  class="p-button-outlined"></button> -->
+                </span>
+            </td>
+          </tr>
+          <!-- <p-overlayPanel #op [style]="{ width: 'auto'}" >
+            <div class="input-control-container">
+                <div class="input-form-radio-box mt-2">
+                    <div class="radio-toolbar1 radio-toolbar">
+                        <input id="Branch" type="radio" name="rentOwnHome" (click)="branchDataList(data.LoginId)"  value="Branch">
+                        <label for="Branch" style="background-color: primary;" ><img style="max-width: 30px;max-height: 10px;" >Branch</label>
+                        <input id="Product" type="radio" name="rentOwnHome"   value="Product" (click)="ProductDataList(data)">
+                        <label for="Product" ><img style="max-width: 30px;max-height: 10px;">Product</label>
+                        <input id="Cover" type="radio" name="rentOwnHome"   value="Cover" (click)="ConfigPopUp('Cover',data)"> 
+                        <label for="Cover" ><img style="max-width: 30px;max-height: 10px;" >Cover</label>
+                        <input id="Deposit" type="radio" name="rentOwnHome"   value="Deposit" (click)="depositList(data.LoginId)">
+                        <label for="Deposit" ><img style="max-width: 30px;max-height: 10px;" >Deposit</label>
+                        <input id="PaymentTypes" type="radio" name="rentOwnHome"   value="PaymentTypes" (click)="PaymentTypes(data)">
+                        <label for="PaymentTypes" ><img style="max-width: 30px;max-height: 10px;" >Payment Types</label>
+                    </div>
+                </div>
+            </div>
+        </p-overlayPanel> -->
+    
+        </ng-template>
+    </p-table>
+</ng-container>

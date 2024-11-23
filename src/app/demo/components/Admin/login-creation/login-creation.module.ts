@@ -42,6 +42,7 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
 import { CreateDealerComponent } from './create-dealer/create-dealer.component';
 import { CreateGarageComponent } from './create-garage/create-garage.component';
 import { CreateSurveyorComponent } from './create-surveyor/create-surveyor.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 @NgModule({
   declarations: [
     LoginCreationComponent,
@@ -52,6 +53,7 @@ import { CreateSurveyorComponent } from './create-surveyor/create-surveyor.compo
     CreateSurveyorComponent,
     CreateDealerComponent,
     CreateGarageComponent,
+    LoginFormComponent,
 
     ],
   imports: [

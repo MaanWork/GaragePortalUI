@@ -139,8 +139,8 @@ export class LoginComponent {
                     //   this.router.navigate(['/garage']);
                     // }
                   }
-                  else  if (res?.ErrorMessage && res?.ErrorMessage.length > 0 || res?.Response?.ErrorMessage && res?.Response?.ErrorMessage.length > 0) {
-                    const errorList: any[] = res.ErrorMessage || res?.Response?.ErrorMessage;
+                  else if (res?.ErrorMessage && res?.ErrorMessage.length > 0 || res?.Response?.ErrorMessage && res?.Response?.ErrorMessage.length > 0 || res?.Message && res?.ErrorMessage.length > 0) {
+                    const errorList: any[] = res.ErrorMessage || res?.Response?.ErrorMessage || res?.Message;
                     let ulList:any='';
                     let entry:any[] =  errorList.filter(ele=>ele.Field=='SessionError')
                         if(res.ChangePasswordYn=='Y'){
@@ -292,7 +292,7 @@ export class LoginComponent {
       this.changePasswordSection=false;this.forget=false;
     }
     forgetSubmit(){
-      const urlLink = `${this.CommonApiUrl}api/forgotpassword`;
+      const urlLink = `${this.CommonApiUrl}login/api/forgotpassword`;
       // const formData = this.ForgetForm.value;
   
       const reqData = {
@@ -304,7 +304,7 @@ export class LoginComponent {
         (data: any) => {
           let res: any = data;
           console.log(data);
-          if (data.Response) {
+          if (data.Result) {
             Swal.fire({
               title: '<strong>Forget Password </strong>',
               icon: 'info',
@@ -400,7 +400,7 @@ export class LoginComponent {
     onsubmit() {
       let p=this.pa
       if(this.password2!=this.password1){
-        const urlLink = `${this.CommonApiUrl}api/changepassword`;
+        const urlLink = `${this.CommonApiUrl}login/api/changepassword`;
         const reqData = {
           "LoginId": this.username1,
           "NewPassword": this.password1,
@@ -411,7 +411,7 @@ export class LoginComponent {
           (data: any) => {
             let res: any = data;
             console.log(data);
-            if (data.Response) {
+            if (data.Result) {
               Swal.fire({
                 title: '<strong>Change Password </strong>',
                 icon: 'info',
@@ -605,8 +605,6 @@ export class LoginComponent {
       }
   
     }
-
-
     onLogin() {
       this.submitted = true;
       let searchValue = "";

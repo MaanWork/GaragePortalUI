@@ -27,6 +27,7 @@ import { CrmHomeComponent } from '../CRM/crm-home/crm-home.component';
 import { GarageComponent } from '../garage/garage-home/garage.component';
 import { DamageDetailsComponent } from '../garage/damage-details/damage-details.component';
 import { WorkOrderComponent } from '../garage/work-order/work-order.component';
+import { SparePartsHomeComponent } from '../spareparts/spare-parts-home/spare-parts-home.component';
 
 
 @NgModule({
@@ -96,6 +97,10 @@ import { WorkOrderComponent } from '../garage/work-order/work-order.component';
         {
           path: 'fnol',
           loadChildren: () => import('../../components/Fnol/fnol.module').then(m => m.FnolModule)
+        },
+        {
+          path: 'spareparts', 
+          loadChildren: () => import('../../components/spareparts/spare-parts-home/spare-parts-home.module').then(m => m.SparePartsHomeModule)
         },
         { path: '', component: CustomerDetailComponent },
     ])],

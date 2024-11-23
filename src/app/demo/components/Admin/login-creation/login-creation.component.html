@@ -1,13 +1,20 @@
 <div class="card">
     <p-tabView [activeIndex]="tabIndex"  (onChange)="onTabClicked($event)">
         <p-tabPanel header="Admin">
-           <app-create-admin></app-create-admin>
+            <!-- [data]="adminLoginList" -->
+           <app-create-admin ></app-create-admin>
         </p-tabPanel>
-        <!-- <p-tabPanel header="User">
-           <app-user></app-user>
+        <p-tabPanel header="Surveyor">
+            <!-- [data]="surveyorLoginList" -->
+           <app-create-surveyor ></app-create-surveyor>
         </p-tabPanel>
-        <p-tabPanel header="Insurance Employee" >
-            <app-insurence-emp></app-insurence-emp>
-        </p-tabPanel> -->
+        <p-tabPanel header="Garage" >
+            <!-- [data]="garageLoginList" -->
+            <app-create-garage ></app-create-garage>
+        </p-tabPanel>
+        <p-tabPanel header="Dealer" >
+            <!-- [data]="dealerLoginList" -->
+            <app-create-dealer ></app-create-dealer>
+        </p-tabPanel>
     </p-tabView>
 </div>

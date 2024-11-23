@@ -2080,8 +2080,8 @@ getType3(type){
 		);
 	}
 	taxExcepted(){
-			let fieldList=this.additionalInfoFields[0].fieldGroup;
-			for(let field of fieldList){
+		let fieldList=this.additionalInfoFields[0].fieldGroup;
+		for(let field of fieldList){
 			if(this.productItem.isTaxExempted=='Y'){
 				if(field.key=='TaxExemptedId'){
 					field.hide=false;field.hideExpression=false;
