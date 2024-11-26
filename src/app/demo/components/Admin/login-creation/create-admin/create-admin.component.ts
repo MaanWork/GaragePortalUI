@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as Mydatas from '../../../../../app-config.json';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
+import { AllRisk } from '../../../quotation/quotation-plan/models/AllRisk';
 
 @Component({
   selector: 'app-create-admin',
@@ -10,6 +11,7 @@ import { SharedService } from 'src/app/shared/shared.service';
   styleUrls: ['./create-admin.component.scss']
 })
 export class CreateAdminComponent {
+  @Input("data") adminLoginList: any[] = [];
   public AppConfig: any = (Mydatas as any).default;
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
@@ -27,7 +29,7 @@ export class CreateAdminComponent {
   userType: any;
   brokerbranchCode: any;
   allLoginList: any[]=[];
-  adminLoginList: any[]=[];
+  //adminLoginList: any[]=[];
   surveyorLoginList: any[]=[];
   dealerLoginList: any[]=[];
   garageLoginList: any[]=[];
@@ -44,7 +46,9 @@ export class CreateAdminComponent {
       this.GarageId = this.userDetails.Response.UserName;
       this.userType = this.userDetails.Response.UserType;
       this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
-      this.getAllLogins()
+     // this.getAllLogins();
+      console.log(this.adminLoginList,"adminLoginListadminLoginListadminLoginList");
+      
     }
 
     getAllLogins() {
@@ -58,7 +62,7 @@ export class CreateAdminComponent {
           if (data.Response) {
             this.allLoginList = data.Response;
             // let adminList,surveyorList,dealerList,garageList;
-            this.adminLoginList=this.allLoginList.filter(ele=>ele.UserType=='Admin');
+           // this.adminLoginList=this.allLoginList.filter(ele=>ele.UserType=='Admin');
             // this.surveyorLoginList=this.allLoginList.filter(ele=>ele.UserType=='Surveyor');
             // this.dealerLoginList=this.allLoginList.filter(ele=>ele.UserType=='Dealer');
             // this.garageLoginList=this.allLoginList.filter(ele=>ele.UserType=='Garage');

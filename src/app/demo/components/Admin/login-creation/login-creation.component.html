@@ -2,19 +2,19 @@
     <p-tabView [activeIndex]="tabIndex"  (onChange)="onTabClicked($event)">
         <p-tabPanel header="Admin">
             <!-- [data]="adminLoginList" -->
-           <app-create-admin ></app-create-admin>
+           <app-create-admin [data]="adminLoginList"></app-create-admin>
         </p-tabPanel>
         <p-tabPanel header="Surveyor">
             <!-- [data]="surveyorLoginList" -->
-           <app-create-surveyor ></app-create-surveyor>
+           <app-create-surveyor [data]="surveyorLoginList"></app-create-surveyor>
         </p-tabPanel>
         <p-tabPanel header="Garage" >
             <!-- [data]="garageLoginList" -->
-            <app-create-garage ></app-create-garage>
+            <app-create-garage [data]="garageLoginList"></app-create-garage>
         </p-tabPanel>
         <p-tabPanel header="Dealer" >
             <!-- [data]="dealerLoginList" -->
-            <app-create-dealer ></app-create-dealer>
+            <app-create-dealer [data]="dealerLoginList"></app-create-dealer>
         </p-tabPanel>
     </p-tabView>
 </div>

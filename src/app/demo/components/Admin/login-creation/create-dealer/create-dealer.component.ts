@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as Mydatas from '../../../../../app-config.json';
@@ -27,10 +27,11 @@ export class CreateDealerComponent {
   userType: any;
   brokerbranchCode: any;
   allLoginList: any[]=[];
-  adminLoginList: any[]=[];
-  surveyorLoginList: any[]=[];
-  dealerLoginList: any[]=[];
+  // adminLoginList: any[]=[];
+  // surveyorLoginList: any[]=[];
+  //dealerLoginList: any[]=[];
   garageLoginList: any[]=[];
+  @Input("data") dealerLoginList: any[] = [];
   constructor(private router:Router,
     private sharedService:SharedService,public datePipe:DatePipe) {
       this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
@@ -44,7 +45,7 @@ export class CreateDealerComponent {
       this.GarageId = this.userDetails.Response.UserName;
       this.userType = this.userDetails.Response.UserType;
       this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
-      this.getAllLogins()
+      //this.getAllLogins()
     }
 
     getAllLogins() {
