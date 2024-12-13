@@ -3606,7 +3606,7 @@ export class RiskDetailsComponent {
                         if(i==this.uwQuestionList.length) this.onSaveUWQues(uwList,data.Result,type);
                       }
                     }
-                    else alert("else");this.tabIndex+=1;
+                    else this.tabIndex+=1;
                   } 
                 }
               }
