@@ -47,8 +47,9 @@
                   <td>{{ fnol.LossLocation }}</td>
                   <td>{{ fnol.PoliceStation }}</td>
                   <td>
-                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="getfnolEdit(fnol)" ></button>
-                  </td>
+                      <button pButton pRipple icon="pi pi-pencil" *ngIf="!fnol.FnolNo" class="p-button-outlined" (click)="getfnolEdit(fnol)" ></button>
+                      <button pButton pRipple icon="pi pi-eye" *ngIf="fnol.FnolNo" class="p-button-outlined" (click)="getfnolEditView(fnol)" ></button>
+                    </td>
                   <td>
                     <button pButton pRipple icon="pi pi-list" class="p-button-outlined" ></button>
                   </td>

@@ -1,0 +1,59 @@
+
+.dialog-content {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #4CAF50;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .info-item {
+    margin-bottom: 15px;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+  }
+  
+  .info-item i {
+    margin-right: 10px;
+    color: #4CAF50;
+    font-size: 1.3em;
+  }
+  
+  .info-item strong {
+    width: 120px;
+    color: #333;
+  }
+  
+  p-footer {
+    text-align: right;
+  }
+  
+  .p-button-rounded {
+    border-radius: 50px;
+  }
+  
+  .p-button-info {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .p-button-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .p-button-info:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .p-button-danger:hover {
+    background-color: #c82333;
+    border-color: #c82333;
+  }
+  

@@ -48,6 +48,7 @@ export class DamageDetailsComponent {
   Type: string;
   QuoteStatus:any;
   QuoteStatusList: any[]=[];
+  PartTypeList: any[]=[];
   constructor(private messageService: MessageService,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -103,6 +104,7 @@ export class DamageDetailsComponent {
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
   this.getRepairReplaceType();
+  this.getPartType();
   // if(this.DamageDeatilsList.length!=0){
   //   this.grandTotal1 = this.addTotalsToData(this.DamageDeatilsList);
   // }
@@ -370,4 +372,17 @@ addTotalsToData(dataList){
 saveDamageStaus(){
 
 }
+getPartType(){
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+          this.PartTypeList = data.Result;
+      }
+    },
+    (err) => { },
+  );
+}
+
 }

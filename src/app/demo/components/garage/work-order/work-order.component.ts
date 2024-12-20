@@ -88,7 +88,7 @@ export class WorkOrderComponent {
 		this.setHeaders();
 
 		this.checkFieldNames()}
-     	this.maxDobDate = new Date(year - 18,month, day );
+    this.maxDobDate = new Date(year - 18,month, day );
 		// if(this.productItem.IdType=='1' || this.productItem.IdType==1){
 		// 	this.productItem.dobOrRegDate=this.maxDobDate;
 		// }
@@ -99,7 +99,7 @@ export class WorkOrderComponent {
 		this.insuranceId = this.userDetails.Response.CompanyId;
 		this.loginType = this.userDetails.Response.LoginType;
     this.GarageName = this.userDetails.Response.UserName;
-    this.GarageId = this.userDetails.Response.UserName;
+    this.GarageId = this.loginId;
 		this.userType = this.userDetails.Response.UserType;
 		this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
 		this.typeValue = sessionStorage.getItem('typeValue');

@@ -47,6 +47,7 @@ export class CreateFNOLComponent {
   viewImageUrl: any;
   viewImageSection: boolean=false;
   FnolNo: string;
+  PoliceReportNo: string;
   constructor(private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
@@ -62,6 +63,7 @@ export class CreateFNOLComponent {
       this.userType = this.userDetails.Response.UserType;
       this.CliamNo = sessionStorage.getItem('CliamNo');
       this.PolicyNo = sessionStorage.getItem('PolicyNo');
+      this.PoliceReportNo = sessionStorage.getItem('PoliceReportNo');
       this.FnolNo = sessionStorage.getItem('FnolNo');
       // this.FnolNo = "4444444444";
       if(this.PolicyNo){
@@ -210,6 +212,9 @@ export class CreateFNOLComponent {
             if(data.IsError == false){
              // sessionStorage.setItem("QuotationNo",data.Response.QuotationNo)
               this.router.navigate(['/fnol']);
+              sessionStorage.removeItem('FnolNo');
+              sessionStorage.removeItem('PolicyNo');
+              sessionStorage.removeItem('FnolDisable');
             }
         },
         (err) => { },
@@ -219,6 +224,7 @@ export class CreateFNOLComponent {
     getfnolEditData(){
       let ReqObj = {
          "PolicyNo": this.PolicyNo,
+         "PoliceReportNo":  this.PoliceReportNo
       }
       let urlLink = `${this.CommonApiUrl}fnol/getClaimByPolicy`;
       this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
@@ -243,11 +249,23 @@ export class CreateFNOLComponent {
       this.form.controls['policeReportNo'].setValue(rowdata.PoliceReportNo);
       this.form.controls['lossDescription'].setValue(rowdata.LossDescription);
       this.form.controls['atFault'].setValue(rowdata.AtFault);
-     
+      let disable = sessionStorage.getItem('FnolDisable');
+      if(disable=='Disable'){
+        let fieldList=this.Fields[0].fieldGroup;
+        for(let field of fieldList){
+          if(field.key=='policyNo' || field.key=='insuredId' || field.key=='lossDate'
+            || field.key=='intimatedDate'  || field.key=='policeReportNo'  || field.key=='lossLocation'  || field.key=='natureOfLoss' 
+          || field.key=='policeStation'  || field.key=='policeReportNo'  || field.key=='lossDescription'  || field.key=='atFault'
+           ){
+            field.props.disabled = true;
+           }
+        }
+      }
     }
     getBack(){
       sessionStorage.removeItem('FnolNo');
       sessionStorage.removeItem('PolicyNo');
+      sessionStorage.removeItem('FnolDisable');
       this.router.navigate(['/fnol']);
       
     }

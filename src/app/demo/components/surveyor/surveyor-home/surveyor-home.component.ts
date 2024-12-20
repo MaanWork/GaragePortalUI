@@ -49,6 +49,8 @@ export class SurveyorHomeComponent {
   selectedRows: any;
   WorkAssigned: any[]=[];
   QuoteStatusList: any[]=[];
+  displayDialog: boolean=false;
+  responseData: any[]=[];
   
   constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
@@ -78,7 +80,7 @@ export class SurveyorHomeComponent {
   }
   setHeaders(){
     if(this.lang=='en'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.',  'Type', 'Vehicle Reg #','Purchased by Where','Compare Quote'];
+      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.',  'Type', 'Vehicle Reg #','Purchased by Where','Compare Quote /View'];
       this.columnsP = [ 'S.#','Claim No', 'Quotation No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
       this.columnsC = [ 'S.#','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Garage Price', 'Dealer Price','Garage Id','Dealer Id', 'Vehicle Reg #' ,'Entry Date'];
       this.columnsDealer = ['Claim No','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Dealer Price','Garage Price','Vehicle Reg #' ,'Entry Date'];
@@ -126,6 +128,7 @@ getallVehicleList(status,event,type){
   let ReqObj = {
       "CompanyId": this.CompanyId,
       "GarageId": this.GarageDrop,
+      "SurveyorId":this.loginId
     }
     
     let urlLink = `${this.CommonApiUrl}vehicle/surveyor/view`;
@@ -421,6 +424,7 @@ onCheckGarageCoverAll(){
   //let CliamNo = sessionStorage.getItem('CliamNo');
   let ReqObj = {
     "GarageId": this.GarageDrop,
+    "SurveyorId":this.loginId
   }
 
   let urlLink = `${this.CommonApiUrl}vehicle/surveyor/asigned/completed`;
@@ -434,5 +438,13 @@ onCheckGarageCoverAll(){
     (err) => { },
   );
 }
+detailview(data){
+  console.log(data,"detailview");
+  this.displayDialog = true;
+  if(data){
+    this.responseData = [data];
+  }
+  console.log(this.responseData,"detailview");
 
+}
 }

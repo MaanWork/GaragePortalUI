@@ -41,7 +41,9 @@ export class GarageComponent {
   columnsR: any[]=[];
   columnsP: any[]=[];
   QuoteStatusList:any[]=[];
-  
+  displayDialog:boolean=false;
+  responseData: any[]=[];
+  DamageDisable: boolean=false;
   constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -121,6 +123,11 @@ getallVehicleList(status,event,type){
           }
           console.log(this.pendingVehicleList,event,"this.pendingVehicleList");
           
+          // for(let entry of this.pendingVehicleList){
+          //   if(entry.QuotationNo=='' || entry.QuotationNo==null){
+          //     this.DamageDisable=true;
+          //   }
+          // }
           // this.compeletedVehicleList = compeleted;
           // this.rejectedVehicleList = rejected;
           
@@ -232,5 +239,14 @@ if(rowData){
   sessionStorage.setItem("Completed",type)
   this.router.navigate(['/garage/workorder'])
 }
+}
+detailview(data){
+  console.log(data,"detailview");
+  this.displayDialog = true;
+  if(data){
+    this.responseData = [data];
+  }
+  console.log(this.responseData,"detailview");
+
 }
 }

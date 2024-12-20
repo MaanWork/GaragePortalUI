@@ -40,6 +40,8 @@ export class DealerComponent {
   columnsR: any[]=[];
   columnsP: any[]=[];
   QuoteStatusList: any[]=[];
+  displayDialog: boolean=false;
+  responseData: any[]=[];
   
   constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
@@ -204,5 +206,14 @@ if(rowData){
   sessionStorage.setItem("Completed",type)
   this.router.navigate(['/dealer/damagedetail'])
 }
+}
+detailview(data){
+  console.log(data,"detailview");
+  this.displayDialog = true;
+  if(data){
+    this.responseData = [data];
+  }
+  console.log(this.responseData,"detailview");
+
 }
 }

@@ -84,9 +84,8 @@
                     </td>
                     <td>
                         <ng-container *ngIf="DamageIndex==i">
-                        <input (input)="onInputChange()"
-                        pInputText [disabled]="userType=='Dealer'"
-                        [(ngModel)]="product.DamagePart" />
+                            <p-dropdown (input)="onInputChange()" [disabled]="userType=='Dealer'" [options]="PartTypeList" optionLabel="CodeDesc" optionValue="CodeDesc" appendTo="body" [(ngModel)]="product.DamagePart" />
+
                         </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">
                             {{product.DamagePart}}

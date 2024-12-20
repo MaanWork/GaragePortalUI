@@ -22,7 +22,7 @@ export class ProductData {
 	Clientstatus:any=''
 	CityName:any
 	Country:any=''
-	Gender:any
+	Gender:any=''
 	IdNumber:any =''
 	IdType:any=''
 	isTaxExempted:any=''

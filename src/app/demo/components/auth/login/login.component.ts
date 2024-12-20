@@ -45,6 +45,11 @@ export class LoginComponent {
   otpGenerated: any;
   submitted: boolean;langList:any[]=[]
   messageTextLocal: any=null;
+  partyId: any;
+  CategoryId: any;
+  ProdId: any;
+  LoginId: any;
+  CompanyId: any;
     constructor(public layoutService: LayoutService, private router: Router,private loginService:LoginService,
         private authService: AuthService,private translate: TranslateService,private appComp:AppComponent,private shared:SharedService) { 
           this.langList = [
@@ -107,6 +112,12 @@ export class LoginComponent {
                     sessionStorage.setItem('UserToken', Token);
                     sessionStorage.setItem('menuSection', 'navMenu');
                     this.userType = data.Response.UserType;
+                    this.partyId = data?.Response?.PartyId;
+                    this.CategoryId = data?.Response?.CategoryId;
+                    this.ProdId = data?.Response?.ProdId;
+                    this.LoginId = data?.Response?.LoginId;
+                    this.CompanyId =data?.Response?.CompanyId;
+                    if(this.userType=='Garage' && this.partyId && this.CategoryId && this.ProdId && this.LoginId && this.CompanyId && this.partyId!='99999')this.insuredVehicleInfoSave()
                     sessionStorage.setItem('userType', this.userType);
                     if (this.userType == 'Garage' || this.userType == 'Surveyor' || this.userType == 'Dealer' || this.userType=='Admin') {
                       let CompanyId=data?.Response?.CompanyId;
@@ -751,5 +762,24 @@ export class LoginComponent {
         sessionStorage.setItem('Userdetails', JSON.stringify(userDetails));
         sessionStorage.setItem('resetLoginDetails','true');
        // this.onProceedBuyPolicy();
+      }
+
+      insuredVehicleInfoSave(){
+        let ReqObj ={
+          "PartyId":this.partyId,
+          "CategoryId":this.CategoryId,
+          "ProdId":this.ProdId,
+          "Companyid":this.CompanyId,
+          "Garageid":this.LoginId,
+        }
+          let urlLink = `${this.CommonApiUrl}insuredvehicleinfo/save`;
+        this.shared.onPostMethodSync(urlLink, ReqObj).subscribe(
+          (data: any) => {
+            if(data){
+            }
+          },
+          (err) => { },
+        
+        );
       }
 }

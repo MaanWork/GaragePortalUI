@@ -41,9 +41,9 @@
                 <td>{{ vehicle.VehicleRegno }}</td>
                 <td >
                   <span class="p-buttonset">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" [disabled]="item.Code =='CRBG'" (click)="editQuote(vehicle,item.Code)"></button>
-                    <button pButton pRipple icon="pi pi-cog" class="p-button-outlined" (click)="editQuote1(vehicle.ClaimNo,vehicle,'In-Progress')"></button>
-                    <!-- <button pButton pRipple icon="pi pi-times" class="p-button-outlined" [disabled]="item.Code =='CRBG' || item.Code == 'GPC'" (click)="rejectQuote(vehicle.ClaimNo,'CRBG')"></button> -->
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" *ngIf="vehicle.QuoteStatus !='GPC'" [disabled]="item.Code =='CRBG'" (click)="editQuote(vehicle,item.Code)"></button>
+                    <button pButton pRipple icon="pi pi-cog" *ngIf="vehicle.QuoteStatus !='GPC'" class="p-button-outlined" [disabled]="vehicle.QuotationNo==''" (click)="editQuote1(vehicle.ClaimNo,vehicle,'In-Progress')"></button>
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-outlined" (click)="detailview(vehicle)"></button>
                     <!-- <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" (click)="onAddCustomer(customer)"></button> -->
                     <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-outlined"></button> -->
                   </span>
@@ -267,4 +267,94 @@
     </div> -->
     
     
+    <p-dialog header="Claim Details" [(visible)]="displayDialog" [closable]="false" [style]="{width: '50vw'}">
   
+      <div class="dialog-content" *ngFor="let item of responseData">
+        <!-- Claim Information Section -->
+       <div class="grid">
+        <div class="col-12 lg:col-6 md:col-6">
+        <div class="claim-info">
+          <h2>Claim Information</h2>
+          <!-- <div class="info-item">
+            <i class="pi pi-id-card"></i><strong>Company ID:</strong> {{item.CompanyId}}
+          </div> -->
+          <div class="info-item">
+            <i class="pi pi-hashtag"></i><strong>Policy No:</strong> {{item.PolicyNo}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-list"></i><strong>Claim No:</strong> {{item.ClaimNo}}
+          </div>
+        </div>
+        </div>
+        <!-- Vehicle Details Section -->
+        <div class="col-12 lg:col-6 md:col-6">
+        <div class="vehicle-details">
+          <h2>Vehicle Details</h2>
+          <div class="info-item">
+            <i class="pi pi-car"></i><strong>Make:</strong> {{item.VehicleMake}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-cog"></i><strong>Model:</strong> {{item.VehicleModel}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-calendar"></i><strong>Make Year:</strong> {{item.MakeYear}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-chart-bar"></i><strong>Chassis No:</strong> {{item.ChassisNo}}
+          </div>
+        </div>
+      </div>
+        <!-- Insured Details Section -->
+        <div class="col-12 lg:col-6 md:col-6">
+        <div class="insured-details">
+          <h2>Insured Details</h2>
+          <div class="info-item">
+            <i class="pi pi-user"></i><strong>Insured Name:</strong> {{item.InsuredName}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-tags"></i><strong>Vehicle Type:</strong> {{item.Type}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-book"></i><strong>Vehicle Regno:</strong> {{item.VehicleRegno}}
+          </div>
+        </div>
+      </div>
+        <!-- Additional Information Section -->
+        <div class="col-12 lg:col-6 md:col-6">
+        <div class="additional-info">
+          <h2>Additional Information</h2>
+          <div class="info-item">
+            <i class="pi pi-calendar"></i><strong>Entry Date:</strong> {{item.EntryDate}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-check-circle"></i><strong>Quote Status:</strong> {{item.QuoteStatus}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-question-circle"></i><strong>Quotation No:</strong> {{item.QuotationNo || 'N/A'}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-refresh"></i><strong>Status:</strong> {{item.Status || 'N/A'}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-sign-in"></i><strong>Dealer Login:</strong> {{item.DealerLogin || 'N/A'}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-sign-out"></i><strong>Garage Login ID:</strong> {{item.GarageLoginId || 'N/A'}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-server"></i><strong>FNOL SGS ID:</strong> {{item.fnolSgsId || 'N/A'}}
+          </div>
+          <div class="info-item">
+            <i class="pi pi-map-marker"></i><strong>Loss Location:</strong> {{item.lossLocation || 'N/A'}}
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+    
+      <!-- Dialog Footer with Close Button -->
+      <p-footer>
+        <button pButton type="button" label="Close" icon="pi pi-times" (click)="displayDialog = false" class="p-button-danger p-button-rounded"></button>
+      </p-footer>
+    
+    </p-dialog>

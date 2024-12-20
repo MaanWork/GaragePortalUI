@@ -66,6 +66,7 @@ export class DamageDetailsComponent {
   FieldsSalvage: any[]=[];
   spareFordeduct: any=0;
   LabourFordeduct: any=0;
+  PartTypeList: any[]=[];
   constructor(private cdr: ChangeDetectorRef,private messageService: MessageService,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -133,6 +134,7 @@ export class DamageDetailsComponent {
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
   this.getRepairReplaceType();
+  this.getPartType();
   if(this.DamageDeatilsList.length==0){
     this.DamageDeatilsList=[{
       "DamageSno":this.DamageDeatilsList.length+1,
@@ -648,5 +650,17 @@ setValues(rowdata){
  this.form.controls['VATRate'].setValue(Number(rowdata.VatRatePer))
  this.form.controls['VATAmount'].setValue(Number(rowdata.VatAmount))
   this.form.controls['salvageDeduction'].setValue(Number(rowdata.SalvageDeduction))
+}
+getPartType(){
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+          this.PartTypeList = data.Result;
+      }
+    },
+    (err) => { },
+  );
 }
 }

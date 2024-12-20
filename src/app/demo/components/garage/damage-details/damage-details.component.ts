@@ -50,6 +50,7 @@ export class DamageDetailsComponent {
   saveStatus: string = ''; // Status to show save status
   debounceTimeout: any;
   draftData: any[]=[];
+  PartTypeList: any[]=[];
   constructor(private messageService: MessageService,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -105,6 +106,7 @@ export class DamageDetailsComponent {
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
   this.getRepairReplaceType();
+  this.getPartType();
   
   if (this.draftData) {
     let i = 0;
@@ -127,11 +129,10 @@ export class DamageDetailsComponent {
     "QuotationNo":this.QuotationNo
   }]
 }
-   for (i = 0; i < draftData.length; i++) {
+  for (i = 0; i < draftData.length; i++) {
      const entry = draftData[i];
- 
      // Create a new entry in your DamageDeatilsList
-     this.DamageDeatilsList.push({
+    this.DamageDeatilsList.push({
        DamageSno: entry.DamageSno,
        DamageDirection: entry.DamageDirection,
        DamagePart: entry.DamagePart,
@@ -278,6 +279,18 @@ getDamageDirection(){
       },
       (err) => { },
     );
+}
+getPartType(){
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+          this.PartTypeList = data.Result;
+      }
+    },
+    (err) => { },
+  );
 }
 getRepairReplaceType(){
   let urlLink = `${this.CommonApiUrl}dropdown/repairreplace`;

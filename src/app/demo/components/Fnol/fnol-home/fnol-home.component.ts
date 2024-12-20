@@ -73,6 +73,16 @@ export class FnolHomeComponent {
   }
   getfnolEdit(rowData){
     if(rowData.FnolNo)sessionStorage.setItem('FnolNo',rowData.FnolNo);
+    if(rowData.PoliceReportNo)sessionStorage.setItem('PoliceReportNo',rowData.PoliceReportNo);
+    if(rowData.PolicyNo){
+      sessionStorage.setItem('PolicyNo',rowData.PolicyNo);
+      this.router.navigate(['/fnol/createfnol']);
+    }
+  }
+  getfnolEditView(rowData){
+
+    if(rowData.FnolNo)sessionStorage.setItem('FnolNo',rowData.FnolNo);sessionStorage.setItem('FnolDisable','Disable');
+    if(rowData.PoliceReportNo)sessionStorage.setItem('PoliceReportNo',rowData.PoliceReportNo);
     if(rowData.PolicyNo){
       sessionStorage.setItem('PolicyNo',rowData.PolicyNo);
       this.router.navigate(['/fnol/createfnol']);
