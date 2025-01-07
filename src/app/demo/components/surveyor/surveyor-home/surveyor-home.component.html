@@ -9,6 +9,11 @@
         <p-dropdown inputId="sourceType" class="w-full" styleClass="w-full" optionLabel="CodeDesc"
             [options]="GarageDropList" [(ngModel)]="GarageDrop" (onChange)="getallVehicleList('change')" optionValue="CodeDesc" placeholder="Select Garage">
         </p-dropdown>
+        <div class="input-form-error" *ngIf="GarageDropError">
+          <div class="text-danger" style="font-size: 12px;">
+              Please select Garage...
+          </div>
+      </div>
     </div>
     </div>
     
@@ -16,7 +21,7 @@
       <!-- this.QuoteStatusList,$event,'change' -->
       <p-tabView [(activeIndex)]="tabIndex" (onChange)="getallVehicleList(this.QuoteStatusList,$event,'change')">
         <ng-container *ngFor="let item of this.QuoteStatusList">
-          <p-tabPanel [header]="item.CodeDesc" >
+          <p-tabPanel [header]="item.CodeDesc"  [disabled]="GarageDropError"  >
             <ng-container>
               <!-- <div class="flex justify-content-end mb-4">
                 <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>

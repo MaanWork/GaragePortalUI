@@ -28,6 +28,41 @@ export class GarageLogin {
               {
                 fieldGroupClassName: 'grid',
                 fieldGroup: [
+                  // {
+                  //   type: 'input',
+                  //   key: 'CoreAppCode',
+                  //   defaultValue: '',
+                  //   className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                  //   props: {
+                  //     label: `Core App Code`,
+                  //     disabled: false,
+                  //     required: true,
+                  //     options: [
+      
+                  //     ],
+                  //   },
+                  //   validators: {
+                  //     validation: [ForceLengthValidators.maxLength(50), ForceLengthValidators.min(1)]
+                  //   },
+                  //   hooks: {
+                  //   },
+                  //   expressions: {
+                  //   },
+                  // },
+                  // {
+                  //   type: 'button',
+                  //   key: 'SearchValue',
+                  //   className: 'col-12 lg:col-1 md:col-1 xl:col-1',
+                  //   props: {
+                  //     label: `Search`,
+                  //     icon: 'pi pi-search', // Assuming you are using PrimeIcons
+                  //     disabled: false,
+                  //   },
+                  //   hooks: {
+                  //   },
+                  //   expressions: {
+                  //   },
+                  // },
                     {
                         type: 'input',
                         key: 'UserName',
@@ -49,27 +84,7 @@ export class GarageLogin {
                         expressions: {
                         },
                     },
-                    {
-                      type: 'input',
-                      key: 'CoreAppCode',
-                      defaultValue: '',
-                      className: 'col-12 lg:col-3 md:col-3 xl:col-3',
-                      props: {
-                        label: `Core App Code`,
-                        disabled: false,
-                        required: true,
-                        options: [
-        
-                        ],
-                      },
-                      validators: {
-                        validation: [ForceLengthValidators.maxLength(50), ForceLengthValidators.min(1)]
-                      },
-                      hooks: {
-                      },
-                      expressions: {
-                      },
-                    },
+                   
                     {
                         className: 'col-12 lg:col-3 md:col-3 xl:col-3',
                         type: 'input',

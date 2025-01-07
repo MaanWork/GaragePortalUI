@@ -50,6 +50,7 @@ export class SurveyorHomeComponent {
   WorkAssigned: any[]=[];
   QuoteStatusList: any[]=[];
   displayDialog: boolean=false;
+  GarageDropError: boolean=false;
   responseData: any[]=[];
   
   constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
@@ -118,14 +119,20 @@ getQuoteStatus(){
     (data: any) => {
       console.log(data);
       if(data.Result){
-          this.QuoteStatusList = data.Result;
+        this.QuoteStatusList = data.Result;
       }
     },
     (err) => { },
   );
 }
 getallVehicleList(status,event,type){
-  let ReqObj = {
+  this.GarageDropError=false;
+  if(this.GarageDrop=='' || this.GarageDrop==null || this.GarageDrop=='--Select--'){
+    this.GarageDropError=true;
+  }
+  else{
+   
+    let ReqObj = {
       "CompanyId": this.CompanyId,
       "GarageId": this.GarageDrop,
       "SurveyorId":this.loginId
@@ -151,6 +158,8 @@ getallVehicleList(status,event,type){
       },
       (err) => { },
     );
+  }
+ 
 }
 getCompVehicleList(){
   let ReqObj = {
@@ -227,7 +236,7 @@ getallgarageLoginId(){
       (data: any) => {
         console.log(data);
         if(data.Result){
-          let obj =[{"Code":"","CodeDesc":"--Select--"}]
+          let obj =[{"Code":null,"CodeDesc":"--Select--"}]
             this.GarageDropList = obj.concat(data.Result);
         }
       },
@@ -445,6 +454,5 @@ detailview(data){
     this.responseData = [data];
   }
   console.log(this.responseData,"detailview");
-
 }
 }

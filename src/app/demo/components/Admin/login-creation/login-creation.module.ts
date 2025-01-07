@@ -53,8 +53,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
     CreateSurveyorComponent,
     CreateDealerComponent,
     CreateGarageComponent,
-    LoginFormComponent,
-
+    LoginFormComponent
     ],
   imports: [
     CommonModule,
@@ -82,7 +81,6 @@ import { LoginFormComponent } from './login-form/login-form.component';
     TreeSelectModule,
     SelectButtonModule,
     DropdownModule,
-    ReactiveFormsModule,
     FormlyModule,
     CalendarModule,
     InputTextareaModule,

@@ -309,7 +309,8 @@ export class WorkOrderComponent {
       (data: any) => {
         console.log(data);
         if(data.Result){
-            this.DealerDropList = data.Result;
+          let obj =[{"Code":"","CodeDesc":"--Select--"}]
+            this.DealerDropList = obj.concat(data.Result);
         }
       },
       (err) => { },

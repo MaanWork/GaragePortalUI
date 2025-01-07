@@ -42,6 +42,15 @@ export class LoginFormComponent {
   CountryDropList: any[]=[];
   LoginDetails: any;
   editDetails:any;
+  CatagoryId: any;
+  CatagoryIdList: any[]=[];
+  customerSearchvisible: boolean=false;
+  searchValue: any;
+  searchLengthSection: boolean=false;
+  searchList: any[]=[];
+  position: string = 'top';
+  searchCode: any;
+  searchValues: any;
   constructor(private route1: ActivatedRoute, private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
@@ -68,8 +77,20 @@ export class LoginFormComponent {
     this.route1.paramMap.subscribe(params => {
       this.userTypeinLink = params.get('UserType');
     });
-    this.setForm(this.userType);
-  }
+    if(this.userTypeinLink=='Surveyor'){
+              this.CatagoryId="007";  
+            }
+        else if(this.userTypeinLink=='Dealer'){
+          this.CatagoryId="502";  
+        }
+        else if(this.userTypeinLink=='Admin'){
+          this.CatagoryId="99999";  
+        }
+        else if(this.userTypeinLink=='Garage'){
+          this.CatagoryId="009";  
+        }
+          this.setForm(this.userType);
+        }
 
   setForm(rowData){
     let fireData;
@@ -90,6 +111,7 @@ export class LoginFormComponent {
   this.getBranchDrop();
   this.getCountrytDrop();
   this.getCityDrop();
+  // this.getCatagoryList()
   if(this.editDetails){
     let exceptedHooks ={ onInit: (field: FormlyFieldConfig) => {
 			field.form.controls['changePassYN'].valueChanges.subscribe(() => {
@@ -116,9 +138,9 @@ changePassword(){
 		let fieldList=this.fields[0].fieldGroup;
 		for(let field of fieldList){
 			if(this.productItem.changePassYN=='Y'){
-				if(field.key=='Password' || field.key=='RePassword'){
+				if(field.key=='Pasesword' || field.key=='RePassword'){
           field.hide=false;
-          field.hideExpression=false;
+          field.hideExprssion=false;
         }
 			} 
 			if(this.productItem.changePassYN=='N'){
@@ -127,7 +149,7 @@ changePassword(){
           field.hideExpression=true;
         }
 			}
-}
+    }
 }
 createNewLogin(productItem){
   let EffectiveDate,urlLink;
@@ -170,7 +192,8 @@ createNewLogin(productItem){
     "CountryName": "",
     "MobileCode": "",
     "MobileCodeDesc": "",
-    "ChangePassYN":this.productItem.changePassYN
+    "ChangePassYN":this.productItem.changePassYN,
+    "CatagoryId":this.CatagoryId
   }
    
   if(this.userTypeinLink=='Surveyor'){
@@ -180,7 +203,7 @@ createNewLogin(productItem){
     urlLink = `${this.CommonApiUrl}login/create/dealer`;
   }
   else if(this.userTypeinLink=='Admin'){
-    urlLink = `${this.CommonApiUrl}api/create/admin`;
+    urlLink = `${this.CommonApiUrl}login/create/admin`;
   }
   else if(this.userTypeinLink=='Garage'){
     urlLink = `${this.CommonApiUrl}login/create/garage`;
@@ -310,7 +333,20 @@ getCountrytDrop() {
     (err) => { },
   );
 }
+// getCatagoryList(){
+//   let urlLink = `${this.CommonApiUrl}dropdown/usertype`
+//   this.sharedService.onGetMethodSync(urlLink).subscribe(
+//     (data:any) => {
+//         if(data.Result){
+//           let defaultRow = [{'Code':'','CodeDesc':'---Select---'}];
 
+//           this.CatagoryIdList = defaultRow.concat(data.Result);
+//          // this.setValue(this.LoginDetails);
+//         }
+//     },
+//   (err)=>{},
+//   );
+// }
 getBack(){
   sessionStorage.removeItem('EditLoginData')
   this.router.navigate(['/loginCreation'])
@@ -335,7 +371,7 @@ editLoginForm(){
 }
 setValue(rowData){
   this.form.controls['UserName'].setValue(rowData.Loginname)
-  this.form.controls['CoreAppCode'].setValue(rowData.CoreAppCode)
+  this.productItem.CoreAppCode=rowData.CoreAppCode
   this.form.controls['MobileNumber'].setValue(rowData.Mobileno)
   this.form.controls['EmailId'].setValue(rowData.Emailid)
   this.form.controls['Address'].setValue(rowData.Address)
@@ -351,5 +387,43 @@ setValue(rowData){
   // this.form.controls['UserName'].setValue(rowData.Loginname)
   // this.form.controls['CoreAppCode'].setValue(rowData.CoreAppCode)
 
+}
+onSearchCustomer(value){
+  this.searchList =[];
+    if(value=='' || value==null || value==undefined || value.length<3){
+      this.searchLengthSection = true;
+    }
+    else{
+      this.searchLengthSection = false;
+      let ReqObj ={
+       "SearchValue": this.searchValue,
+        "Category": this.CatagoryId
+      }
+      let urlLink = `${this.CommonApiUrl}login/getCoreAppCode`;
+      this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+        (data: any) => {
+              console.log("Searched Data",data);
+              if(data.Response.length!=0){
+                if(data.Response.length==1){
+                  if(data.Response[0].Code!=null){
+                    this.searchList = data.Response;
+                  }
+                }
+                else this.searchList = data.Response;
+              }
+        },
+        (err) => { },
+      ); 
+    }
+}
+selectProduct(value){
+  this.searchCode=value.Code
+  this.searchValues=value.CodeDesc
+}
+
+SaveCustomer(){
+  this.customerSearchvisible=false;
+  this.productItem.CoreAppCode=this.searchCode
+  this.form.controls['UserName'].setValue( this.searchValues)
 }
 }

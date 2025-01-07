@@ -354,7 +354,7 @@ export class WorkOrderComponent {
     if(this.productItem.SettlementType || this.productItem.Settlement){
       if(this.productItem.SettlementType) SettlementTypeDesc = this.SettlementTypeList.find(ele => ele.Code == this.productItem.SettlementType).CodeDesc;
       if(this.productItem.Settlement) SettlementDesc =  this.productItem.Settlement
-     // if(this.productItem.WorkOrderType) WorkOrderType = this.WorkOrderTypeList.find(ele => ele.Code == this.productItem.WorkOrderType).CodeDesc;
+      //if(this.productItem.WorkOrderType) WorkOrderType = this.WorkOrderTypeList.find(ele => ele.Code == this.productItem.WorkOrderType).CodeDesc;
     }
     else{
       SettlementTypeDesc = "",
@@ -364,7 +364,7 @@ export class WorkOrderComponent {
     let ReqObj = {
         "ClaimNo": this.CliamNo,
         "WorkOrderNo": this.productItem.WorkOrderNumber,
-        "WorkOrderType": WorkOrderType,
+        "WorkOrderType": this.productItem.WorkOrderType,
         "WorkOrderDate": WorkOrderDate,
         "SettlementType": this.productItem.SettlementType,
         "SettlementTo": this.productItem.Settlement,
@@ -425,6 +425,10 @@ export class WorkOrderComponent {
     // this.form.controls['WorkOrderType'].setValue(rowdata.WorkOrderType)
     this.form.controls['WorkOrderNumber'].setValue(rowdata.WorkOrderNo)
     this.form.controls['WorkOrderDate'].setValue(rowdata.WorkOrderDate)
+    this.productItem.SettlementType=rowdata.SettlementType;
+    this.productItem.Settlement=rowdata.SettlementTo;
+    this.productItem.WorkOrderType=rowdata.WorkOrderType;
+    // alert(this.productItem.WorkOrderType)
     // this.form.controls['SettlementType'].setValue(rowdata.SettlementType)
     // this.form.controls['Settlement'].setValue(rowdata.SettlementTo)
     // this.form.controls['DefaultGarageName'].setValue(rowdata.GarageName)
