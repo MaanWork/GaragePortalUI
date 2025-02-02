@@ -55,7 +55,7 @@ export class FnolHomeComponent {
       //this.setHeaders();
     }
     this.getallfnolList()
-    this.columns=[ 'S.#','Fnol No','Policy No',  'Loss Date','Intimated Date', 'Loss Location', 'Police Station', 'Edit','Check Claim Status'];
+    this.columns=[ 'S.#','Fnol No','Policy No',  'Loss Date','Intimated Date', 'Loss Location', 'Police Station', 'Edit'];
   }
   getallfnolList(){
     let ReqObj = {

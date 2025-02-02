@@ -235,38 +235,58 @@ saveDamageDeatils(rowData,index){
       urlLink = `${this.CommonApiUrl}api/damagedetails/dealersave`;
     }
     else{
-      ReqObj = 
-        [{
-          "ClaimNo": this.CliamNo,
-          "QuotationNo": this.QuotationNo,
-          "DamageSno": index+1,
-          "DamageDirection": rowData.DamageDirection,
-          "DamagePart": rowData.DamagePart,
-          "RepairReplace": rowData.RepairReplace,
-          "NoOfUnits": rowData.NoOfUnits,
-          "UnitPrice": rowData.UnitPrice,
-          "ReplacementCharge": rowData.ReplacementCharge,
-          "GarageLoginId": this.loginId,
-          "TotalPrice": rowData.TotalPrice,
-        }]
+      let i=0;
+      if(rowData.DamageDirection==null || rowData.DamageDirection==0 || rowData.DamageDirection==undefined || rowData.DamageDirection=='' || rowData.DamageDirection=='-Select-'){rowData['DamageDirectionError']=true;i+=1;}
+      else rowData['DamageDirectionError']=false;
+      if(rowData.DamagePart==null || rowData.DamagePart==0 || rowData.DamagePart==undefined || rowData.DamagePart=='' || rowData.DamagePart=='-Select-'){rowData['DamagePartError']=true;i+=1;}
+      else rowData['DamagePartError']=false;
+      if(rowData.NoOfUnits==null || rowData.NoOfUnits==0 || rowData.NoOfUnits==undefined || rowData.NoOfUnits==''){rowData['NoOfUnitsError']=true;i+=1;}
+      else rowData['NoOfUnitsError']=false;
+      if(rowData.UnitPrice==null || rowData.UnitPrice==0 || rowData.UnitPrice==undefined || rowData.UnitPrice==''){rowData['UnitPriceError']=true;i+=1;}
+      else rowData['UnitPriceError']=false;
+      if((rowData.ReplacementCharge==null || rowData.ReplacementCharge==0 || rowData.ReplacementCharge==undefined) && rowData.RepairReplace!='REPAIR'){rowData['ReplacementChargeError']=true;i+=1;}
+      else rowData['ReplacementChargeError']=false;
+      if(i==0){
+        let UnitPrice=null,ReplacementCharge=null;
+        if(rowData.UnitPrice){UnitPrice = String(rowData.UnitPrice).replaceAll(',','')}
+        if(rowData.ReplacementCharge){ReplacementCharge = String(rowData.ReplacementCharge).replaceAll(',','')}
+        ReqObj = 
+          [{
+            "ClaimNo": this.CliamNo,
+            "QuotationNo": this.QuotationNo,
+            "DamageSno": index+1,
+            "DamageDirection": rowData.DamageDirection,
+            "DamagePart": rowData.DamagePart,
+            "RepairReplace": rowData.RepairReplace,
+            "NoOfUnits": rowData.NoOfUnits,
+            "UnitPrice": UnitPrice,
+            "ReplacementCharge": ReplacementCharge,
+            "GarageLoginId": this.loginId,
+            "TotalPrice": rowData.TotalPrice,
+          }]
+      }
+     
   //       reqList.push(ReqObj)
   //       i+=1;
   // }
        urlLink = `${this.CommonApiUrl}damage/garage/save`;
     }
-    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
-      (data: any) => {
-        console.log(data);
-        if(data.Errors.length!=0){
-           // this.DamageDeatilsList = data;
-        }
-        else{
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Damage Details Added Successfully' });
-          this.DamageIndex =null
-        }
-      },
-      (err) => { },
-    );
+    if(ReqObj){
+      this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+        (data: any) => {
+          console.log(data);
+          if(data.Errors.length!=0){
+             // this.DamageDeatilsList = data;
+          }
+          else{
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Damage Details Added Successfully' });
+            this.DamageIndex =null
+          }
+        },
+        (err) => { },
+      );
+    }
+   
 }
 getDamageDirection(){
     let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection`;
@@ -274,7 +294,8 @@ getDamageDirection(){
       (data: any) => {
         console.log(data);
         if(data.Result){
-            this.DamageDirectionList = data.Result;
+            let defaultRow = [{"Code": null,"CodeDesc":"-Select-"}]
+            this.DamageDirectionList = defaultRow.concat(data.Result);
         }
       },
       (err) => { },
@@ -284,13 +305,36 @@ getPartType(){
   let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
-      console.log(data);
       if(data.Result){
-          this.PartTypeList = data.Result;
+        let defaultRow = [{"Code": null,"CodeDesc":"-Select-"}]
+        this.PartTypeList = defaultRow.concat(data.Result);
       }
     },
     (err) => { },
   );
+}
+onAmountChange (args) {
+  if (args.key === 'e' || args.key === '+' || args.key === '-') {
+    return false;
+  } else {
+    return true;
+  }
+}
+CommaFormatted(rowData) {
+
+  // format number
+  if (rowData.UnitPrice!='' && rowData.UnitPrice!=null && rowData.UnitPrice!=undefined) {
+    rowData.UnitPrice = String(rowData.UnitPrice).replace(/[^0-9.]|(?<=\..*)\./g, "")
+     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+}
+LabourCommaFormatted(rowData) {
+
+  // format number
+  if (rowData.ReplacementCharge!='' && rowData.ReplacementCharge!=null && rowData.ReplacementCharge!=undefined) {
+    rowData.ReplacementCharge = String(rowData.ReplacementCharge).replace(/[^0-9.]|(?<=\..*)\./g, "")
+     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 }
 getRepairReplaceType(){
   let urlLink = `${this.CommonApiUrl}dropdown/repairreplace`;
@@ -312,15 +356,18 @@ DamageDictDesc(rowData){
   // return entry;
 }
 totalCalc(rowData){
+  if(rowData.NoOfUnits=='' || rowData.NoOfUnits==null) rowData.NoOfUnits = 0;
+  if(rowData.UnitPrice=='' || rowData.UnitPrice==null) rowData.UnitPrice = 0;
   let ReplacementCharge
   if(rowData.ReplacementCharge==null){
     ReplacementCharge = 0;
   } 
   else {
-    ReplacementCharge = rowData.ReplacementCharge
+    ReplacementCharge = Number(String(rowData.ReplacementCharge).replaceAll(',',''))
   }
-
-  const total = Number(rowData.NoOfUnits) * Number(rowData.UnitPrice)  +  Number(ReplacementCharge);
+  
+  const total = Number(String(rowData.NoOfUnits).replaceAll(',','')) * Number(String(rowData.UnitPrice).replaceAll(',',''))  +  Number(String(ReplacementCharge).replaceAll(',',''));
+  console.log("Total",total)
   return total;
 }
 addNewDamageDeatils(){
@@ -396,11 +443,11 @@ validation(){
 // }
 removeDamageDeatils(rowData,index){
   //this.DamageDeatilsList.splice(index,1)
-let ReqObj =[ {
-  "ClaimNo": this.CliamNo,
-  "QuotationNo": rowData.QuotationNo,
-  "DamageSno":rowData.DamageSno,
-}]
+  let ReqObj =[ {
+    "ClaimNo": this.CliamNo,
+    "QuotationNo": rowData.QuotationNo,
+    "DamageSno":rowData.DamageSno,
+  }]
     let urlLink = `${this.CommonApiUrl}damage/garagedelete`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
@@ -421,12 +468,12 @@ next(){
   }
   
 }
-addTotalsToData(dataList){
-  let grandTotal = 0;
-  for (let i = 0; i < dataList.length; i++) {
-    const rowData = dataList[i];
-    grandTotal += this.totalCalc(rowData);
-  }
-    return  grandTotal    
-} 
+  addTotalsToData(dataList){
+    let grandTotal = 0;
+      for (let i = 0; i < dataList.length; i++) {
+        const rowData = dataList[i];
+        grandTotal += this.totalCalc(rowData);
+      } 
+      return Number(grandTotal)
+  } 
 }

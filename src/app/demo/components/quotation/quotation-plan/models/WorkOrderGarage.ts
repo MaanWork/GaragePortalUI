@@ -1,7 +1,8 @@
 import { ForceLengthValidators } from "../personal-quote-details/personal-quote-details.component";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 
-export class WorkOrderGarage {
+export class 
+WorkOrderGarage {
     customerDetails: any;
     commonDetails: any[]=[];
     endorsementSection: boolean=false;
@@ -80,7 +81,7 @@ export class WorkOrderGarage {
                         props: {
                           label: `Quotation Date`,
                           disabled: false,
-                        //   required: true,
+                          required: true,
                           options: [
           
                           ],
@@ -165,7 +166,7 @@ export class WorkOrderGarage {
                         props: {
                           label: `Expected Delivery Date`,
                           disabled: false,
-                        //   required: true,
+                          required: true,
                           options: [
           
                           ],
@@ -234,7 +235,7 @@ export class WorkOrderGarage {
                     props: {
                       label: `Status`,
                       disabled: false,
-                    //   required: true,
+                      required: true,
                       options: [
       
                       ],
@@ -257,7 +258,7 @@ export class WorkOrderGarage {
                     props: {
                       label: `Total Loss`,
                       disabled: false,
-                    //   required: true,
+                      required: true,
                       // options: [
       
                       // ],
@@ -295,14 +296,14 @@ export class WorkOrderGarage {
               },
               
               {
-                type: 'textarea',
+                type: 'primeTextArea',
                 key: 'Remarks',
                 defaultValue: '',
                 className: 'col-12 lg:col-12 md:col-12 xl:col-12',
                 props: {
                   label: `Remarks`,
                   disabled: false,
-                //   required: true,
+                  required: true,
                   // options: [
   
                   // ],

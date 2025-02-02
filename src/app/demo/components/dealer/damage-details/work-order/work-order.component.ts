@@ -9,6 +9,7 @@ import { FormGroup } from '@angular/forms';
 import * as Mydatas from '../../../../../app-config.json';
 import { ProductData } from '../product';
 import { WorkOrder } from '../../../quotation/quotation-plan/models/WorkOrder';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-work-order',
@@ -104,9 +105,43 @@ export class WorkOrderComponent {
     // this.Fields.forEach(field => {
     //   this.form.addControl(field.key, new FormGroup({})); // Ensure control is added
     // });
+    let alphabetHooks4 = { onInit: (field: FormlyFieldConfig) => {
+      field.form.controls['SettlementType'].valueChanges.subscribe(() => {
+        //this.taxExcepted();
+        this.onCheckAlphabetsSettlement(event)
+        });
+      field.props.onKeydown = (event: KeyboardEvent) => {
+        this.onCheckAlphabetsSettlement(event) // Call your method on key press
+        };
+      }
+    }
+    let alphabetHooks2 = { onInit: (field: FormlyFieldConfig) => {
+      field.form.controls['WorkOrderNumber'].valueChanges.subscribe(() => {
+        //this.taxExcepted();
+        this.onCheckAlphabetsWorkOrder(event)
+        });
+      field.props.onKeydown = (event: KeyboardEvent) => {
+        this.onCheckAlphabetsWorkOrder(event) // Call your method on key press
+        };
+      }
+    }
+    let alphabetHooks1 = { onInit: (field: FormlyFieldConfig) => {
+      field.form.controls['PrimaryLocation'].valueChanges.subscribe(() => {
+        //this.taxExcepted();
+        this.onCheckAlphabetsWorkPrimary(event)
+        });
+      field.props.onKeydown = (event: KeyboardEvent) => {
+        this.onCheckAlphabetsWorkPrimary(event) // Call your method on key press
+        };
+      }
+    }
     if(this.Completed=='Completed' || this.Completed=='SurveyorPending'){
       let fieldList=this.Fields[0].fieldGroup;
       for(let field of fieldList){
+          if(field.key=='SettlementType') field.hooks = alphabetHooks4;
+          if(field.key=='WorkOrderNumber') field.hooks = alphabetHooks2;
+          if(field.key=='PrimaryLocation') field.hooks = alphabetHooks1;
+          
           field.props.disabled = true;
       }
     }
@@ -118,7 +153,36 @@ export class WorkOrderComponent {
      }
     }
 
-    
+    onCheckAlphabetsSettlement(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 50);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){
+          if(field.key=='SettlementType'){field.value = input.value;}
+        }
+			}
+		}
+    onCheckAlphabetsWorkOrder(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 10);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){
+          if(field.key=='WorkOrderNumber'){field.value = input.value;}
+        }
+			}
+		}
+    onCheckAlphabetsWorkPrimary(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 10);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){
+          if(field.key=='PrimaryLocation'){field.value = input.value;}
+        }
+			}
+		}
     checkFieldNames(){
       if(this.Fields.length!=0){
         let fieldList = this.Fields[0].fieldGroup;

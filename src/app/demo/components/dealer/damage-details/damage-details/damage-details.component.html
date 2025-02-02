@@ -1,7 +1,7 @@
 <div class="card">
     <div class="flex flex-warp justify-content-between" > 
         <h2>
-            Vehicle Damage Details
+            Vehicle Damage Details 1
         </h2>
         <h4>
            Total Amount : <b>{{addTotalsToData(DamageDeatilsList)}}</b>
@@ -9,8 +9,7 @@
         <button pButton pRipple label="Add New" class="mb-3"  (click)="addNewDamageDeatils()" *ngIf="userType!='Surveyor' && userType!='Dealer'"></button>
     </div>
     <p-table 
-        [value]="DamageDeatilsList" dataKey="id" editMode="row" [rows]="5"
-        [paginator]="true"
+        [value]="DamageDeatilsList" dataKey="id" editMode="row"
         [tableStyle]="{ 'min-width': '70rem' }">
             <ng-template pTemplate="header">
                 <tr>
@@ -156,7 +155,7 @@
                     <td >
                         {{ totalCalc(product) }}
                     </td> 
-                    <td class="p-buttonset" *ngIf="userType!='Surveyor'">
+                    <td class="p-buttonset" *ngIf="userType!='Surveyor'" style="width:150px !important">
                         <button pButton pRipple icon="pi pi-pencil" [disabled]="Type=='disabled'" *ngIf="DamageIndex!=i" class="p-button-outlined" (click)='DamageIndex=i'></button>
                         <button pButton pRipple icon="pi pi-save" *ngIf="DamageIndex==i" class="p-button-outlined" (click)='saveDamageDeatils(product,i)'></button>
                         <button pButton pRipple icon="pi pi-trash"  *ngIf="userType!='Dealer'" class="p-button-outlined" (click)="removeDamageDeatils(product,i)"></button>

@@ -373,7 +373,7 @@ export class WorkOrder {
               },
               
               {
-                type: 'textarea',
+                type: 'primeTextArea',
                 key: 'Remarks',
                 defaultValue: '',
                 className: 'col-12 lg:col-12 md:col-12 xl:col-12',

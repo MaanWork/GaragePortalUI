@@ -52,6 +52,8 @@ import { GarageRoutingModule } from './garage-routing.module';
 import { DialogModule } from 'primeng/dialog';
 import { DamageDetailsComponent } from './damage-details/damage-details.component';
 import { WorkOrderComponent } from './work-order/work-order.component';
+import { PipesModule } from '../../pipes/pipes.module';
+import { TextareaTypeComponent } from '../quotation/quotation-plan/formlyTypes/textareaTypeField';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
@@ -69,6 +71,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     SpeedDialModule,
     SelectButtonModule,
     FormsModule,
+    PipesModule,
     ReactiveFormsModule,
     ToastModule,
     MessagesModule,
@@ -108,6 +111,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         //{ name: 'commaSeparators', component: CommaSeparatorsInput, wrappers: ['form-field'] },
         { name: 'table', component: TableTypeComponent, wrappers: ['form-field'] },
         { name: 'tables', component: TablesTypeComponent, wrappers: ['form-field'] },
+         { name: 'primeTextArea', component: TextareaTypeComponent, wrappers: ['form-field'] },
         {
           name: 'datepicker',
           component: DatepickerTypeComponent,

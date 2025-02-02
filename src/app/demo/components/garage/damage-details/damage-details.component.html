@@ -4,13 +4,12 @@
             Vehicle Damage Details
         </h2>
         <h4>
-           Total Amount : <b>{{addTotalsToData(DamageDeatilsList)}}</b>
+           Total Amount : <b>{{addTotalsToData(DamageDeatilsList) | commaseparator}}</b>
         </h4>
         <button pButton pRipple label="Add New" class="mb-3" [disabled]="DamageIndex"  (click)="addNewDamageDeatils()" *ngIf="userType!='Surveyor' && userType!='Dealer'"></button>
     </div>
     <p-table 
-        [value]="DamageDeatilsList" dataKey="id" editMode="row" [rows]="5"
-        [paginator]="true"
+        [value]="DamageDeatilsList" dataKey="id" editMode="row" 
         [tableStyle]="{ 'min-width': '70rem' }">
             <ng-template pTemplate="header">
                 <tr>
@@ -85,7 +84,6 @@
                     <td>
                         <ng-container *ngIf="DamageIndex==i">
                             <p-dropdown (input)="onInputChange()" [disabled]="userType=='Dealer'" [options]="PartTypeList" optionLabel="CodeDesc" optionValue="CodeDesc" appendTo="body" [(ngModel)]="product.DamagePart" />
-
                         </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">
                             {{product.DamagePart}}
@@ -111,8 +109,8 @@
                     </td>
                     <td>
                         <ng-container *ngIf="DamageIndex==i">
-                        <input (input)="onInputChange()"
-                        pInputText type="text" [disabled]="userType=='Dealer'"
+                        <input (input)="onInputChange()" 
+                        pInputText type="text" [disabled]="userType=='Dealer'" maxlength="3"
                         [(ngModel)]="product.NoOfUnits" />
                           </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">
@@ -126,8 +124,8 @@
                     </td>
                     <td>
                         <ng-container *ngIf="DamageIndex==i">
-                            <input (input)="onInputChange()"
-                            pInputText type="text" [disabled]="product.RepairReplace=='REPAIR'"
+                            <input (input)="onInputChange()" (keydown)="onAmountChange($event)" (keyup)="CommaFormatted(product)"
+                            pInputText type="text" [disabled]="product.RepairReplace=='REPAIR'" maxlength="15"
                             [(ngModel)]="product.UnitPrice" />
                         </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">
@@ -141,8 +139,7 @@
                     </td>
                     <td>
                         <ng-container *ngIf="DamageIndex==i || (DamageIndex==i && userType=='Dealer')" >
-                            <input (input)="onInputChange()"
-                            pInputText type="text"  
+                            <input (input)="onInputChange()" (keydown)="onAmountChange($event)" (keyup)="LabourCommaFormatted(product)" maxlength="15" pInputText type="text"  
                             [(ngModel)]="product.ReplacementCharge" />
                         </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">
@@ -154,8 +151,8 @@
                             </div>
                         </div>
                     </td>
-                    <td >
-                        {{ totalCalc(product) }}
+                    <td style="min-width: 100px;max-width: 100px;">
+                        {{ totalCalc(product) | commaseparator}}
                     </td> 
                     <td class="p-buttonset" *ngIf="userType!='Surveyor'">
                         <button pButton pRipple icon="pi pi-pencil" [disabled]="product.UnitPrice && userType=='Dealer'" *ngIf="DamageIndex!=i" class="p-button-outlined" (click)='DamageIndex=i'></button>

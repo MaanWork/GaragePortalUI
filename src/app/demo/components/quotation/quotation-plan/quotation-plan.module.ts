@@ -82,6 +82,7 @@ import { HttpLoaderFactory } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
 import { HomePremiumComponent } from './home-premium/home-premium.component';
 import { FieldsetModule } from 'primeng/fieldset';
+import { TextareaTypeComponent } from './formlyTypes/textareaTypeField';
 //import { textareaTypeField } from './formlyTypes/textareaTypeField';
 export function maxlengthValidationMessage(err, field) {
   return `This value should be less than ${field.templateOptions.maxLength} characters`;
@@ -120,7 +121,7 @@ export function maxlengthValidationMessage(err, field) {
     ShortQuoteComponent,
     TravelQuoteDetailsComponent,
     CustomerInfoComponent,
-    HomePremiumComponent
+    HomePremiumComponent,TextareaTypeComponent
   ],
   imports: [
     CommonModule,
@@ -185,6 +186,7 @@ export function maxlengthValidationMessage(err, field) {
         //{ name: 'commaSeparators', component: CommaSeparatorsInput, wrappers: ['form-field'] },
         { name: 'table', component: TableTypeComponent, wrappers: ['form-field'] },
         { name: 'tables', component: TablesTypeComponent, wrappers: ['form-field'] },
+        { name: 'primeTextArea', component: TextareaTypeComponent, wrappers: ['form-field'] },
         {
           name: 'datepicker',
           component: DatepickerTypeComponent,

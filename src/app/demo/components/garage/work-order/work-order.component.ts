@@ -10,6 +10,7 @@ import { WorkOrder } from '../../quotation/quotation-plan/models/WorkOrder';
 import { FormGroup } from '@angular/forms';
 import * as Mydatas from '../../../../app-config.json';
 import { WorkOrderGarage } from '../../quotation/quotation-plan/models/WorkOrderGarage';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-work-order',
@@ -118,9 +119,45 @@ export class WorkOrderComponent {
     this.getUploadedDocList(null,null,null);
     this.productItem.Subrogation='N';
     this.productItem.JoinOrder='N';
+    let alphabetHooks4 = { onInit: (field: FormlyFieldConfig) => {
+          field.form.controls['SettlementType'].valueChanges.subscribe(() => {
+            //this.taxExcepted();
+            this.onCheckAlphabetsSettlement(event)
+            });
+          field.props.onKeydown = (event: KeyboardEvent) => {
+            this.onCheckAlphabetsSettlement(event) // Call your method on key press
+            };
+          }
+        }
+        let alphabetHooks2 = { onInit: (field: FormlyFieldConfig) => {
+          field.form.controls['WorkOrderNumber'].valueChanges.subscribe(() => {
+            //this.taxExcepted();
+            this.onCheckAlphabetsWorkOrder(event)
+            });
+          field.props.onKeydown = (event: KeyboardEvent) => {
+            this.onCheckAlphabetsWorkOrder(event) // Call your method on key press
+            };
+          }
+        }
+        let alphabetHooks1 = { onInit: (field: FormlyFieldConfig) => {
+          field.form.controls['PrimaryLocation'].valueChanges.subscribe(() => {
+            //this.taxExcepted();
+            this.onCheckAlphabetsWorkPrimary(event)
+            });
+          field.props.onKeydown = (event: KeyboardEvent) => {
+            this.onCheckAlphabetsWorkPrimary(event) // Call your method on key press
+            };
+          }
+        }
     // this.Fields.forEach(field => {
     //   this.form.addControl(field.key, new FormGroup({})); // Ensure control is added
     // });
+    let fieldList=this.Fields[0].fieldGroup;
+      for(let field of fieldList){
+          if(field.key=='SettlementType') field.hooks = alphabetHooks4;
+          if(field.key=='WorkOrderNumber') field.hooks = alphabetHooks2;
+          if(field.key=='PrimaryLocation') field.hooks = alphabetHooks1;
+      }
     if(this.Completed=='Completed' || this.Completed=='SurveyorPending'){
       let fieldList=this.Fields[0].fieldGroup;
       for(let field of fieldList){
@@ -134,7 +171,34 @@ export class WorkOrderComponent {
         this.DealerList();
      }
     }
-
+    onCheckAlphabetsSettlement(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 50);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){if(field.key=='SettlementType'){field.value = input.value;}}
+			} 
+		}
+    onCheckAlphabetsWorkOrder(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z0-9]/g, "").slice(0, 10);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){
+          if(field.key=='WorkOrderNumber'){field.value = input.value;}
+        }
+			}
+		}
+    onCheckAlphabetsWorkPrimary(event: Event): void {
+			const input = event.target as HTMLInputElement;
+			if(input.value){
+				input.value = input.value.replace(/[^A-Za-z]/g, "").slice(0, 10);
+				let fieldList=this.Fields[0].fieldGroup;
+				for(let field of fieldList){
+          if(field.key=='PrimaryLocation'){field.value = input.value;}
+        }
+			}
+		}
     
     checkFieldNames(){
       if(this.Fields.length!=0){
@@ -333,75 +397,95 @@ export class WorkOrderComponent {
     );
   }
   onSubmit(){
-    let DeliveryDate,WorkOrderDate
-    if (this.productItem.DeliveryDate != undefined && this.productItem.DeliveryDate != null && this.productItem.DeliveryDate != '') {
-      if(String(this.productItem.DeliveryDate).includes('/')){
-        DeliveryDate = this.productItem.DeliveryDate;
-      }
-      else DeliveryDate = this.datePipe.transform(this.productItem.DeliveryDate,'dd/MM/yyyy')
-    }
-    if (this.productItem.WorkOrderDate != undefined && this.productItem.WorkOrderDate != null && this.productItem.WorkOrderDate != '') {
-      if(String(this.productItem.WorkOrderDate).includes('/')){
-        WorkOrderDate = this.productItem.WorkOrderDate;
-      }
-      else WorkOrderDate = this.datePipe.transform(this.productItem.WorkOrderDate,'dd/MM/yyyy')
-    }
-    // if(this.userType=='Surveyor'){
-    //   this.GarageName='';
-    //   this.GarageId='';
-    // }
-    let SettlementTypeDesc=null,SettlementDesc=null,WorkOrderType=null;
-    if(this.productItem.SettlementType || this.productItem.Settlement){
-      if(this.productItem.SettlementType) SettlementTypeDesc = this.SettlementTypeList.find(ele => ele.Code == this.productItem.SettlementType).CodeDesc;
-      if(this.productItem.Settlement) SettlementDesc =  this.productItem.Settlement
-      //if(this.productItem.WorkOrderType) WorkOrderType = this.WorkOrderTypeList.find(ele => ele.Code == this.productItem.WorkOrderType).CodeDesc;
-    }
-    else{
-      SettlementTypeDesc = "",
-      SettlementDesc =  "",
-      WorkOrderType = ""
-    }
-    let ReqObj = {
-        "ClaimNo": this.CliamNo,
-        "WorkOrderNo": this.productItem.WorkOrderNumber,
-        "WorkOrderType": this.productItem.WorkOrderType,
-        "WorkOrderDate": WorkOrderDate,
-        "SettlementType": this.productItem.SettlementType,
-        "SettlementTo": this.productItem.Settlement,
-        "GarageName": this.GarageName,
-        "GarageId": this.GarageId,
-        "Location": this.productItem.PrimaryLocation,
-        "RepairType": this.productItem.RepairType,
-        "QuotationNo": this.QuotationNo,
-        "DeliveryDate": DeliveryDate,
-        "JointOrderYn": this.productItem.JoinOrder,
-        "SubrogationYn": this.productItem.Subrogation,
-        "TotalLoss": this.productItem.TotalLoss,
-        "LossType": this.productItem.TotalLossType,
-        "Remarks": this.productItem.Remarks,
-        "CreatedBy": this.loginId,
-        "UpdatedBy": this.loginId,
-        "QuoteStatus": this.productItem.QuoteStatus,
-        "UserType": this.userType,
-        "SparepartsDealerId": this.DealerDrop,
-        "SettlementTypeDesc":SettlementTypeDesc,
-        "SettlementToDesc":SettlementDesc,
-        "WorkOrderTypeDesc":WorkOrderType
+    let fieldList=this.Fields[0].fieldGroup;
+    let j=0,i=0;
+    for(let field of fieldList){
+        if((field.templateOptions.required==true || field.props.required==true) && (field.hide!=true)){
+          j+=1;
+				  this.form.controls[field.key].errors=true;
+				  this.form.controls[field.key].touched=true;
+				  field.templateOptions['errors'] = true;
+				  field.props['errors'] = true;
+				  console.log(this.form.controls[field.key]);
+				}
+				else{
+				  field.templateOptions['errors'] = false;
+				  field.props['errors'] = false;
+				}
+        i+=1;
+        if(i==fieldList.length && j==0){
+          let DeliveryDate,WorkOrderDate
+          if (this.productItem.DeliveryDate != undefined && this.productItem.DeliveryDate != null && this.productItem.DeliveryDate != '') {
+            if(String(this.productItem.DeliveryDate).includes('/')){
+              DeliveryDate = this.productItem.DeliveryDate;
+            }
+            else DeliveryDate = this.datePipe.transform(this.productItem.DeliveryDate,'dd/MM/yyyy')
+          }
+          if (this.productItem.WorkOrderDate != undefined && this.productItem.WorkOrderDate != null && this.productItem.WorkOrderDate != '') {
+            if(String(this.productItem.WorkOrderDate).includes('/')){
+              WorkOrderDate = this.productItem.WorkOrderDate;
+            }
+            else WorkOrderDate = this.datePipe.transform(this.productItem.WorkOrderDate,'dd/MM/yyyy')
+          }
+          // if(this.userType=='Surveyor'){
+          //   this.GarageName='';
+          //   this.GarageId='';
+          // }
+          let SettlementTypeDesc=null,SettlementDesc=null,WorkOrderType=null;
+          if(this.productItem.SettlementType || this.productItem.Settlement){
+            if(this.productItem.SettlementType) SettlementTypeDesc = this.SettlementTypeList.find(ele => ele.Code == this.productItem.SettlementType).CodeDesc;
+            if(this.productItem.Settlement) SettlementDesc =  this.productItem.Settlement
+            //if(this.productItem.WorkOrderType) WorkOrderType = this.WorkOrderTypeList.find(ele => ele.Code == this.productItem.WorkOrderType).CodeDesc;
+          }
+          else{
+            SettlementTypeDesc = "",
+            SettlementDesc =  "",
+            WorkOrderType = ""
+          }
+          let ReqObj = {
+              "ClaimNo": this.CliamNo,
+              "WorkOrderNo": this.productItem.WorkOrderNumber,
+              "WorkOrderType": this.productItem.WorkOrderType,
+              "WorkOrderDate": WorkOrderDate,
+              "SettlementType": this.productItem.SettlementType,
+              "SettlementTo": this.productItem.Settlement,
+              "GarageName": this.GarageName,
+              "GarageId": this.GarageId,
+              "Location": this.productItem.PrimaryLocation,
+              "RepairType": this.productItem.RepairType,
+              "QuotationNo": this.QuotationNo,
+              "DeliveryDate": DeliveryDate,
+              "JointOrderYn": this.productItem.JoinOrder,
+              "SubrogationYn": this.productItem.Subrogation,
+              "TotalLoss": this.productItem.TotalLoss,
+              "LossType": this.productItem.TotalLossType,
+              "Remarks": this.productItem.Remarks,
+              "CreatedBy": this.loginId,
+              "UpdatedBy": this.loginId,
+              "QuoteStatus": this.productItem.QuoteStatus,
+              "UserType": this.userType,
+              "SparepartsDealerId": this.DealerDrop,
+              "SettlementTypeDesc":SettlementTypeDesc,
+              "SettlementToDesc":SettlementDesc,
+              "WorkOrderTypeDesc":WorkOrderType
+          }
+          
+          let urlLink = `${this.CommonApiUrl}workOrder/garage/save`;
+          this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+            (data: any) => {
+              console.log(data);
+              if(data.Response){
+                if(data.Message=='Success'){
+                  sessionStorage.setItem("QuotationNo",data.Response.QuotationNo)
+                  this.router.navigate(['/garage/damagedetail'])
+                }
+              }
+            },
+            (err) => { },
+          );
+        }
     }
     
-    let urlLink = `${this.CommonApiUrl}workOrder/garage/save`;
-    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
-      (data: any) => {
-        console.log(data);
-        if(data.Response){
-          if(data.Message=='Success'){
-            sessionStorage.setItem("QuotationNo",data.Response.QuotationNo)
-            this.router.navigate(['/garage/damagedetail'])
-          }
-        }
-      },
-      (err) => { },
-    );
   }
   getGarageClaim(){
     let ReqObj = {

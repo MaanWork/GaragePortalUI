@@ -262,9 +262,10 @@ totalCalc(rowData){
   else {
     ReplacementCharge = rowData.ReplacementCharge
   }
-  let add= Number(rowData.UnitPrice)+ Number(ReplacementCharge);
-  const total = Number(rowData.NoOfUnits)*(add)
-  return total;
+  
+  const total = Number(rowData.NoOfUnits)*(rowData.UnitPrice)
+  let add= Number(total)+ Number(ReplacementCharge);
+  return add;
 }
 addNewDamageDeatils(){
   let entry = {
@@ -280,8 +281,7 @@ addNewDamageDeatils(){
     
   }
   this.DamageIndex = this.DamageDeatilsList.length
-  this.DamageDeatilsList.push(entry)
-  console.log(this.DamageDeatilsList); // Debug line
+  this.DamageDeatilsList.push(entry) // Debug line
   // this.DamageVisible=true;
 }
 getBack(){

@@ -9,8 +9,8 @@
         <button pButton pRipple label="Add New" class="mb-3"  (click)="addNewDamageDeatils()" *ngIf="userType!='Surveyor' && userType!='Dealer'"></button>
     </div>
     <p-table 
-        [value]="DamageDeatilsList" dataKey="id" editMode="row" [rows]="5"
-        [paginator]="true"
+        [value]="DamageDeatilsList" dataKey="id" editMode="row"
+        
         [tableStyle]="{ 'min-width': '70rem' }">
             <ng-template pTemplate="header">
                 <tr>
@@ -33,7 +33,7 @@
                         Spare Parts Cost
                     </th>
                     <th style="width:auto">
-                        Replacement Charge
+                        Labour Cost Charge
                      </th>
                      <th style="width:auto">
                         Total

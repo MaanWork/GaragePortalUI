@@ -20,7 +20,7 @@
             </div> -->
             <p-table #dtEmployeeExist [value]="fnolList" 
             [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
-            [globalFilterFields]="['ClaimNo','VehicleMake','VehicleModel','ChassisNo','VehicleRegno','InsuredName','Type']" [rows]="5">
+            [globalFilterFields]="['FnolNo','PolicyNo','LossDate','IntimatedDate','LossLocation','PoliceStation']" [rows]="5">
               <ng-template pTemplate="caption">
                 <div class="flex flex wrap justify-content-end">
                   <div class="table-header">
@@ -50,9 +50,6 @@
                       <button pButton pRipple icon="pi pi-pencil" *ngIf="!fnol.FnolNo" class="p-button-outlined" (click)="getfnolEdit(fnol)" ></button>
                       <button pButton pRipple icon="pi pi-eye" *ngIf="fnol.FnolNo" class="p-button-outlined" (click)="getfnolEditView(fnol)" ></button>
                     </td>
-                  <td>
-                    <button pButton pRipple icon="pi pi-list" class="p-button-outlined" ></button>
-                  </td>
                 </tr>
               </ng-template>
               <!-- <ng-container>
