@@ -400,19 +400,19 @@ export class WorkOrderComponent {
     let fieldList=this.Fields[0].fieldGroup;
     let j=0,i=0;
     for(let field of fieldList){
-        if((field.templateOptions.required==true || field.props.required==true) && (field.hide!=true)){
+        if((field.templateOptions.required==true || field.props.required==true) && (field.hide!=true) && (this.productItem[field.key]==null || this.productItem[field.key]=='')){
           j+=1;
 				  this.form.controls[field.key].errors=true;
 				  this.form.controls[field.key].touched=true;
 				  field.templateOptions['errors'] = true;
 				  field.props['errors'] = true;
-				  console.log(this.form.controls[field.key]);
 				}
 				else{
 				  field.templateOptions['errors'] = false;
 				  field.props['errors'] = false;
 				}
         i+=1;
+       
         if(i==fieldList.length && j==0){
           let DeliveryDate,WorkOrderDate
           if (this.productItem.DeliveryDate != undefined && this.productItem.DeliveryDate != null && this.productItem.DeliveryDate != '') {
