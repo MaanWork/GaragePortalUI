@@ -240,11 +240,11 @@ saveDamageDeatils(rowData,index){
       else rowData['DamageDirectionError']=false;
       if(rowData.DamagePart==null || rowData.DamagePart==0 || rowData.DamagePart==undefined || rowData.DamagePart=='' || rowData.DamagePart=='-Select-'){rowData['DamagePartError']=true;i+=1;}
       else rowData['DamagePartError']=false;
-      if(rowData.NoOfUnits==null || rowData.NoOfUnits==0 || rowData.NoOfUnits==undefined || rowData.NoOfUnits==''){rowData['NoOfUnitsError']=true;i+=1;}
+      if((rowData.NoOfUnits==null || rowData.NoOfUnits==0 || rowData.NoOfUnits==undefined || rowData.NoOfUnits=='') ){rowData['NoOfUnitsError']=true;i+=1;}
       else rowData['NoOfUnitsError']=false;
-      if(rowData.UnitPrice==null || rowData.UnitPrice==0 || rowData.UnitPrice==undefined || rowData.UnitPrice==''){rowData['UnitPriceError']=true;i+=1;}
+      if((rowData.UnitPrice==null || rowData.UnitPrice==0 || rowData.UnitPrice==undefined || rowData.UnitPrice=='') && rowData.RepairReplace!='REPAIR'){rowData['UnitPriceError']=true;i+=1;}
       else rowData['UnitPriceError']=false;
-      if((rowData.ReplacementCharge==null || rowData.ReplacementCharge==0 || rowData.ReplacementCharge==undefined) && rowData.RepairReplace!='REPAIR'){rowData['ReplacementChargeError']=true;i+=1;}
+      if((rowData.ReplacementCharge==null || rowData.ReplacementCharge==0 || rowData.ReplacementCharge==undefined) ){rowData['ReplacementChargeError']=true;i+=1;}
       else rowData['ReplacementChargeError']=false;
       if(i==0){
         let UnitPrice=null,ReplacementCharge=null;
