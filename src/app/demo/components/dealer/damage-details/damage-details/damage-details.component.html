@@ -1,7 +1,7 @@
 <div class="card">
     <div class="flex flex-warp justify-content-between" > 
         <h2>
-            Vehicle Damage Details 1
+            Vehicle Damage Details
         </h2>
         <h4>
            Total Amount : <b>{{addTotalsToData(DamageDeatilsList)}}</b>
@@ -124,8 +124,8 @@
                     </td>
                     <td>
                         <ng-container *ngIf="DamageIndex==i">
-                            <input 
-                            pInputText type="text" 
+                            <input (input)="onInputSparePartsChange(product,$event)"
+                            pInputText type="text" maxlength="20"
                             [(ngModel)]="product.UnitPrice" />
                         </ng-container>
                         <ng-container *ngIf="DamageIndex!=i">

@@ -159,6 +159,12 @@ export class DamageDetailsComponent {
       (err) => { },
     );
 }
+onInputSparePartsChange(rowData,event: Event): void{
+  const input = event.target as HTMLInputElement;
+  // Remove non-numeric characters and limit length to 5
+  input.value = input.value.replace(/[^0-9]/g, '').slice(0, 20);
+  rowData.UnitPrice = input.value;
+}
 saveDamageDeatils(rowData,index){
   let ReqObj,urlLink
   //for(let entry of this.DamageDeatilsList){
