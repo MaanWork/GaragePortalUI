@@ -85,9 +85,9 @@ WorkOrderGarage {
                           options: [
           
                           ],
-                        //   datepickerOptions: {
-                        //     min:new Date(),
-                        // },
+                          datepickerOptions: {
+                            min:new Date(),
+                        },
                         },
                         // validators: {
                         //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
@@ -166,7 +166,7 @@ WorkOrderGarage {
                         props: {
                           label: `Expected Delivery Date`,
                           disabled: false,
-                          required: true,
+                          required: false,
                           options: [
           
                           ],

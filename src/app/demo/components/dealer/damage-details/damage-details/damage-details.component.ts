@@ -121,7 +121,7 @@ export class DamageDetailsComponent {
 // }]
  }
  getQuoteStatus(){
-  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}`;
+  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);
@@ -215,7 +215,7 @@ saveDamageDeatils(rowData,index){
     );
 }
 getDamageDirection(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection/${this.CompanyId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -227,7 +227,7 @@ getDamageDirection(){
     );
 }
 getRepairReplaceType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/repairreplace`;
+  let urlLink = `${this.CommonApiUrl}dropdown/repairreplace/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);
@@ -379,7 +379,7 @@ saveDamageStaus(){
 
 }
 getPartType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);

@@ -373,10 +373,10 @@ export class WorkOrder {
               },
               
               {
-                type: 'primeTextArea',
+                type: 'textarea',
                 key: 'Remarks',
                 defaultValue: '',
-                className: 'col-12 lg:col-12 md:col-12 xl:col-12',
+                className: 'col-6 lg:col-6 md:col-6 xl:col-6',
                 props: {
                   label: `Remarks`,
                   disabled: false,

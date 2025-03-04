@@ -101,7 +101,7 @@ ngOnInit(){
   // }
 }
 getQuoteStatus(){
-  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}`;
+  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);

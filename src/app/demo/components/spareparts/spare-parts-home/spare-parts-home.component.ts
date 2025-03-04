@@ -57,10 +57,12 @@ export class SparePartsHomeComponent {
       //this.setHeaders();
     }
     this.getallSparePartsList()
-    this.columns=['ClaimNo','QuotationNo','GarageId','WorkOrder Date','WorkOrder No','Settlement To','Delivery Date','Total After Deductions','AmountToBeRecovered','Action'];
+    this.columns=['ClaimNo','QuotationNo','GarageId','WorkOrder Date','WorkOrder No','Settlement To','Delivery Date','Total After Deductions','Action'];
   }
   getallSparePartsList(){
         let ReqObj = {
+          "SurveyorLoginId":this.loginId,
+          "CompanyId":this.CompanyId
       }
       let urlLink = `${this.CommonApiUrl}fnol/getSpareParts`;
       this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(

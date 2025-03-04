@@ -923,6 +923,8 @@ export class CoverDetailsComponent {
       }
   }
   checkSelectedCovers(){
+    console.log(this.vehicleDetailsList,"this.vehicleDetailsList");
+    
     if(this.vehicleDetailsList.length!=0){
       if(this.vehicleDetailsList[0].CoverList.length!=0){
         this.currencyCode== this.vehicleDetailsList[0].CoverList[0].Currency;
@@ -2171,7 +2173,7 @@ export class CoverDetailsComponent {
          
         }
         else{
-          vehicle = this.vehicleDetailsList.find(ele=>ele.Vehicleid==vehicleId && ele.SectionId==rowData.SectionId && ele.LocationId==rowData.LocationId);
+          vehicle = this.vehicleDetailsList.find(ele=>ele.Vehicleid==vehicleId && ele.LocationId==rowData.LocationId);
         }
         let coverList = vehicle?.CoverList;
         if(event){
@@ -2567,6 +2569,7 @@ export class CoverDetailsComponent {
           }
         }
         else{
+          alert(2)
           rowData['selected']= false;
           let entry = this.selectedCoverList.filter(ele=>ele.Id==vehicleId);
           if(entry){
@@ -3472,6 +3475,8 @@ export class CoverDetailsComponent {
                 duplicateId = duplicateVehicle[0].Vehicleid;
             }
             j+=1;
+            
+            
             if(j==this.vehicleDetailsList.length){
               if (duplicateId!=null) {
                 this.selectedRowData=this.vehicleDetailsList.find(ele=>ele.SectionId==this.selectedSectionId);

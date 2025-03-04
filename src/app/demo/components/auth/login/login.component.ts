@@ -50,6 +50,7 @@ export class LoginComponent {
   ProdId: any;
   LoginId: any;
   CompanyId: any;
+  SurveyorId: any;
     constructor(public layoutService: LayoutService, private router: Router,private loginService:LoginService,
         private authService: AuthService,private translate: TranslateService,private appComp:AppComponent,private shared:SharedService) { 
           this.langList = [
@@ -117,7 +118,8 @@ export class LoginComponent {
                     this.ProdId = data?.Response?.ProdId;
                     this.LoginId = data?.Response?.LoginId;
                     this.CompanyId =data?.Response?.CompanyId;
-                    if(this.userType=='Garage' && this.partyId && this.CategoryId && this.ProdId && this.LoginId && this.CompanyId && this.partyId!='99999')this.insuredVehicleInfoSave()
+                    this.SurveyorId =data?.Response?.SurveyorId;
+                    if((this.userType == 'Garage' || this.userType == 'Surveyor') && this.partyId && this.CategoryId && this.ProdId && this.LoginId && this.CompanyId && this.partyId!='99999')this.insuredVehicleInfoSave()
                     sessionStorage.setItem('userType', this.userType);
                     if (this.userType == 'Garage' || this.userType == 'Surveyor' || this.userType == 'Dealer' || this.userType=='Admin') {
                       let CompanyId=data?.Response?.CompanyId;
@@ -765,14 +767,28 @@ export class LoginComponent {
       }
 
       insuredVehicleInfoSave(){
+        let userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
+        this.userType = userDetails.Response.UserType;
+        this.partyId = userDetails.Response.PartyId;
+        this.CategoryId = userDetails.Response.CategoryId;
+        this.ProdId = userDetails.Response.ProdId;
+        this.LoginId = userDetails.Response.LoginId;
+        this.CompanyId = userDetails.Response.CompanyId;
+        let urlLink;
         let ReqObj ={
           "PartyId":this.partyId,
           "CategoryId":this.CategoryId,
           "ProdId":this.ProdId,
           "Companyid":this.CompanyId,
-          "Garageid":this.LoginId,
+         
         }
-          let urlLink = `${this.CommonApiUrl}insuredvehicleinfo/save`;
+        if(this.userType=='Garage'){
+          ReqObj['Garageid']=this.LoginId
+          urlLink = `${this.CommonApiUrl}insuredvehicleinfo/save`;
+        } else if(this.userType=='Surveyor'){
+            ReqObj['SurveyorId']=this.LoginId
+            urlLink = `${this.CommonApiUrl}insuredvehicleinfo/surveyor/save`;
+          }
         this.shared.onPostMethodSync(urlLink, ReqObj).subscribe(
           (data: any) => {
             if(data){

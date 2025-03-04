@@ -237,7 +237,7 @@ export class WorkOrderComponent {
   }
 
   getWorkOrderType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getworkordertype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getworkordertype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -263,7 +263,7 @@ export class WorkOrderComponent {
     );
   }
   getSettlementType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -289,7 +289,7 @@ export class WorkOrderComponent {
     );
   }
   getSettlement(){
-    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement`;
+    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -315,7 +315,7 @@ export class WorkOrderComponent {
     );
   }
   DealerList(){
-    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId`;
+    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -327,7 +327,7 @@ export class WorkOrderComponent {
     );
   }
   getTotalLossType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -354,7 +354,7 @@ export class WorkOrderComponent {
   }
 
   getQuoteStatus(){
-    let urlLink = `${this.CommonApiUrl}dropdown/status`;
+    let urlLink = `${this.CommonApiUrl}dropdown/status/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);

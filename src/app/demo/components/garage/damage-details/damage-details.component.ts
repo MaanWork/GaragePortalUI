@@ -289,7 +289,7 @@ saveDamageDeatils(rowData,index){
    
 }
 getDamageDirection(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection/${this.CompanyId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -302,7 +302,7 @@ getDamageDirection(){
     );
 }
 getPartType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts`;
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       if(data.Result){
@@ -337,7 +337,7 @@ LabourCommaFormatted(rowData) {
   }
 }
 getRepairReplaceType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/repairreplace`;
+  let urlLink = `${this.CommonApiUrl}dropdown/repairreplace/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);

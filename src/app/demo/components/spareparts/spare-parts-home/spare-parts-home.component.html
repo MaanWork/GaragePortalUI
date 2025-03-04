@@ -32,7 +32,7 @@
             </ng-template>
               <ng-template pTemplate="header">
                   <tr>
-                      <th [pSortableColumn]="column" *ngFor="let column of columns">{{column}} <p-sortIcon [field]="column"></p-sortIcon></th>
+                      <th *ngFor="let column of columns">{{column}} </th>
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-spare let-i="rowIndex">
@@ -45,9 +45,9 @@
                   <td>{{ spare.SettlementTo }}</td>
                   <td>{{ spare.DeliveryDate }}</td>
                   <td>{{ spare.TotalAfterDeductions }}</td>
-                  <td>{{ spare.AmountToBeRecovered }}</td>
+                  <!-- //<td>{{ spare.AmountToBeRecovered }}</td> -->
                   <td>
-                      <button pButton pRipple icon="pi pi-spin pi-replay" class="p-button-outlined" (click)="saveSpare(spare)" ></button>
+                      <button pButton pRipple icon="pi pi-replay" class="p-button-outlined" (click)="saveSpare(spare)" ></button>
                   </td>
                   <!-- <td>
                     <button pButton pRipple icon="pi pi-list" class="p-button-outlined" ></button>

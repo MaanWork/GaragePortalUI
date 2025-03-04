@@ -51,9 +51,6 @@ export class CreateFNOLComponent {
   constructor(private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
-      this.getpoliceStation();
-      this.getnatureofLoss();
-      this.getlosslocation();
       this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
       this.loginId = this.userDetails.Response.LoginId;
       this.agencyCode = this.userDetails.Response.OaCode;
@@ -65,6 +62,9 @@ export class CreateFNOLComponent {
       this.PolicyNo = sessionStorage.getItem('PolicyNo');
       this.PoliceReportNo = sessionStorage.getItem('PoliceReportNo');
       this.FnolNo = sessionStorage.getItem('FnolNo');
+      this.getpoliceStation();
+      this.getnatureofLoss();
+      this.getlosslocation();
       // this.FnolNo = "4444444444";
       if(this.PolicyNo){
         this.getfnolEditData();
@@ -75,7 +75,7 @@ export class CreateFNOLComponent {
       this.Fields[0] = fireData?.fields?.fieldGroup[0];
     }
     getpoliceStation(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/policeStation`;
+      let urlLink = `${this.CommonApiUrl}claim/dropdown/policeStation/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -101,7 +101,7 @@ export class CreateFNOLComponent {
       );
     }
     getnatureofLoss(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/natureofloss`;
+      let urlLink = `${this.CommonApiUrl}claim/dropdown/natureofloss/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -127,7 +127,7 @@ export class CreateFNOLComponent {
       );
     }
     getlosslocation(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/losslocation`;
+      let urlLink = `${this.CommonApiUrl}claim/dropdown/losslocation/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -350,7 +350,7 @@ export class CreateFNOLComponent {
         //   "ProductId": this.productId,
         //   "SectionId": rowData.sectionId
         // }
-        let urlLink = `${this.CommonApiUrl}dropdown/documentType`;
+        let urlLink = `${this.CommonApiUrl}dropdown/documentType/${this.CompanyId}`;
         this.sharedService.onGetMethodSync(urlLink).subscribe(
           (data: any) => {
             console.log(data);

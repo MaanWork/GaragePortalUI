@@ -254,7 +254,7 @@ export class WorkOrderComponent {
   }
 
   getRepairtype(){
-    let urlLink = `${this.CommonApiUrl}dropdown/repairtype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/repairtype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -280,7 +280,7 @@ export class WorkOrderComponent {
     );
   }
   getSettlementType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -306,7 +306,7 @@ export class WorkOrderComponent {
     );
   }
   getSettlement(){
-    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement`;
+    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -332,7 +332,7 @@ export class WorkOrderComponent {
     );
   }
   DealerList(){
-    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId`;
+    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -344,7 +344,7 @@ export class WorkOrderComponent {
     );
   }
   getTotalLossType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -371,7 +371,7 @@ export class WorkOrderComponent {
   }
 
   getQuoteStatus(){
-    let urlLink = `${this.CommonApiUrl}claim/garage/status/${this.currentStatus}`;
+    let urlLink = `${this.CommonApiUrl}claim/garage/status/${this.currentStatus}/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -586,6 +586,7 @@ export class WorkOrderComponent {
   }
   onDeleteSelectedDocument(index){
     this.uploadListDoc.splice(index,1);
+    window.location.reload();
   }
   onChangeLocation(entry){
     if(entry.locationId!=null){
@@ -599,7 +600,7 @@ export class WorkOrderComponent {
       //   "ProductId": this.productId,
       //   "SectionId": rowData.sectionId
       // }
-      let urlLink = `${this.CommonApiUrl}dropdown/documentType`;
+      let urlLink = `${this.CommonApiUrl}dropdown/documentType/${this.insuranceId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -735,6 +736,7 @@ export class WorkOrderComponent {
       (data: any) => {
         console.log(data);
         if(data.IsError==false){
+          window.location.reload();
           this.getUploadedDocList(null,null,null);
         }
       },

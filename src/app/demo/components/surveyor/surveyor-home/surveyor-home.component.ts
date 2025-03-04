@@ -114,7 +114,7 @@ ngOnInit(){
  // }
 }
 getQuoteStatus(){
-  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}`;
+  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}/${this.CompanyId}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);
@@ -231,7 +231,7 @@ getCompVehicleList(){
     );
 }
 getallgarageLoginId(){
-    let urlLink = `${this.CommonApiUrl}dropdown/garageLoginId`;
+    let urlLink = `${this.CommonApiUrl}dropdown/garageLoginId/${this.CompanyId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -248,6 +248,7 @@ editQuote(rowData){
       sessionStorage.setItem('CliamNo',rowData.ClaimNo);
       sessionStorage.setItem('GarageLoginId',rowData.GarageLoginId);
       sessionStorage.setItem('QuoteStatus',rowData.QuoteStatus);
+      if(rowData.InsuredName)sessionStorage.setItem('InsuredName',rowData.InsuredName);
       if(this.userType=="Surveyor")
         {
           sessionStorage.setItem('Completed','SurveyorPending')

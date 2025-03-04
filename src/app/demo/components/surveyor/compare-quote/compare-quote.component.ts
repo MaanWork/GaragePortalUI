@@ -151,7 +151,8 @@ export class CompareQuoteComponent {
   proceedGarage(rowData){
     let ReqObj = {
       "ClaimNo": rowData.ClaimNo,
-      "QuotationNo":rowData.QuotationNo
+      "QuotationNo":rowData.QuotationNo,
+      "GarageLoginId":rowData.GarageId
     }
     let urlLink = `${this.CommonApiUrl}workOrder/surveyor/quoteSave`;
      this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(

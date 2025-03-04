@@ -274,7 +274,8 @@ export class AppMenuComponent implements OnInit {
             }
             else {
               entry["icon"] = menu.icon;
-              if(menu.CodeDesc=='Dashboard' && this.userType!='Admin' ) entry["routerLink"] =  ['/'];
+              if(menu.CodeDesc=='Dashboard' && this.userType=='Garage' ) entry["routerLink"] =  ['/garage'];
+              else if(menu.CodeDesc=='Dashboard' && this.userType=='Dealer' ) entry["routerLink"] =  ['/dealer'];
               else if(menu.CodeDesc=='Dashboard' && this.userType=='Admin'){
                 entry["routerLink"] =  ['/loginCreation'];
               }
@@ -291,11 +292,11 @@ export class AppMenuComponent implements OnInit {
                 //   entry["routerLink"] =  ['/garage/dealer'];
                 // }
               }
-              else if(menu.CodeDesc=='Garage') {
-              if(this.userType=='Dealer'){
-                    entry["routerLink"] =  ['/dealer'];
-                  }
-              }
+              // else if(menu.CodeDesc=='Garage') {
+              // if(this.userType=='Dealer'){
+              //       entry["routerLink"] =  ['/dealer'];
+              //     }
+              // }
               else if(menu.CodeDesc=='fnol') entry["routerLink"] =  ['/fnol'];
               else if(menu.CodeDesc=='Overview') entry["routerLink"] =  ['/'];
               else if(menu.CodeDesc=='Support') entry['routerLink'] = ['/'];

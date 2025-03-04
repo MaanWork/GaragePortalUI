@@ -124,7 +124,7 @@ export class WorkOrderComponent {
     // });
     let alphabetHooks4 = { onInit: (field: FormlyFieldConfig) => {
           field.form.controls['SettlementType'].valueChanges.subscribe(() => {
-            //this.taxExcepted();
+            this.settlementTypeChange();
             this.onCheckAlphabetsSettlement(event)
             });
           field.props.onKeydown = (event: KeyboardEvent) => {
@@ -155,6 +155,7 @@ export class WorkOrderComponent {
     if(this.Completed=='Completed' || this.Completed=='SurveyorPending'){
       let fieldList=this.Fields[0].fieldGroup;
       for(let field of fieldList){
+        // alert(field.key)
         if(field.key=='SettlementType') field.hooks = alphabetHooks4;
         if(field.key=='WorkOrderNumber') field.hooks = alphabetHooks2;
         if(field.key=='PrimaryLocation') field.hooks = alphabetHooks1;
@@ -262,7 +263,7 @@ export class WorkOrderComponent {
   }
 
   getWorkOrderType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getworkordertype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getworkordertype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -288,7 +289,7 @@ export class WorkOrderComponent {
     );
   }
   getRepairTypeType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/repairtype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/repairtype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -315,7 +316,7 @@ export class WorkOrderComponent {
   }
   
   getSettlementType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/getsettlementtype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -341,7 +342,7 @@ export class WorkOrderComponent {
     );
   }
   getSettlement(){
-    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement`;
+    let urlLink = `${this.CommonApiUrl}dropdown/accountforsettlement/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -367,7 +368,7 @@ export class WorkOrderComponent {
     );
   }
   DealerList(){
-    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId`;
+    let urlLink = `${this.CommonApiUrl}dropdown/dealerLoginId/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -380,7 +381,7 @@ export class WorkOrderComponent {
     );
   }
   getTotalLossType(){
-    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype`;
+    let urlLink = `${this.CommonApiUrl}dropdown/claimlosstype/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -407,7 +408,7 @@ export class WorkOrderComponent {
   }
 
   getQuoteStatus(){
-    let urlLink = `${this.CommonApiUrl}claim/surveyor/status/${this.currentStatus}`;
+    let urlLink = `${this.CommonApiUrl}claim/surveyor/status/${this.currentStatus}/${this.insuranceId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
@@ -541,7 +542,17 @@ export class WorkOrderComponent {
       (err) => { },
     );
   }
+  settlementTypeChange(){
+    if(this.productItem.SettlementType=='I'){
+      this.form.controls['Settlement'].setValue(sessionStorage.getItem('InsuredName'));
+    }
+    else{
+      this.form.controls['Settlement'].setValue('');
+    }
+  }
   setvalue(rowdata){
+    
+    
     this.form.controls['WorkOrderType'].setValue(rowdata.WorkOrderType)
     this.form.controls['WorkOrderNumber'].setValue(rowdata.WorkOrderNo)
     this.form.controls['WorkOrderDate'].setValue(rowdata.WorkOrderDate)
@@ -634,7 +645,7 @@ export class WorkOrderComponent {
       //   "ProductId": this.productId,
       //   "SectionId": rowData.sectionId
       // }
-      let urlLink = `${this.CommonApiUrl}dropdown/documentType`;
+      let urlLink = `${this.CommonApiUrl}dropdown/documentType/${this.insuranceId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
