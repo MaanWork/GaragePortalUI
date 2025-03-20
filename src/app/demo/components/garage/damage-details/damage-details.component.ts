@@ -106,7 +106,7 @@ export class DamageDetailsComponent {
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
   this.getRepairReplaceType();
-  this.getPartType();
+  //this.getPartType(' ');
   
   if (this.draftData) {
     let i = 0;
@@ -235,7 +235,7 @@ saveDamageDeatils(rowData,index){
       urlLink = `${this.CommonApiUrl}api/damagedetails/dealersave`;
     }
     else{
-      let i=0;
+      let i=0,DamageDirection;
       if(rowData.DamageDirection==null || rowData.DamageDirection==0 || rowData.DamageDirection==undefined || rowData.DamageDirection=='' || rowData.DamageDirection=='-Select-'){rowData['DamageDirectionError']=true;i+=1;}
       else rowData['DamageDirectionError']=false;
       if(rowData.DamagePart==null || rowData.DamagePart==0 || rowData.DamagePart==undefined || rowData.DamagePart=='' || rowData.DamagePart=='-Select-'){rowData['DamagePartError']=true;i+=1;}
@@ -250,12 +250,14 @@ saveDamageDeatils(rowData,index){
         let UnitPrice=null,ReplacementCharge=null;
         if(rowData.UnitPrice){UnitPrice = String(rowData.UnitPrice).replaceAll(',','')}
         if(rowData.ReplacementCharge){ReplacementCharge = String(rowData.ReplacementCharge).replaceAll(',','')}
+        if( rowData.DamageDirection) DamageDirection= this.DamageDirectionList.find(ele=>ele.Code == rowData.DamageDirection).CodeDesc;
+
         ReqObj = 
           [{
             "ClaimNo": this.CliamNo,
             "QuotationNo": this.QuotationNo,
             "DamageSno": index+1,
-            "DamageDirection": rowData.DamageDirection,
+            "DamageDirection": DamageDirection,
             "DamagePart": rowData.DamagePart,
             "RepairReplace": rowData.RepairReplace,
             "NoOfUnits": rowData.NoOfUnits,
@@ -281,6 +283,7 @@ saveDamageDeatils(rowData,index){
           else{
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Damage Details Added Successfully' });
             this.DamageIndex =null
+            this.getDamageDeatilsListByclaimid()
           }
         },
         (err) => { },
@@ -288,6 +291,11 @@ saveDamageDeatils(rowData,index){
     }
    
 }
+// getName(rowData){
+//   let  DamageDirection= this.DamageDirectionList.find(ele=>ele.Code == rowData.DamageDirection).CodeDesc;
+//   alert(DamageDirection)
+//  // return DamageDirection;
+// }
 getDamageDirection(){
     let urlLink = `${this.CommonApiUrl}dropdown/getdamagedirection/${this.CompanyId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
@@ -301,8 +309,8 @@ getDamageDirection(){
       (err) => { },
     );
 }
-getPartType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}`;
+getPartType(rowData){
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}/${rowData}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       if(data.Result){

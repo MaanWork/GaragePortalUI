@@ -52,6 +52,7 @@ import { FnolHomeComponent } from './fnol-home/fnol-home.component';
 import { FnolRoutingModule } from './fnol-routing.module';
 import { CreateFNOLComponent } from './create-fnol/create-fnol.component';
 import { FnolListingComponent } from './fnol-listing/fnol-listing.component';
+import { TimepickerTypeComponent } from '../quotation/quotation-plan/formlyTypes/timePicker';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
@@ -120,6 +121,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
             },
           },
         },
+        {
+          name: 'timepicker',
+          component: TimepickerTypeComponent,
+          defaultOptions: {
+            defaultValue: new Date(),
+            templateOptions: {
+              datepickerOptions: {},
+            },
+          },
+        },
         // {
         //   name: 'my-autocomplete',
         //   component: NgSelectFormlyComponent
@@ -143,6 +154,15 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
           defaultOptions: {
             templateOptions: {
               type: 'datepicker'
+            }
+          }
+        },
+        {
+          name: 'time',
+          extends: 'input',
+          defaultOptions: {
+            templateOptions: {
+              type: 'timepicker'
             }
           }
         },

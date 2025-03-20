@@ -33,7 +33,7 @@ export class TotalAmount {
                     type: 'commaSeparator',
                     key: 'sparePartsCost',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
                      // label: `Spare Part Depreciation`,
                       disabled: true,
@@ -51,10 +51,10 @@ export class TotalAmount {
                     type: 'commaSeparator',
                     key: 'sparePartDepreciation',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
                       // label: `Spare Part Depreciation`,
-                      disabled: false,
+                      disabled: true,
                     //   required: true,
                     },
                     // validators: {
@@ -69,10 +69,10 @@ export class TotalAmount {
                   type: 'commaSeparator',
                   key: 'discountonSpareParts',
                   defaultValue: '',
-                  className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                  className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                   props: {
                     // label: `Discount on Spare Parts`,
-                    disabled: false,
+                    disabled: true,
                   //   required: true,
                   },
                   // validators: {
@@ -83,11 +83,29 @@ export class TotalAmount {
                   expressions: {
                   },
               },
+              {
+                type: 'commaSeparator',
+                key: 'replacementCostDeductible',
+                defaultValue: '',
+                className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                props: {
+                 // label: `Deductible Replacement Cost `,
+                  disabled: true,
+                //   required: true,
+                },
+                // validators: {
+                //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
+                // },
+                hooks: {
+                },
+                expressions: {
+                },
+            },
                {
                 type: 'commaSeparator',
                 key: 'totalAmountReplacement',
                 defaultValue: '',
-                className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                 props: {
                   // label: `Total Amount Replacement`,
                   disabled: true,
@@ -111,7 +129,7 @@ export class TotalAmount {
                     type: 'commaSeparator',
                     key: 'repairLabour',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
                      // label: ``,
                       disabled: true,
@@ -129,7 +147,7 @@ export class TotalAmount {
                   type: 'commaSeparator',
                   key: 'disabled1',
                   defaultValue: '',
-                  className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                  className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                   props: {
                    // label: ``,
                     disabled: true,
@@ -143,14 +161,15 @@ export class TotalAmount {
                   expressions: {
                   },
               },
+             
               {
                 type: 'commaSeparator',
                 key: 'repairLabourDiscountAmount',
                 defaultValue: '',
-                className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                 props: {
                 //  label: `Repair Labour Discount Amount`,
-                  disabled: false,
+                  disabled: true,
                 //   required: true,
                 },
                 // validators: {
@@ -160,11 +179,30 @@ export class TotalAmount {
                 },
                 expressions: {
                 },
-            },{
+            },
+            {
+              type: 'commaSeparator',
+              key: 'repairLabourDeductible',
+              defaultValue: '',
+              className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+              props: {
+               // label: `Deductible Replacement Cost `,
+                disabled: true,
+              //   required: true,
+              },
+              // validators: {
+              //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
+              // },
+              hooks: {
+              },
+              expressions: {
+              },
+          },
+            {
               type: 'commaSeparator',
               key: 'totalAmountRepairLabour',
               defaultValue: '',
-              className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+              className: 'col-12 lg:col-2 md:col-2 xl:col-2',
               props: {
                // label: `Total Amount Repair Labour`,
                 disabled: true,
@@ -185,22 +223,106 @@ export class TotalAmount {
                 fieldGroup: [ 
                   {
                     type: 'commaSeparator',
-                    key: 'replacementCostDeductible',
+                    key: 'disabled2',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
-                     // label: `Deductible Replacement Cost `,
-                      disabled: false,
-                    //   required: true,
+                      // label: `Total After Deduction`,
+                      disabled: true,
+                      // required: true,
+                      options: [
+      
+                      ],
                     },
-                    // validators: {
-                    //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
-                    // },
+                  //   validators: {
+                  //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                  //   },
                     hooks: {
                     },
                     expressions: {
                     },
+                  },
+                  {
+                    type: 'commaSeparator',
+                    key: 'disabled2',
+                    defaultValue: '',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                    props: {
+                      // label: `Total After Deduction`,
+                      disabled: true,
+                      // required: true,
+                      options: [
+      
+                      ],
+                    },
+                  //   validators: {
+                  //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                  //   },
+                    hooks: {
+                    },
+                    expressions: {
+                    },
+                  },
+                  {
+                    type: 'commaSeparator',
+                    key: 'disabled2',
+                    defaultValue: '',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                    props: {
+                      // label: `Total After Deduction`,
+                      disabled: true,
+                      // required: true,
+                      options: [
+      
+                      ],
+                    },
+                  //   validators: {
+                  //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                  //   },
+                    hooks: {
+                    },
+                    expressions: {
+                    },
+                  },
+                {
+                  type: 'commaSeparator',
+                  key: 'disabled2',
+                  defaultValue: '',
+                  className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                  props: {
+                    // label: `Total After Deduction`,
+                    disabled: true,
+                    // required: true,
+                    options: [
+    
+                    ],
+                  },
+                //   validators: {
+                //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                //   },
+                  hooks: {
+                  },
+                  expressions: {
+                  },
                 },
+                {
+                  type: 'commaSeparator',
+                  key: 'totalReplacementCostDeductible',
+                  defaultValue: '',
+                  className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                  props: {
+                   // label: `Deductible Replacement Cost `,
+                    disabled: true,
+                  //   required: true,
+                  },
+                  // validators: {
+                  //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
+                  // },
+                  hooks: {
+                  },
+                  expressions: {
+                  },
+              },
                   ]},
 
                   {
@@ -208,22 +330,106 @@ export class TotalAmount {
                     fieldGroup: [ 
                       {
                         type: 'commaSeparator',
-                        key: 'repairLabourDeductible',
+                        key: 'disabled2',
                         defaultValue: '',
-                        className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                        className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                         props: {
-                         // label: `Deductible Replacement Cost `,
-                          disabled: false,
-                        //   required: true,
+                          // label: `Total After Deduction`,
+                          disabled: true,
+                          // required: true,
+                          options: [
+          
+                          ],
                         },
-                        // validators: {
-                        //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
-                        // },
+                      //   validators: {
+                      //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                      //   },
                         hooks: {
                         },
                         expressions: {
                         },
+                      },
+                      {
+                        type: 'commaSeparator',
+                        key: 'disabled2',
+                        defaultValue: '',
+                        className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                        props: {
+                          // label: `Total After Deduction`,
+                          disabled: true,
+                          // required: true,
+                          options: [
+          
+                          ],
+                        },
+                      //   validators: {
+                      //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                      //   },
+                        hooks: {
+                        },
+                        expressions: {
+                        },
+                      },
+                      {
+                        type: 'commaSeparator',
+                        key: 'disabled2',
+                        defaultValue: '',
+                        className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                        props: {
+                          // label: `Total After Deduction`,
+                          disabled: true,
+                          // required: true,
+                          options: [
+          
+                          ],
+                        },
+                      //   validators: {
+                      //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                      //   },
+                        hooks: {
+                        },
+                        expressions: {
+                        },
+                      },
+                    {
+                      type: 'commaSeparator',
+                      key: 'disabled2',
+                      defaultValue: '',
+                      className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                      props: {
+                        // label: `Total After Deduction`,
+                        disabled: true,
+                        // required: true,
+                        options: [
+        
+                        ],
+                      },
+                    //   validators: {
+                    //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                    //   },
+                      hooks: {
+                      },
+                      expressions: {
+                      },
                     },
+                    {
+                      type: 'commaSeparator',
+                      key: 'totalRepairLabourDeductible',
+                      defaultValue: '',
+                      className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                      props: {
+                       // label: `Deductible Replacement Cost `,
+                        disabled: true,
+                      //   required: true,
+                      },
+                      // validators: {
+                      //   validation: [ForceLengthValidators.maxLength(5), ForceLengthValidators.min(1)]
+                      // },
+                      hooks: {
+                      },
+                      expressions: {
+                      },
+                  },
                       ]},
 
 
@@ -234,7 +440,7 @@ export class TotalAmount {
                             type: 'commaSeparator',
                             key: 'AccidentDeduction',
                             defaultValue: '',
-                            className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                            className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                             props: {
                              // label: `Deductible Replacement Cost `,
                               disabled: false,
@@ -254,12 +460,12 @@ export class TotalAmount {
                             fieldGroup: [ 
                               {
                                 type: 'commaSeparator',
-                                key: 'salvageDeduction',
+                                key: 'TotalwithVAT',
                                 defaultValue: '',
                                 className: 'col-12 lg:col-3 md:col-3 xl:col-3',
                                 props: {
                                  // label: `Deductible Replacement Cost `,
-                                  disabled: false,
+                                  disabled: true,
                                 //   required: true,
                                 },
                                 // validators: {
@@ -298,78 +504,14 @@ export class TotalAmount {
                 {
                   fieldGroupClassName: 'grid',
                   fieldGroup: [ 
-                   
-                    {
-                      type: 'commaSeparator',
-                      key: 'disabled2',
-                      defaultValue: '',
-                      className: 'col-12 lg:col-3 md:col-3 xl:col-3',
-                      props: {
-                        // label: `Total After Deduction`,
-                        disabled: true,
-                        // required: true,
-                        options: [
-        
-                        ],
-                      },
-                    //   validators: {
-                    //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
-                    //   },
-                      hooks: {
-                      },
-                      expressions: {
-                      },
-                    },
-                    {
-                      type: 'commaSeparator',
-                      key: 'VatRate1',
-                      defaultValue: '',
-                      className: 'col-12 lg:col-3 md:col-3 xl:col-3',
-                      props: {
-                        // label: `VAT Rate Per`,
-                        disabled: true,
-                      // required: true,
-                        options: [
-        
-                        ],
-                      },
-                      // validators: {
-                      //   validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
-                      // },
-                      hooks: {
-                      },
-                      expressions: {
-                      },
-                  },
-                  {
-                    type: 'commaSeparator',
-                    key: 'VATRate',
-                    defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
-                    props: {
-                      // label: `VAT Rate`,
-                      disabled: false,
-                      // required: true,
-                      options: [
-      
-                      ],
-                    },
-                  //   validators: {
-                  //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
-                  //   },
-                    hooks: {
-                    },
-                    expressions: {
-                    },
-                  },
                   {
                     type: 'commaSeparator',
                     key: 'VATAmount',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
                       // label: `VAT Amount`,
-                      disabled: false,
+                      disabled: true,
                       // required: true,
                       options: [
       
@@ -383,14 +525,21 @@ export class TotalAmount {
                     expressions: {
                     },
                   },
+                ]
+              },
+
+
+              {
+                fieldGroupClassName: 'grid',
+                fieldGroup: [ 
                   // {
                   //   type: 'commaSeparator',
-                  //   key: 'totalWithVAT',
+                  //   key: 'disabled2',
                   //   defaultValue: '',
                   //   className: 'col-12 lg:col-3 md:col-3 xl:col-3',
                   //   props: {
-                  //     label: `VAT Total Amount`,
-                  //     disabled: false,
+                  //     // label: `Total After Deduction`,
+                  //     disabled: true,
                   //     // required: true,
                   //     options: [
       
@@ -404,21 +553,14 @@ export class TotalAmount {
                   //   expressions: {
                   //   },
                   // },
-                ]
-              },
-
-
-              {
-                fieldGroupClassName: 'grid',
-                fieldGroup: [ 
                   {
                     type: 'commaSeparator',
                     key: 'NetAmount',
                     defaultValue: '',
-                    className: 'col-12 lg:col-3 md:col-3 xl:col-3',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
                     props: {
                       // label: `Net Amount`,
-                      disabled: false,
+                      disabled:true,
                     //   required: true,
                     },
                     // validators: {
@@ -454,7 +596,31 @@ export class TotalAmount {
                         },
                     },
                       ]},
-
+              {
+                fieldGroupClassName: 'grid',
+                fieldGroup: [ 
+                  {
+                    type: 'commaSeparator',
+                    key: 'VATRate',
+                    defaultValue: '',
+                    className: 'col-12 lg:col-2 md:col-2 xl:col-2',
+                    props: {
+                      // label: `VAT Rate`,
+                      disabled: false,
+                      // required: true,
+                      options: [
+      
+                      ],
+                    },
+                  //   validators: {
+                  //     validation: [ForceLengthValidators.maxLength(30), ForceLengthValidators.min(1)]
+                  //   },
+                    hooks: {
+                    },
+                    expressions: {
+                    },
+                  },
+                  ]},
 
             ]
           }

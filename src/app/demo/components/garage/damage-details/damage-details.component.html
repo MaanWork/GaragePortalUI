@@ -67,8 +67,8 @@
                     </td> -->
                     <td >
                         <ng-container *ngIf="DamageIndex==i">
-                            <p-dropdown [disabled]="userType=='Dealer'" class="w-full p-button-outlined" (input)="onInputChange()"
-                                 styleClass="w-full" [options]="DamageDirectionList"  appendTo="body" optionLabel="CodeDesc" optionValue="CodeDesc"
+                            <p-dropdown [disabled]="userType=='Dealer'" class="w-full p-button-outlined" (onChange)="getPartType(product.DamageDirection)"
+                                 styleClass="w-full" [options]="DamageDirectionList"  appendTo="body" optionLabel="CodeDesc" optionValue="Code"
                                  [(ngModel)]="product.DamageDirection" 
                                  required />
                         </ng-container>
@@ -155,7 +155,7 @@
                         {{ totalCalc(product) | commaseparator}}
                     </td> 
                     <td class="p-buttonset" *ngIf="userType!='Surveyor'">
-                        <button pButton pRipple icon="pi pi-pencil" [disabled]="product.UnitPrice && userType=='Dealer'" *ngIf="DamageIndex!=i" class="p-button-outlined" (click)='DamageIndex=i'></button>
+                        <button pButton pRipple icon="pi pi-pencil" [disabled]="product.UnitPrice && userType=='Dealer'" *ngIf="DamageIndex!=i" class="p-button-outlined" (click)='DamageIndex=i;getPartType(product.DamageDirection)'></button>
                         <button pButton pRipple icon="pi pi-save" *ngIf="DamageIndex==i" class="p-button-outlined" (click)='saveDamageDeatils(product,i)'></button>
                         <button pButton pRipple icon="pi pi-trash"  *ngIf="userType!='Dealer'" class="p-button-outlined" (click)="removeDamageDeatils(product,i)"></button>
                     </td>

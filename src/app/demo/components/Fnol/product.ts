@@ -41,7 +41,8 @@ export class ProductData {
 	atFault:any='N'
 	policeStation:any=''
 	lossDescription:any=''
-
+	lossTime:any
+	insuredName:any=''
 //   MobileCodeDesc:any=''
 // 	Occupation:any=''
   /*const currentYear = new Date().getFullYear();

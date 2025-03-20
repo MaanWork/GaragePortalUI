@@ -2,14 +2,21 @@
     <div class="grid">
         <div class="col-12 mt-3">
             <!-- <h4 class="ml-3">{{ 'HOME.WorkOrder' | translate }}</h4> -->
-             <div class="flex flex-warp justify-content-between"> 
-                 <h4 class="ml-3">Work Order</h4>
-                 <div class="lg:col-2 md:col-2 col-3" *ngIf="userType=='Surveyor'">
-                    <label for="username">Dealer *</label>
-                    <p-dropdown inputId="sourceType" [disabled]="DealerCondition=='N'" class="w-full" styleClass="w-full" optionLabel="CodeDesc"
-                        [options]="DealerDropList" [(ngModel)]="DealerDrop" optionValue="Code" placeholder="Select Dealer">
-                    </p-dropdown>
-                </div>
+            <h4 class="ml-3 p-0 mb-0">Work Order</h4>
+             <div class="flex flex-warp justify-content-end m-0 p-0"> 
+              
+              <div class="lg:col-2 md:col-2 col-2 m-0 p-0">
+                <button pButton pRipple icon="pi pi-eye" style="float: right !important;margin-right: 10px;margin-top: 10px !important;" title="View Coverages" class="p-button-outlined" (click)="onViewCoverageDetails()">&nbsp;View Coverages&nbsp;</button>
+              </div>
+              <div class="lg:col-3 md:col-3 col-3 m-0 p-0" *ngIf="userType=='Surveyor'">
+                  <label for="username">Dealer *</label>
+                  <p-dropdown inputId="sourceType" [disabled]="DealerCondition=='N'" class="w-full" styleClass="w-full" optionLabel="CodeDesc"
+                      [options]="DealerDropList" [(ngModel)]="DealerDrop" optionValue="Code" placeholder="Select Dealer">
+                  </p-dropdown>
+              </div>
+                 <div>
+                 
+                 </div>
              </div>
             <div class="m-2 p-2">
                 <form [formGroup]="form">
@@ -181,5 +188,31 @@
         <div class="col-12 sm:col-12 md:col-12">
             <img [src]="viewImageUrl" width="600px">
         </div>
+    </div>
+</p-dialog>
+<p-dialog header="Coverage Details" [(visible)]="coverageSection" [modal]="true" styleClass="w-10 md:w-8 lg:w-6" [draggable]="false" [resizable]="false">
+    <div class="grid" *ngIf="coveragesList.length!=0">
+      <div class="col-12 sm:col-12 md:col-12">
+        <p-table [value]="coveragesList" [tableStyle]="{'min-width':'50rem'}" [paginator]="false">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>S.No</th>
+                    <th>Coverage Name</th>
+                  </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-doc let-i="rowIndex">
+              <tr>
+                    <td>{{ i+1 }}</td>
+                    <td>{{doc}}</td>
+              </tr>
+            </ng-template>
+        </p-table>
+      </div>
+    </div>
+    <div class="flex flex-warp justify-content-center" *ngIf="coveragesList.length==0">
+          <b>No Coverage Available</b>
+    </div>
+    <div class="flex flex-warp justify-content-center mt-2" >
+      <p-button label="Close"  (click)="coverageSection=!coverageSection" class="p-3 mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button> 
     </div>
 </p-dialog>

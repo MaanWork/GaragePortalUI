@@ -83,6 +83,7 @@ import { HttpClient } from '@angular/common/http';
 import { HomePremiumComponent } from './home-premium/home-premium.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { TextareaTypeComponent } from './formlyTypes/textareaTypeField';
+import { TimepickerTypeComponent } from './formlyTypes/timePicker';
 //import { textareaTypeField } from './formlyTypes/textareaTypeField';
 export function maxlengthValidationMessage(err, field) {
   return `This value should be less than ${field.templateOptions.maxLength} characters`;
@@ -109,6 +110,7 @@ export function maxlengthValidationMessage(err, field) {
     FormlyFieldStepper,
     CommaSeparatorInput,
     DatepickerTypeComponent,
+    TimepickerTypeComponent,
     FormlyFieldTabs,
     RepeatTypeComponent,
     TableTypeComponent,

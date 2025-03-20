@@ -97,7 +97,7 @@ export class CompareQuoteComponent {
         { "name": "VAT Rate", "values": "VatRate" },
         { "name": "VAT Amount", "values": "VatAmount" },
         { "name": "Total with VAT", "values": "TotalWithVAT" },
-        { "name": "Salvage Deduction", "values": "SalvageDeduction" },
+        // { "name": "Salvage Deduction", "values": "SalvageDeduction" },
         { "name": "Work Order No", "values": "WorkOrderNo" },
         { "name": "Work Order Date", "values": "WorkOrderDate" },
         { "name": "Settlement To", "values": "SettlementTo" },

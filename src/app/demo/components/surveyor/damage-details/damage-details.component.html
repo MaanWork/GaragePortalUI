@@ -30,16 +30,19 @@
                         No.Of Units
                     </th>
                     <th style="width:auto">
-                        Spare Parts Cost
+                        Unit Price
                     </th>
                     <th style="width:auto">
-                        Labour Cost Charge
+                        Replacement Charge
                      </th>
                      <th style="width:auto">
                         Total
                      </th>
                       <th style="width:auto" *ngIf="userType!='Surveyor'">
                         Action
+                      </th>
+                      <th style="width:auto" *ngIf="userType=='Surveyor'">
+                        
                       </th>
                 </tr>
             </ng-template>
@@ -115,7 +118,7 @@
                         pInputText type="text" [disabled]="userType=='Dealer'"
                         [(ngModel)]="product.NoOfUnits" />
                           </ng-container>
-                        <ng-container *ngIf="DamageIndex!=i">
+                        <ng-container *ngIf="DamageIndex!=i && product.RepairReplace=='REPLACE'">
                             {{product.NoOfUnits}}
                         </ng-container>
                         <div class="input-form-error"  *ngIf="product.NoOfUnitsError">
@@ -162,6 +165,10 @@
                         <button pButton pRipple icon="pi pi-save" *ngIf="DamageIndex==i" class="p-button-outlined" (click)='saveDamageDeatils(product,i)'></button>
                         <button pButton pRipple icon="pi pi-trash"  *ngIf="userType!='Dealer'" class="p-button-outlined" (click)="removeDamageDeatils(product,i)"></button>
                     </td>
+                    <td class="p-buttonset" *ngIf="userType=='Surveyor'">
+                        <button pButton pRipple icon="pi pi-plus"  (click)='totalAmountPopup(product,i)'></button>
+                        
+                    </td>
                     <!-- <td>
                         <div class="flex align-items-center justify-content-center gap-2">
                             <button 
@@ -205,26 +212,30 @@
     <div class="flex flex-warp justify-content-end mt-3">
         <!-- <div class="col-12 lg-col-6 md-col-6"> -->
             <button pButton pRipple label="Total Amount" *ngIf="totalAmountView==false" class="p-button-outlined" (click)='totalAmountOpen()'></button>
+            <button pButton pRipple label="X" *ngIf="totalAmountView==true" class="p-button-outlined" (click)='totalAmountView=false'></button>
         <!-- </div> -->
     </div>
 <ng-container *ngIf="totalAmountView==true">
     <div class="grid justify-content-center mt-3" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
         <div class="col-12 lg:col-2 sm:col-2 md:col-2 "> 
         </div>
-        <div class="col-12 lg:col-8 sm:col-8 md:col-8"> 
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
             <div class="flex flex-warp "> 
-                <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
+                <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
                     <h6>Amount</h6>
                 </div>
-                <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
-                    <h6>Depreciation Amount</h6>
+                <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+                    <h6>Depreciation </h6>
                 </div>
-                <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
-                    <h6>Discount Amount</h6>
+                <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+                    <h6>Discount </h6>
                 </div>
-                <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
+                <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+                    <h6>Deductible </h6>
+                </div>
+                <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
                     <h6>Total Amount</h6>
                 </div>
             </div>
@@ -234,90 +245,102 @@
                 </form>
             </div> -->
         </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
     </div>
     <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
         <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
             <h5>Spare Parts Cost : </h5>
         </div>
-        <div class="col-12 lg:col-8 sm:col-8 md:col-8"> 
-            <div class="m-2 p-2">
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
+            <div class=" p-2">
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="FieldsSpare" [model]="productItem"></formly-form>
                 </form>
             </div>
         </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
     </div>
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
+    <!-- <div class="grid justify-content-center" >
+      
         <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
-            <h5>Repair Labour Cost : </h5>
+            <h5>Amount Replacement : </h5>
         </div>
-        <div class="col-12 lg:col-8 sm:col-8 md:col-8"> 
-            <div class="m-2 p-2">
-                <form [formGroup]="form">
-                    <formly-form [form]="form" [fields]="FieldsRepair" [model]="productItem"></formly-form>
-                </form>
-            </div>
-        </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-    </div>
-   
-<div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
-            <h5>Deductible Replacement : </h5>
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+       
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
             <div class="m-2 p-2">
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="FieldsReplaceD" [model]="productItem"></formly-form>
                 </form>
             </div>
         </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        
+    </div> -->
+    <div class="grid justify-content-center" >
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5>Repair Labour Cost : </h5>
         </div>
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
+            <div class=" p-2">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsRepair" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
     </div>
 
 
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+    <!-- <div class="grid justify-content-center" >
+        
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5>Repair Deductible : </h5>
         </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
-            <h5>Repair Labour Deductible : </h5>
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
             <div class="m-2 p-2">
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="FieldsRepairD" [model]="productItem"></formly-form>
                 </form>
             </div>
         </div>
+    </div> -->
+    <div class="grid justify-content-center" >
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        <div class="col-12 lg:col-8 sm:col-8 md:col-8 mt-3"> 
+            <h5>Net Amount : </h5>
+        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        
+        <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
+            <div class=" p-2 " style="margin-left: 57px;">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsNetAmount" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
         <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
         </div>
     </div>
+
+
     <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        <div class="col-12 lg:col-8 sm:col-8 md:col-8 mt-3"> 
             <h5>Unknown Accident Deduction : </h5>
         </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
-            <div class="m-2 p-2">
+        <!-- <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
+        </div> -->
+        <div class="col-12 lg:col-3 sm:col-3 md:col-3"> 
+            <div class=" p-2" style="margin-left: 57px;">
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="FieldsAccident" [model]="productItem"></formly-form>
                 </form>
@@ -326,7 +349,7 @@
         <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
         </div>
     </div>
-    <div class="grid justify-content-center" >
+    <!-- <div class="grid justify-content-center" >
         <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
         </div>
         <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
@@ -343,72 +366,18 @@
         </div>
         <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
         </div>
-    </div>
+    </div> -->
 
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
-            <h5>Total After Deduction : </h5>
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
-            <div class="m-2 p-2">
-                <form [formGroup]="form">
-                    <formly-form [form]="form" [fields]="FieldsTotalAfterD" [model]="productItem"></formly-form>
-                </form>
-            </div>
-        </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-    </div>
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
-            <h5>VAT Rate & Amount : </h5>
-        </div>
-        <div class="col-12 lg:col-8 sm:col-8 md:col-8"> 
-            <div class="m-2 p-2">
-                <form [formGroup]="form">
-                    <formly-form [form]="form" [fields]="FieldsVAT" [model]="productItem"></formly-form>
-                </form>
-            </div>
-        </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-    </div>
-   
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
-            <h5>Net Amount : </h5>
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
-        </div>
-        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
-            <div class="m-2 p-2">
-                <form [formGroup]="form">
-                    <formly-form [form]="form" [fields]="FieldsNetAmount" [model]="productItem"></formly-form>
-                </form>
-            </div>
-        </div>
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-    </div>
-
-    <div class="grid justify-content-center" >
-        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
-        </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
+    <div class="grid justify-content-start" >
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        <div class="col-12 lg:col-5 sm:col-5 md:col-5 mt-3"> 
             <h5>Amount To Be Recovered : </h5>
         </div>
-        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
+        <div class="col-12 lg:col-4 sm:col-4 md:col-4" style="margin-left: -43px;"> 
         </div>
         <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
-            <div class="m-2 p-2">
+            <div class=" p-2">
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="FieldsRecivedAmount" [model]="productItem"></formly-form>
                 </form>
@@ -417,6 +386,99 @@
         <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
         </div>
     </div>
+
+
+    <div class="grid justify-content-start" >
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+        <div class="col-12 lg:col-4 sm:col-4 md:col-4 mt-3"> 
+            <h5>Total After Deduction : </h5>
+        </div>
+        <div class="col-12 lg:col-4 sm:col-4 md:col-4"> 
+        </div>
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+            <div class=" p-2" style="margin-left: 59px;">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsTotalAfterD" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div>
+    </div>
+    <!-- <div class="grid justify-content-start" >
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5></h5>
+        </div>
+        <div class="col-12 lg:col-10 sm:col-10 md:col-10"> 
+            <div class=" p-2"  >
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsVAT" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+    </div> -->
+    <div class="grid justify-content-start" >
+       
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5>VAT Rate : </h5>
+        </div>
+        <!-- <div class="col-12 lg:col-2 sm:col-1 md:col-2"> 
+        </div>-->
+        <div class="col-12 lg:col-6 sm:col-6 md:col-6"> 
+        </div> 
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+            <div class=" p-2" style="margin-left: 59px;">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsVatRate" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+    </div>
+    <div class="grid justify-content-start" >
+       
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5>VAT Amount : </h5>
+        </div>
+        <!-- <div class="col-12 lg:col-2 sm:col-1 md:col-2"> 
+        </div>-->
+        <div class="col-12 lg:col-6 sm:col-6 md:col-6"> 
+        </div> 
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+            <div class=" p-2" style="margin-left: 59px;">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsVAT" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+    </div>
+   
+    <div class="grid justify-content-start" >
+       
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2 mt-3"> 
+            <h5>Total Amount With VAT: </h5>
+        </div>
+        <!-- <div class="col-12 lg:col-2 sm:col-1 md:col-2"> 
+        </div>-->
+        <div class="col-12 lg:col-6 sm:col-6 md:col-6"> 
+        </div> 
+        <div class="col-12 lg:col-2 sm:col-2 md:col-2"> 
+            <div class=" p-2" style="margin-left: 59px;">
+                <form [formGroup]="form">
+                    <formly-form [form]="form" [fields]="FieldsSalvage" [model]="productItem"></formly-form>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="col-12 lg:col-1 sm:col-1 md:col-1"> 
+        </div> -->
+    </div>
+    
+
+    
 </ng-container>
     <div class="flex  justify-content-center">
         <p-button label="Back"  (click)="getBack()" class="p-3 mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
@@ -429,17 +491,117 @@
     [showTransformOptions]="'translateX(100%)'" />
 </div>
 
-<!-- <p-dialog header="Damage Details"  [(visible)]="DamageVisible" [modal]="true"  [draggable]="false" [resizable]="false" [style]="{ width: '70rem' }">
+<p-dialog header="Damage Details"  [(visible)]="totalAmountPop" [modal]="true"  [draggable]="true" [resizable]="false" [style]="{ width: '70rem' , height: '40rem' }">
     
-    <div class="m-2 p-2">
-        <form [formGroup]="form">
-            <formly-form [form]="form" [fields]="Fields" [model]="productItem"></formly-form>
-        </form>
+    <div class="mt-4 p-5">
+        <div class="grid">
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="make">Spare Part Type</label>
+                <p-dropdown inputId="make" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="SpareList" 
+                    [(ngModel)]="sparePartType" 
+                    optionLabel="CodeDesc" 
+                    optionValue="Code"
+                    placeholder="Select Spare Part Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Discount %</label>
+                <input pInputText id="chasis-no" placeholder="Enter Discount" [(ngModel)]="SpareDiscount" (keydown)="calcRowDiscount();spareTotalAmount()" (keyup)="calcRowDiscount();spareTotalAmount()" />
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Discount Amount</label>
+                <input pInputText id="chasis-no"  disabled  [(ngModel)]="SpareDiscountAmount"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Replacement Cost Deductible</label>
+                <input pInputText id="chasis-no" [(ngModel)]="ReplacementCostDeductible" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" placeholder="Enter Deductible"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="make">Damage Type</label>
+                <p-dropdown inputId="make" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="DamageList" 
+                    [(ngModel)]="DamageType" 
+                    optionLabel="CodeDesc" 
+                    optionValue="Code"
+                    placeholder="Select Damage Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="make">Depreciation Type</label>
+                <p-dropdown inputId="make" 
+                    class="w-full" 
+                    styleClass="w-full" 
+                    [options]="DepreciationList" 
+                    [(ngModel)]="DepreciationType" 
+                    optionLabel="CodeDesc" 
+                    optionValue="Code"
+                    (onChange)="DepreciationTypeChange();spareTotalAmount()"
+                    placeholder="Select Depreciation Type">
+                </p-dropdown>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 " *ngIf="DepreciationType!='2'">
+                <label for="chasis-no">Depreciation</label>
+                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplace" />
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 " *ngIf="DepreciationType=='2'">
+                <label for="chasis-no">Depreciation</label>
+                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplaceper" />
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Total Amount</label>
+                <input pInputText id="chasis-no" disabled [(ngModel)]="tolalSpare" />
+            </div>
+        </div>
+       
+    </div>
+    <div class="mt-5 ml-5"><h5>
+        Repair / Labour 
+    </h5></div>
+    <div class=" p-5">
+        <div class="grid">
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="make">Repair / Labour</label>
+                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourCost" placeholder="Enter Repair / Labour"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no"> Discount %</label>
+                <input pInputText id="chasis-no" (keydown)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()" (keyup)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()"  [(ngModel)]="RepairLabourDiscountPer" placeholder="Enter Discount %" />
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no"> Discount Amount</label>
+                <input pInputText id="chasis-no"  [(ngModel)]="RepairLabourDiscountAmount" disabled placeholder="Enter Discount Amount"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no"> Deductible</label>
+                <input pInputText id="chasis-no" (keydown)="repairTotalAmount()" (keyup)="repairTotalAmount()" [(ngModel)]="RepairLabourDeductible"  placeholder="Enter Deductible"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Total Amount </label>
+                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourTotalAmount" disabled placeholder="Enter Total Amount"/>
+            </div>
+            <div class="col-12 lg:col-3 md:col-3 ">
+                <label for="chasis-no">Remarks</label>
+                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourRemarks" placeholder="Enter Remarks"/>
+            </div>
+          
+            
+        </div>
+       
     </div>
 
-
-    <div class="flex justify-content-center gap-2">
-        <p-button label="Cancel" severity="secondary" (click)="DamageVisible = false" />
-        <p-button label="Save" (click)="saveDamageDeatils()" />
+    <div class="flex justify-content-end gap-2 mt-5">
+        <div class="col-12 lg:col-3 md:col-3 ">
+            <label for="chasis-no">Grand Total</label>
+            <input pInputText id="chasis-no" disabled [(ngModel)]="GrandTotal" placeholder="Enter Remarks"/>
+        </div>
+        <!-- <p-button label="Cancel" severity="secondary" (click)="DamageVisible = false" /> -->
+        <div class="col-12 lg:col-1 md:col-1 mt-4">
+        <p-button label="Save" (click)="saveRowData()" />
+        </div>
     </div>
-</p-dialog> -->
+</p-dialog>

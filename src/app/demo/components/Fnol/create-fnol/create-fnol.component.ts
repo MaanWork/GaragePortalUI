@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { ProductData } from '../../garage/product';
 import { FNOL } from '../../quotation/quotation-plan/models/FNOL';
 import * as Mydatas from '../../../../app-config.json';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-create-fnol',
@@ -48,6 +49,8 @@ export class CreateFNOLComponent {
   viewImageSection: boolean=false;
   FnolNo: string;
   PoliceReportNo: string;
+  PolicySDate: any;
+  PolicyEDate: any;
   constructor(private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
@@ -68,14 +71,39 @@ export class CreateFNOLComponent {
       // this.FnolNo = "4444444444";
       if(this.PolicyNo){
         this.getfnolEditData();
+        
       }
       this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
       this.productItem= new ProductData();
       let fireData = new FNOL();
       this.Fields[0] = fireData?.fields?.fieldGroup[0];
+
+
+        let idTypeHooks1 ={ onInit: (field: FormlyFieldConfig) => {
+          field.form.controls['policyNo'].valueChanges.pipe(
+  // Wait 300ms after the last input before calling idTypechange
+            ).subscribe(() => {
+           //  this.getInsuredName(this.productItem.policyNo); 
+            });
+          field.props.suffix.onClick = (event: KeyboardEvent) => {
+            console.log('Key pressed:', event.key);
+           this.getInsuredName(this.productItem.policyNo); 
+          };
+          }
+          
+      }
+
+
+      let fieldList=this.Fields[0].fieldGroup;
+      for(let field of fieldList){
+        if(field.key=='policyNo'){
+          field.hooks = idTypeHooks1;
+        }
+       
+      }
     }
     getpoliceStation(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/policeStation/${this.CompanyId}`;
+      let urlLink = `${this.CommonApiUrl}dropdown/policeStation/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -101,7 +129,7 @@ export class CreateFNOLComponent {
       );
     }
     getnatureofLoss(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/natureofloss/${this.CompanyId}`;
+      let urlLink = `${this.CommonApiUrl}dropdown/natureofloss/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -127,7 +155,7 @@ export class CreateFNOLComponent {
       );
     }
     getlosslocation(){
-      let urlLink = `${this.CommonApiUrl}claim/dropdown/losslocation/${this.CompanyId}`;
+      let urlLink = `${this.CommonApiUrl}dropdown/losslocation/${this.CompanyId}`;
       this.sharedService.onGetMethodSync(urlLink).subscribe(
         (data: any) => {
           console.log(data);
@@ -170,12 +198,16 @@ export class CreateFNOLComponent {
       //   this.GarageName='';
       //   this.GarageId='';
       // }
-      let LossDate,IntimatedDate;
+      let LossDate,IntimatedDate,LossTime;
       if (this.productItem.lossDate != undefined && this.productItem.lossDate != null && this.productItem.lossDate != '' ) {
         if(String(this.productItem.lossDate).includes('/')){
           LossDate = this.productItem.lossDate;
+          const formattedTime12 = this.productItem.lossTime.toLocaleTimeString("en-US", { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+         LossTime = formattedTime12;
         }
-        else LossDate = this.datePipe.transform(this.productItem.lossDate,'dd/MM/yyyy')
+        else {LossDate = this.datePipe.transform(this.productItem.lossDate,'dd/MM/yyyy')
+        LossTime = this.datePipe.transform(this.productItem.lossTime,'hh:mm:ss')
+        }
       }
       if (this.productItem.intimatedDate != undefined && this.productItem.intimatedDate != null && this.productItem.intimatedDate != '' ) {
         if(String(this.productItem.intimatedDate).includes('/')){
@@ -196,7 +228,9 @@ export class CreateFNOLComponent {
         "LanguageCode": "0",
         "PolicyNo": this.productItem.policyNo,
         "InsuredId": this.productItem.insuredId,
+        "UserName": this.productItem.insuredName,
         "LossDate": LossDate,
+        "LossTime": LossTime,
         "IntimatedDate":IntimatedDate,
         "LossLocation": this.productItem.lossLocation,
         "NatureOfLoss": this.productItem.natureOfLoss,
@@ -238,18 +272,55 @@ export class CreateFNOLComponent {
         (err) => { },
       );
     }
+
+    getInsuredName(rowData){
+      let ReqObj = {
+         "PolicyNo": rowData,
+         //"PoliceReportNo":  this.PoliceReportNo,
+         "CompanyId": this.CompanyId
+      }
+      let urlLink = `${this.CommonApiUrl}fnol/getPolicyDetails`;
+      this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
+        (data: any) => {
+          console.log(data);
+          if(data.Response){
+            this.PolicySDate = data.Response.PolicyFromDate;
+            this.PolicyEDate = data.Response.PolicyToDate;
+            this.form.controls['insuredName'].setValue(data.Response.EngFullName);
+          this.productItem.insuredId = data.Response.InsuredId;
+          }
+        },
+        (err) => { },
+      );
+    }
+
+
+    convertToISO(timeString: string,date): string {
+      // Get the current date in YYYY-MM-DD format
+      const currentDate = new Date(date).toISOString().split('T')[0]; // "2025-03-06"
+    
+      // Combine current date with the given time
+      const dateTime = new Date(`${currentDate}T${timeString}`);
+    
+      // Convert to ISO String
+      return dateTime.toISOString(); // Output in ISO format
+    }
     setvalue(rowdata){
-      this.form.controls['policyNo'].setValue(rowdata.PolicyNo);
-      this.form.controls['insuredId'].setValue(rowdata.InsuredId);
-      this.form.controls['lossDate'].setValue(rowdata.LossDate);
+    //  const isoFormat = ''//this.convertToISO(rowdata.LossTime,rowdata.LossDate);
+    // let date =this.formatDateTime(rowdata.LossDate, rowdata.LossTime)
+       this.productItem.policyNo =rowdata.PolicyNo;
+       this.getInsuredName(this.productItem.policyNo)
+      // this.form.controls['insuredId'].setValue(rowdata.InsuredId);
+      this.form.controls['lossDate'].setValue(rowdata.LossDate);   
+      this.form.controls['lossTime'].setValue(rowdata.LossTime);   
       this.form.controls['intimatedDate'].setValue(rowdata.IntimatedDate);
       this.form.controls['lossLocation'].setValue(rowdata.LossLocation);
       this.form.controls['natureOfLoss'].setValue(rowdata.NatureOfLoss);
-      this.form.controls['policeStation'].setValue(rowdata.PoliceStation);
-      this.form.controls['policeReportNo'].setValue(rowdata.PoliceReportNo);
+      // this.form.controls['policeStation'].setValue(rowdata.PoliceStation);
       this.form.controls['lossDescription'].setValue(rowdata.LossDescription);
       this.form.controls['atFault'].setValue(rowdata.AtFault);
       let disable = sessionStorage.getItem('FnolDisable');
+      this.productItem.policeReportNo = rowdata.PolicyNo;
       if(disable=='Disable'){
         let fieldList=this.Fields[0].fieldGroup;
         for(let field of fieldList){
@@ -259,8 +330,36 @@ export class CreateFNOLComponent {
            ){
             field.props.disabled = true;
            }
+           if(field.key=='lossTime'){
+            field.type='input';
+            field.templateOptions.type = 'text';
+           field.props.disabled = true;
+          }
         }
       }
+    }
+    formatDateTime(date: string, time: string): string {
+      const lossDateTime = new Date(`${date} ${time}`);
+      let formateddatetime =this.customDateFormat(lossDateTime);
+      return formateddatetime
+    }
+    customDateFormat(date: Date): string {
+      const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      
+      const dayOfWeek = daysOfWeek[date.getDay()];
+      const month = monthsOfYear[date.getMonth()];
+      const dayOfMonth = date.getDate();
+      const year = date.getFullYear();
+      const hours = date.getHours();
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+      const timeZoneOffset = date.getTimezoneOffset();
+      const timeZone = `GMT${timeZoneOffset <= 0 ? '+' : '-'}${Math.abs(timeZoneOffset) / 60}`; // Assuming IST (Indian Standard Time)
+      const timeZoneName = "India Standard Time"; // Static value for India, modify if needed
+  
+      // Format the full string
+      return `${dayOfWeek} ${month} ${dayOfMonth} ${year} ${hours}:${minutes}:${seconds} ${timeZone} (${timeZoneName})`;
     }
     getBack(){
       sessionStorage.removeItem('FnolNo');

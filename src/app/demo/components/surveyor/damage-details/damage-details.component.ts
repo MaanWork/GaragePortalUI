@@ -47,7 +47,7 @@ export class DamageDetailsComponent {
   Fields: any[]=[];
   DamageIndex:any=0;
   public form = new FormGroup({}); 
-  grandTotal: any;
+  //grandTotal: any;
   grandTotal1: number;
   Type: string;
   FieldsSpare: any[]=[];
@@ -67,6 +67,32 @@ export class DamageDetailsComponent {
   spareFordeduct: any=0;
   LabourFordeduct: any=0;
   PartTypeList: any[]=[];
+  FieldsVatRate: any[]=[];
+  totalAmountPop: boolean=false;
+  SpareList:any[]=[];
+  DamageList:any[]=[];
+  DamageType:any;
+  sparePartType:any;
+  DepreciationList:any[]=[];
+  DepreciationType:any;
+  SpareDiscount:any='0';
+  SpareDiscountAmount:any='0';
+  cuurentTotal: number;
+  replacedisable: boolean=false;
+  repairdisable: boolean=false;
+  ReplacementCostDeductible: any='0';
+  DepreciationReplace: any='0';
+  RepairLabourCost:  any='0';
+  RepairLabourDiscountPer:  any='0';
+  RepairLabourDiscountAmount:  any='0';
+  RepairLabourDeductible: any='0';
+  RepairLabourTotalAmount:  any='0';
+  RepairLabourRemarks:  any;
+  tolalSpare: any='0';
+  DepreciationReplacechanged: any='0';
+  DepreciationReplaceper:any='0';
+  GrandTotal:any='0'
+  SparePartDepreciation: any;
   constructor(private cdr: ChangeDetectorRef,private messageService: MessageService,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -130,6 +156,7 @@ export class DamageDetailsComponent {
   this.FieldsVAT[0] = fireData?.fields?.fieldGroup[7];
   this.FieldsNetAmount [0] = fireData?.fields?.fieldGroup[8];
   this.FieldsRecivedAmount[0] = fireData?.fields?.fieldGroup[9];
+  this.FieldsVatRate[0] = fireData?.fields?.fieldGroup[10];
   
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
@@ -148,7 +175,9 @@ export class DamageDetailsComponent {
     "QuotationNo":this.QuotationNo
   }]
   }
-  
+  setInterval(() => {
+    this.GrandTotal = Number(this.RepairLabourTotalAmount)+Number(this.tolalSpare)
+  }, 200);
  }
  getDamageDeatilsListByclaimid(){
   let ReqObj,urlLink;
@@ -368,21 +397,23 @@ addTotalsToData(dataList){
   for (let i = 0; i < dataList.length; i++) {
     const rowData = dataList[i];
     grandTotal += this.totalCalc(rowData);
-    addUnit += Number(rowData.UnitPrice);
+    addUnit += Number(rowData.UnitPrice * rowData.NoOfUnits);
     Labourtotal += Number(rowData.ReplacementCharge);
   }
-  this.addUnit =addUnit;
+  this.addUnit =addUnit ;
   this.labourTotal=Labourtotal;
   // this.totalAmountcalc(addUnit);
    
     return  grandTotal    
 } 
 totalAmount(){
-  this.productItem.sparePartsCost =  this.addUnit;
-  this.productItem.totalAmountReplacement =  this.addUnit;
-  this.productItem.repairLabour =this.labourTotal;
-  this.productItem.totalAmountRepairLabour =this.labourTotal;
-  this.productItem.DeductionTotal =(this.productItem.totalAmountReplacement+this.productItem.totalAmountRepairLabour);
+  // this.productItem.sparePartsCost =  this.addUnit;
+  // this.productItem.totalAmountReplacement =  this.addUnit;
+  // this.productItem.repairLabour =this.labourTotal;
+  // this.productItem.totalAmountRepairLabour =this.labourTotal;
+  //this.productItem.DeductionTotal =(this.productItem.totalAmountReplacement+this.productItem.totalAmountRepairLabour);
+  //this.productItem.NetAmount =(this.productItem.totalAmountReplacement+this.productItem.totalAmountRepairLabour);
+ // this.productItem.TotalwithVAT =(this.productItem.DeductionTotal+this.productItem.VATAmount);
 }
 
 totalAmountOpen(){
@@ -396,11 +427,17 @@ this.totalAmountView=true;
       ).subscribe(() => {
         this.addDeduct()  // Call your method on value change
         this.deductTotalnew() 
+        this.netAmount()
+        this.vatRate()
+        this.grandTotal()
       });
     field.props.onKeydown = (event: KeyboardEvent) => {
       console.log('Key pressed:', event.key);
       this.addDeduct() // Call your method on key press
       this.deductTotalnew() 
+      this.netAmount()
+      this.vatRate()
+        this.grandTotal()
     };
     }
     
@@ -413,54 +450,84 @@ let idTypeHooks2 ={ onInit: (field: FormlyFieldConfig) => {
     ).subscribe(() => {
       this.addDeduct()  // Call your method on value change
       this.deductTotalnew() 
+      this.netAmount()
+      this.vatRate()
+        this.grandTotal()
     });
   field.props.onKeydown = (event: KeyboardEvent) => {
     console.log('Key pressed:', event.key);
     this.addDeduct() // Call your method on key press
     this.deductTotalnew() 
+    this.netAmount()
+    this.vatRate()
+        this.grandTotal()
   };
   }
   
 }
+
+
+let idTypeHooks3 ={ onInit: (field: FormlyFieldConfig) => {
+  field.form.controls['replacementCostDeductible'].valueChanges.pipe(
+    debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
+    ).subscribe(() => {
+      this.addDeduct()
+      this.netAmount()  // Call your method on value change
+      this.vatRate()
+        this.grandTotal()
+    });
+  field.props.onKeydown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', event.key);
+    this.addDeduct() 
+    this.netAmount()
+    this.vatRate()
+        this.grandTotal()
+  };
+  }
+  
+}
+
+
+
 let repairLabour ={ onInit: (field: FormlyFieldConfig) => {
   field.form.controls['repairLabourDiscountAmount'].valueChanges.pipe(
     debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
     ).subscribe(() => {
       this.addlabTotal()  // Call your method on value change
       this.deductTotalnew() 
+      this.netAmount()
+      this.vatRate()
+        this.grandTotal()
     });
   field.props.onKeydown = (event: KeyboardEvent) => {
     console.log('Key pressed:', event.key);
     this.addlabTotal() // Call your method on key press
-    this.deductTotalnew() 
+    this.deductTotalnew()
+    this.netAmount() 
+    this.vatRate()
+        this.grandTotal()
   };
   }
   
 }
 
-let replacementCostDeductible ={ onInit: (field: FormlyFieldConfig) => {
-  field.form.controls['replacementCostDeductible'].valueChanges.pipe(
-    debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
-    ).subscribe(() => {
-      this.deductTotal()  // Call your method on value change
-    });
-  field.props.onKeydown = (event: KeyboardEvent) => {
-    console.log('Key pressed:', event.key);
-    this.deductTotal() // Call your method on key press
-  };
-  }
-  
-}
+
 
 let repairLabourDeductible ={ onInit: (field: FormlyFieldConfig) => {
   field.form.controls['repairLabourDeductible'].valueChanges.pipe(
     debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
     ).subscribe(() => {
-      this.deductTotal()  // Call your method on value change
+      this.addlabTotal()  // Call your method on value change
+      this.netAmount()
+      this.vatRate()
+        this.grandTotal()
     });
   field.props.onKeydown = (event: KeyboardEvent) => {
     console.log('Key pressed:', event.key);
-    this.deductTotal() // Call your method on key press
+    this.addlabTotal() // Call your method on key press
+    this.netAmount()
+    this.vatRate()
+        this.grandTotal()
   };
   }
   
@@ -471,54 +538,87 @@ let AccidentDeduction ={ onInit: (field: FormlyFieldConfig) => {
     debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
     ).subscribe(() => {
       this.deductTotal()  // Call your method on value change
+      this.vatRate()
+        this.grandTotal()
     });
   field.props.onKeydown = (event: KeyboardEvent) => {
     console.log('Key pressed:', event.key);
     this.deductTotal() // Call your method on key press
+    this.vatRate()
+        this.grandTotal()
   };
   }
   
 }
-let salvageDeduction ={ onInit: (field: FormlyFieldConfig) => {
-  field.form.controls['salvageDeduction'].valueChanges.pipe(
+let AmountRecovered ={ onInit: (field: FormlyFieldConfig) => {
+  field.form.controls['AmountRecovered'].valueChanges.pipe(
     debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
     ).subscribe(() => {
       this.deductTotal()  // Call your method on value change
+      this.vatRate()
+        this.grandTotal()
     });
   field.props.onKeydown = (event: KeyboardEvent) => {
     console.log('Key pressed:', event.key);
     this.deductTotal() // Call your method on key press
+    this.vatRate()
+        this.grandTotal()
+  };
+  }
+  
+
+
+  
+}
+let VatRatePer ={ onInit: (field: FormlyFieldConfig) => {
+  field.form.controls['VATRate'].valueChanges.pipe(
+    debounceTime(300)  // Wait 300ms after the last input before calling idTypechange
+    ).subscribe(() => {
+      this.vatRate()  // Call your method on value change
+       this.grandTotal()
+       
+    });
+  field.props.onKeydown = (event: KeyboardEvent) => {
+    console.log('Key pressed:', event.key);
+    this.vatRate() // Call your method on key press
+     this.grandTotal()
   };
   }
   
 }
 
-
-        let fieldList=this.FieldsSpare[0].fieldGroup;
-          for(let field of fieldList){
-            if(field.key=='sparePartDepreciation'){
-              field.hooks = idTypeHooks1;
-            }
-            if(field.key=='discountonSpareParts'){
-              field.hooks = idTypeHooks2;
-            }
-          }
-          let fieldList1=this.FieldsRepair[0].fieldGroup;
-          for(let field of fieldList1){
-            if(field.key=='repairLabour'){
-              field.hooks = repairLabour;
-            }
-          }
-          let fieldList2=this.FieldsReplaceD[0].fieldGroup;
-          for(let field of fieldList2){
-            if(field.key=='replacementCostDeductible'){
-              field.hooks = replacementCostDeductible;
-            }
-          }
-          let fieldList3=this.FieldsRepairD[0].fieldGroup;
+        // let fieldList=this.FieldsSpare[0].fieldGroup;
+        //   for(let field of fieldList){
+        //     if(field.key=='sparePartDepreciation'){
+        //       field.hooks = idTypeHooks1;
+        //     }
+        //     if(field.key=='discountonSpareParts'){
+        //       field.hooks = idTypeHooks2;
+        //     }
+        //     if(field.key=='replacementCostDeductible'){
+        //       field.hooks = idTypeHooks3;
+        //     }
+        //   }
+        //   let fieldList1=this.FieldsRepair[0].fieldGroup;
+        //   for(let field of fieldList1){
+        //     if(field.key=='repairLabour'){
+        //       field.hooks = repairLabour;
+        //     }
+        //     if(field.key=='repairLabourDeductible'){
+        //       field.hooks = repairLabourDeductible;
+        //     }
+        //   }
+        //   let fieldList2=this.FieldsReplaceD[0].fieldGroup;
+        //   for(let field of fieldList2){
+        //     if(field.key=='repairLabourDiscountAmount'){
+        //       field.hooks = idTypeHooks3;
+        //     }
+           
+        //   }
+          let fieldList3=this.FieldsVatRate[0].fieldGroup;
           for(let field of fieldList3){
-            if(field.key=='repairLabourDeductible'){
-              field.hooks = repairLabourDeductible;
+            if(field.key=='VATRate'){
+              field.hooks = VatRatePer;
             }
           }
           let fieldList4=this.FieldsAccident[0].fieldGroup;
@@ -527,15 +627,16 @@ let salvageDeduction ={ onInit: (field: FormlyFieldConfig) => {
               field.hooks = AccidentDeduction;
             }
           }
-          let fieldList5=this.FieldsSalvage[0].fieldGroup;
+          let fieldList5=this.FieldsRecivedAmount[0].fieldGroup;
           for(let field of fieldList5){
-            if(field.key=='salvageDeduction'){
-              field.hooks = salvageDeduction;
+            if(field.key=='AmountRecovered'){
+              field.hooks = AmountRecovered;
             }
           }
 
           
-          this.getTotalAmount();    
+          this.getTotalAmount(); 
+          
 }
  
 totalAmountCalc(deduct){
@@ -566,45 +667,73 @@ deductTotalcalc(deductTotal){
  }
 addDeduct(){
   let deduct;
-  deduct=this.productItem.sparePartDepreciation+this.productItem.discountonSpareParts;
+  deduct=this.productItem.sparePartDepreciation+this.productItem.discountonSpareParts+this.productItem.replacementCostDeductible;
   this.totalAmountCalc(deduct)
+ // this.addSpare()
+}
+
+// addSpare(){
+//   let spareReplacementCostDeductible;
+//   spareReplacementCostDeductible=this.productItem.totalAmountReplacement-this.productItem.replacementCostDeductible;
+//   //this.totalAmountCalc(spare)
+//   this.form.controls['totalAmountReplacement'].setValue(spareReplacementCostDeductible);
+// }
+vatRate(){
+  let vatAmount;
+  vatAmount=(this.productItem.VATRate/100)*this.productItem.DeductionTotal;
+  this.form.controls['VATAmount'].setValue(vatAmount);
+  
+}
+grandTotal(){
+  let grandTotal;
+  grandTotal=this.productItem.DeductionTotal+this.productItem.VATAmount
+  this.form.controls['TotalwithVAT'].setValue(grandTotal);
+}
+addrepair(){
+  let reapirCostDeductible;
+  reapirCostDeductible=this.productItem.totalAmountRepairLabour-this.productItem.repairLabourDeductible;
+  this.form.controls['totalAmountRepairLabour'].setValue(reapirCostDeductible);
 }
 addlabTotal(){
   let repairLabour;
-  repairLabour=this.productItem.repairLabourDiscountAmount;
+  repairLabour=this.productItem.repairLabourDiscountAmount+this.productItem.repairLabourDeductible;
   this.labTotal(repairLabour)
 }
 deductTotal(){
-  let deductTotal;
-  deductTotal=this.productItem.replacementCostDeductible+this.productItem.repairLabourDeductible+this.productItem.AccidentDeduction+this.productItem.salvageDeduction;
+  let deductTotal =0;
+  deductTotal=this.productItem.AccidentDeduction+this.productItem.AmountRecovered;
   this.deductTotalcalc(deductTotal)
 }
-
+netAmount(){
+  let netAmount;
+  netAmount=this.productItem.totalAmountRepairLabour+this.productItem.totalAmountReplacement;
+  this.form.controls['NetAmount'].setValue(netAmount);
+}
 saveToalAmount(){
   let ReqObj = {
     "ClaimNo": this.CliamNo,
-    "ReplacementCost": this.productItem.sparePartsCost,
-    "ReplacementCostDeductible": this.productItem.replacementCostDeductible,
-    "SparePartDepreciation": this.productItem.sparePartDepreciation,
-    "DiscountOnSpareParts": this.productItem.discountonSpareParts,
-    "TotalAmountReplacement": this.productItem.totalAmountReplacement,
-    "RepairLabour": this.productItem.repairLabour,
+    "SparePartsCost": this.productItem.sparePartsCost,
+    "SparePartsDeductible": this.productItem.replacementCostDeductible,
+    "SparePartsDepreciation": this.productItem.sparePartDepreciation,
+    "SparePartsDiscount": this.productItem.discountonSpareParts,
+    "TotalAmountSpareParts": this.productItem.totalAmountReplacement,
+    "RepairLabourCost": this.productItem.repairLabour,
     "RepairLabourDeductible": this.productItem.repairLabourDeductible,
-    "RepairLabourDiscountAmount": this.productItem.repairLabourDiscountAmount,
+    "RepairLabourDiscount": this.productItem.repairLabourDiscountAmount,
     "TotalAmountRepairLabour": this.productItem.totalAmountRepairLabour,
     "NetAmount": this.productItem.NetAmount,
     "UnknownAccidentDeduction": this.productItem.AccidentDeduction,
     "AmountToBeRecovered": this.productItem.AmountRecovered,
-    "TotalAfterDeductions": this.productItem.DeductionTotal,
-    "VatRatePer": this.productItem.VATRate,
-    "VatRate": this.productItem.VatRate,
-    "VatAmount":this.productItem.VATAmount,
-    "TotalWithVAT": this.productItem.VATAmount,
-    "SalvageDeduction": this.productItem.salvageDeduction,
+    "TotalAfterDeduction": this.productItem.DeductionTotal,
+    "VATRate": this.productItem.VATRate,
+    //"VatRate": this.productItem.VatRate,
+    "VATAmount":this.productItem.VATAmount,
+    "TotalAmountWithVAT": this.productItem.TotalwithVAT,
+    //"SalvageDeduction": this.productItem.salvageDeduction,
     "GarageId":this.loginId,
     "QuotationNo":this.QuotationNo
   }
-  let urlLink = `${this.CommonApiUrl}damage/surveyor/save`;
+  let urlLink = `${this.CommonApiUrl}damage/surveyor/save/totalamount`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
     (data: any) => {
       console.log(data);
@@ -617,39 +746,68 @@ saveToalAmount(){
 }
 
 getTotalAmount(){
+  this.getTotalAmount1();
   let ReqObj = {
     "ClaimNo": this.CliamNo,
-    "QuotationNo":this.QuotationNo
+    "QuotationNo":this.QuotationNo,
+    "GarageLoginId":sessionStorage.getItem("GarageLoginId")
   }
   let urlLink = `${this.CommonApiUrl}damage/surveyor/view/spareparts`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
     (data: any) => {
       console.log(data);
       if(data.IsError==false){
-        this.setValues(data?.Response);
+        // this.setValues(data?.Response);
+        // this.netAmount();
+        this.addTotals(data?.Response);
+      }
+    },
+    (err) => { },
+  );
+}
+getTotalAmount1(){
+  let ReqObj = {
+    "ClaimNo": this.CliamNo,
+    "QuotationNo":this.QuotationNo,
+    "GarageLoginId":sessionStorage.getItem("GarageLoginId")
+  }
+  let urlLink = `${this.CommonApiUrl}damage/surveyor/view/totalamount`;
+  this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.IsError==false){
+        this.setValues(data?.Response[0]);
+        this.netAmount();
+      //  this.addTotals(data?.Response);
       }
     },
     (err) => { },
   );
 }
 setValues(rowdata){
- //this.form.controls['sparePartsCost'].setValue(rowdata.ReplacementCost)
- this.form.controls['sparePartDepreciation'].setValue(Number(rowdata.SparePartDepreciation))
- this.form.controls['discountonSpareParts'].setValue(Number(rowdata.DiscountOnSpareParts))
- this.form.controls['totalAmountReplacement'].setValue(Number(rowdata.TotalAmountReplacement))
- this.form.controls['replacementCostDeductible'].setValue(Number(rowdata.ReplacementCostDeductible))
- this.form.controls['repairLabourDeductible'].setValue(Number(rowdata.RepairLabourDeductible))
- this.form.controls['repairLabourDiscountAmount'].setValue(Number(rowdata.RepairLabourDiscountAmount))
+  // for(let entry of rowdata){
+  //   this.SparePartDepreciation+=Number(entry.Depreciation)
+  // }
+  // console.log(rowdata,"rowdatarowdatarowdata");
+  // alert(Number(this.SparePartDepreciation))
+  // console.log(entry.SparePartDepreciation)
+//  this.form.controls['sparePartsCost'].setValue(Number(rowdata.ReplacementCost))
+//  this.form.controls['sparePartDepreciation'].setValue(Number(rowdata.SparePartDepreciation))
+//  this.form.controls['discountonSpareParts'].setValue(Number(rowdata.DiscountOnSpareParts))
+//  this.form.controls['totalAmountReplacement'].setValue(Number(rowdata.TotalAmountReplacement))
+//  this.form.controls['replacementCostDeductible'].setValue(Number(rowdata.ReplacementCostDeductible))
+//  this.form.controls['repairLabourDeductible'].setValue(Number(rowdata.RepairLabourDeductible))
+//  this.form.controls['repairLabourDiscountAmount'].setValue(Number(rowdata.RepairLabourDiscountAmount))
  //this.form.controls['repairLabour'].setValue(rowdata.repairLabour)
  //this.form.controls['totalAmountRepairLabour'].setValue(rowdata.TotalAmountRepairLabour)
- this.form.controls['NetAmount'].setValue(Number(rowdata.NetAmount))
+ //this.form.controls['NetAmount'].setValue(Number(rowdata.NetAmount))
  this.form.controls['AccidentDeduction'].setValue(Number(rowdata.UnknownAccidentDeduction))
  //this.form.controls['DeductionTotal'].setValue(rowdata.TotalAfterDeductions)
  this.form.controls['AmountRecovered'].setValue(Number(rowdata.AmountToBeRecovered))
 // this.form.controls['VatRate'].setValue(Number(rowdata.VatRatePer))
- this.form.controls['VATRate'].setValue(Number(rowdata.VatRatePer))
- this.form.controls['VATAmount'].setValue(Number(rowdata.VatAmount))
-  this.form.controls['salvageDeduction'].setValue(Number(rowdata.SalvageDeduction))
+ this.form.controls['VATRate'].setValue(Number(rowdata.VATRate))
+//  this.form.controls['VATAmount'].setValue(Number(rowdata.VatAmount))
+//   this.form.controls['salvageDeduction'].setValue(Number(rowdata.SalvageDeduction))
 }
 getPartType(){
   let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}`;
@@ -663,4 +821,217 @@ getPartType(){
     (err) => { },
   );
 }
+getsparepartstype(){
+  let urlLink = `${this.CommonApiUrl}dropdown/sparepartstype/${this.CompanyId}`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+        let defaultValue =[{"Code":"","CodeDesc":"---Select---"}]
+          this.SpareList = defaultValue.concat(data.Result);
+      }
+    },
+    (err) => { },
+  );
+}
+getDepreciationtype(){
+  let urlLink = `${this.CommonApiUrl}dropdown/depreciationtype/${this.CompanyId}`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+        let defaultValue =[{"Code":"","CodeDesc":"---Select---"}]
+          this.DepreciationList = defaultValue.concat(data.Result);
+      }
+    },
+    (err) => { },
+  );
+}
+getDamageList(){
+  let urlLink = `${this.CommonApiUrl}dropdown/getdamagetype/${this.CompanyId}`;
+  this.sharedService.onGetMethodSync(urlLink).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.Result){
+        let defaultValue =[{"Code":"","CodeDesc":"---Select---"}]
+          this.DamageList = defaultValue.concat(data.Result);
+      }
+    },
+    (err) => { },
+  );
+}
+totalAmountPopup(rowData,index){
+  console.log(rowData,"totalAmountPopuprowData");
+  if(rowData)sessionStorage.setItem('TotalAmountData',JSON.stringify(rowData));
+
+  this.cuurentTotal=( rowData.NoOfUnits*rowData.UnitPrice)
+  this.RepairLabourCost=rowData.ReplacementCharge
+  this.getDepreciationtype();
+  this.getDamageList();
+  this.getsparepartstype();
+  this.getRowData(rowData)
+  this.totalAmountPop =true;
+}
+calcRowDiscount(){
+  const RowDiscountPer = (this.SpareDiscount/100)*this.cuurentTotal;
+  this.SpareDiscountAmount=RowDiscountPer;
+}
+DepreciationTypeChange(){
+   this.DepreciationReplace=0;
+   this.DepreciationReplaceper=0;
+}
+spareTotalAmount(){
+  const DepreciationReplaceper = Number(this.DepreciationReplaceper)/100*this.cuurentTotal;
+  const calcadd= Number(this.DepreciationReplace)+ Number(DepreciationReplaceper) +Number(this.ReplacementCostDeductible)+Number(this.SpareDiscountAmount)
+  this.tolalSpare=this.cuurentTotal-calcadd
+}
+repairTotalAmount(){
+ // const DepreciationReplaceper = Number(this.DepreciationReplaceper)/100*this.cuurentTotal;
+  const calcadd= Number(this.RepairLabourDiscountAmount)+ Number(this.RepairLabourDeductible);
+  this.RepairLabourTotalAmount=this.RepairLabourCost-calcadd
+}
+repairDiscCalc(rowData){
+    this.RepairLabourDiscountAmount=(Number(rowData)/100)*this.RepairLabourCost
+}
+
+getRowData(rowData){
+ 
+let ReqObj = {
+  "ClaimNo": this.CliamNo,
+  "QuotationNo":this.QuotationNo,
+  "GarageLoginId": sessionStorage.getItem("GarageLoginId"),
+  "DamageSno": rowData.DamageSno
+}
+let urlLink = `${this.CommonApiUrl}damage/surveyor/view/spareparts/damageid`;
+this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+  (data: any) => {
+    console.log(data);
+    
+   if(data.Response.length==1){
+    let amounts =data.Response[0];
+    this.sparePartType = amounts.SparePartType
+    this.SpareDiscount = amounts.DiscountPercentage
+    this.SpareDiscountAmount = amounts.DiscountAmount
+    this.ReplacementCostDeductible = amounts.ReplacementCostDeductible
+    this.DamageType = amounts.DamageType
+    this.DepreciationType = amounts.DepreciationType
+    this.DepreciationReplace = amounts.Depreciation
+    this.DepreciationReplaceper = amounts.DiscountPercentage
+    this.tolalSpare = amounts.TotalCost
+    this.RepairLabourCost = amounts.RepairLabour
+    this.RepairLabourDiscountPer = amounts.RepairLabourDiscount
+    this.RepairLabourDiscountAmount = amounts.RepairLabourDiscountAmount
+    this.RepairLabourDeductible = amounts.RepairLabourDeductible
+    this.RepairLabourTotalAmount = amounts.TotalAmountRepairLabour
+    this.RepairLabourRemarks = amounts.Remarks
+   }else{
+    let amounts =data.Response;
+    this.sparePartType = amounts.SparePartType
+    this.SpareDiscount = amounts.DiscountPercentage
+    this.SpareDiscountAmount = amounts.DiscountAmount
+    this.ReplacementCostDeductible = amounts.ReplacementCostDeductible
+    this.DamageType = amounts.DamageType
+    this.DepreciationType = amounts.DepreciationType
+    this.DepreciationReplace = amounts.Depreciation
+    this.DepreciationReplaceper = amounts.DiscountPercentage
+     this.tolalSpare = amounts.TotalCost
+    // this.RepairLabourCost = amounts.RepairLabour
+    this.RepairLabourDiscountPer = amounts.RepairLabourDiscount
+    this.RepairLabourDiscountAmount = amounts.RepairLabourDiscountAmount
+    this.RepairLabourDeductible = amounts.RepairLabourDeductible
+    this.RepairLabourTotalAmount = amounts.TotalAmountRepairLabour
+    this.RepairLabourRemarks = amounts.Remarks
+   }
+  },
+  (err) => { },
+);
+}
+
+saveRowData(){
+    let sparePartTypeDesc = this.SpareList.find(ele=>ele.Code==this.sparePartType)?.CodeDesc;
+    let DepreciationTypeDesc = this.DepreciationList.find(ele=>ele.Code==this.DepreciationType)?.CodeDesc;
+    let TotalAmountData = JSON.parse(sessionStorage.getItem('TotalAmountData'));
+  let ReqObj = {
+    "ClaimNo": this.CliamNo,
+    "QuotationNo":this.QuotationNo,
+    "GarageId": sessionStorage.getItem("GarageLoginId"),
+    "SparePartType": this.sparePartType,
+    "SparePartTypeDesc": sparePartTypeDesc,
+    "DiscountPercentage": this.SpareDiscount,
+    "DiscountAmount": this.SpareDiscountAmount,
+    "ReplacementCostDeductible": this.ReplacementCostDeductible || '0',
+    "DamageType": this.DamageType,
+    "DepreciationType": this.DepreciationType,
+    "DepreciationTypeDesc": DepreciationTypeDesc,
+    "Depreciation": this.DepreciationReplace,
+    //"ReferralStatus": "string",
+    "RepairLabour": this.RepairLabourCost,
+    "RepairLabourDiscount": this.RepairLabourDiscountPer,
+    "RepairLabourDiscountAmount": this.RepairLabourDiscountAmount,
+    "RepairLabourDeductible": this.RepairLabourDeductible,
+    "TotalAmountRepairLabour": this.RepairLabourTotalAmount,
+    "Remarks": this.RepairLabourRemarks,
+    "DamageDirection": TotalAmountData.DamageDirection,
+    "DamageDirectionDesc": TotalAmountData.DamageDirection,
+    "PartType": TotalAmountData.DamagePart,
+    "PartTypeDesc": TotalAmountData.DamagePart,
+    "ReplaceRepair": TotalAmountData.RepairReplace,
+    "NoOfUnits": TotalAmountData.NoOfUnits,
+    "SparePartsCost": TotalAmountData.UnitPrice || '0',
+    "LabourCharge": TotalAmountData.ReplacementCharge,
+    "TotalCost": this.tolalSpare,
+    "DamageSno": TotalAmountData.DamageSno
+  }
+  let urlLink = `${this.CommonApiUrl}damage/surveyor/save`;
+  this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+    (data: any) => {
+      console.log(data);
+      if(data.IsError==false){
+        this.totalAmountPop=false;
+      }
+    },
+    (err) => { },
+  );
+}
+
+addTotals(dataList){
+  let grandTotal = 0;
+  let SparePartsCost=0;
+  let SparePartsCostDep=0;
+  let SparePartsCostDisc=0;
+  let ReplacementCostDeductible=0;
+  let TotalAmountReplacement=0;
+  let repairLabour=0;
+  let RepairLabourDeductible=0;
+  let RepairLabourDiscountAmount=0;
+  let TotalAmountRepairLabour=0;
+  let NetAmount=0;
+  for (let i = 0; i < dataList.length; i++) {
+    const rowData = dataList[i];
+    //grandTotal += this.totalCalc(rowData);
+   SparePartsCost += Number(rowData.SparePartsCost * rowData.NoOfUnits)
+   SparePartsCostDep += Number(rowData.Depreciation);
+   SparePartsCostDisc += Number(rowData.DiscountAmount);
+   ReplacementCostDeductible += Number(rowData.ReplacementCostDeductible);
+   TotalAmountReplacement += Number(rowData.TotalCost);
+   repairLabour += Number(rowData.RepairLabour);
+   RepairLabourDeductible += Number(rowData.RepairLabourDeductible);
+   RepairLabourDiscountAmount += Number(rowData.RepairLabourDiscountAmount);
+   TotalAmountRepairLabour += Number(rowData.TotalAmountRepairLabour);
+   NetAmount = TotalAmountReplacement + TotalAmountRepairLabour
+  }
+  this.form.controls['sparePartsCost'].setValue(Number(SparePartsCost));
+  this.form.controls['sparePartDepreciation'].setValue(Number(SparePartsCostDep));
+  this.form.controls['discountonSpareParts'].setValue(Number(SparePartsCostDisc));
+  this.form.controls['replacementCostDeductible'].setValue(Number(ReplacementCostDeductible));
+  this.form.controls['totalAmountReplacement'].setValue(Number(TotalAmountReplacement));
+  this.form.controls['repairLabour'].setValue(Number(repairLabour));
+  this.form.controls['repairLabourDeductible'].setValue(Number(RepairLabourDeductible))
+  this.form.controls['repairLabourDiscountAmount'].setValue(Number(RepairLabourDiscountAmount))
+  this.form.controls['totalAmountRepairLabour'].setValue(Number(TotalAmountRepairLabour))
+  this.form.controls['NetAmount'].setValue(Number(NetAmount))
+  // this.totalAmountcalc(addUnit);
+   
+ //   return  grandTotal    
+} 
 }

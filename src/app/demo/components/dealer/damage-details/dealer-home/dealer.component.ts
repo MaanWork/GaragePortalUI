@@ -94,7 +94,7 @@ export class DealerComponent {
  
 ngOnInit(){
     this.getQuoteStatus()
-    this.getallVehicleList("DDE","0","direct");
+    this.getallVehicleList("DA","0","direct");
   // else if(this.userType=='Dealer'){
   //   this.GarageDropList = [{"Code":"garage_test","CodeDesc":"garage_test"},{"Code":"garage_test1","CodeDesc":"garage_test1"}]
   //   this.getallWorkOrderInformationList('direct')
@@ -128,7 +128,7 @@ getallVehicleList(status,event,type){
             this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== status[event.index].Code);
           }
           else{
-            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== "DDE");
+            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== "DA");
           }
           console.log(this.pendingVehicleList,event,"this.pendingVehicleList");
           
@@ -194,7 +194,7 @@ rejectQuote(rowData){
     (data: any) => {
       console.log(data);
       if(data.Response){
-        this.getallVehicleList("DDE","0","direct");
+        this.getallVehicleList("DA","0","direct");
       }
     },
     (err) => { },

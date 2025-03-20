@@ -63,7 +63,7 @@ export class WorkOrderComponent {
   viewImageSection: boolean=false;
   GarageLoginId: any;
   DealerCondition: any;
-  errorMsg: string;
+  errorMsg: string;coveragesList:any[]=[];coverageSection:boolean=false;
   constructor(private sharedService: SharedService,private datePipe: DatePipe,
     private messageService: MessageService, private router: Router, private translate: TranslateService,private appComp:AppComponent,
     private primeNGConfig: PrimeNGConfig) {
@@ -629,6 +629,23 @@ export class WorkOrderComponent {
         }
     }
 
+  }
+  onViewCoverageDetails(){
+    this.coveragesList = [];
+    let ReqObj={
+       "ClaimNo": this.CliamNo,
+        "GarageId": this.GarageLoginId
+    }
+    let urlLink = `${this.CommonApiUrl}fnol/listClaimantCoverages`;
+      this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
+        (data: any) => {
+              if(data?.Response){
+                if(data.Response.Dataset){
+                  this.coveragesList = data?.Response?.Dataset?.CoveragesList;
+                  this.coverageSection = true;
+                }
+              }
+        });
   }
   onDeleteSelectedDocument(index){
     this.uploadListDoc.splice(index,1);

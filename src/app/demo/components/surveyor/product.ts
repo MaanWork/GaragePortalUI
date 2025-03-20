@@ -48,6 +48,9 @@ export class ProductData {
 	NetAmount:any=0
 	AmountRecovered:any=0
 	salvageDeduction:any=0
+	TotalwithVAT:any=0
+	totalRepairLabourDeductible:any=0
+	totalReplacementCostDeductible:any=0
 //   MobileCodeDesc:any=''
 // 	Occupation:any=''
   /*const currentYear = new Date().getFullYear();

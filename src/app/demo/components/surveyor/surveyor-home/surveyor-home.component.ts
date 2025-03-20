@@ -105,7 +105,7 @@ export class SurveyorHomeComponent {
   }
  
 ngOnInit(){
-    this.getallVehicleList("CPTS","0",'direct');
+    this.getallVehicleList("GPC","0",'direct');
  // else if(this.userType=='Dealer'){
     // this.GarageDropList = [{"Code":"","CodeDesc":"--Select--"},{"Code":"garage_test","CodeDesc":"garage_test"},{"Code":"garage_test1","CodeDesc":"garage_test1"}]
     this.getQuoteStatus()
@@ -149,7 +149,7 @@ getallVehicleList(status,event,type){
             this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== status[event.index].Code);
           }
           else{
-            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== "CPTS");
+            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== "GPC");
           }
           console.log(this.pendingVehicleList,event,"this.pendingVehicleList");
           this.assignedWork();
@@ -278,7 +278,7 @@ rejectQuote(rowData){
     (data: any) => {
       console.log(data);
       if(data.Response){
-        this.getallVehicleList("CPTS","0",'direct')
+        this.getallVehicleList("GPC","0",'direct')
       }
     },
     (err) => { },

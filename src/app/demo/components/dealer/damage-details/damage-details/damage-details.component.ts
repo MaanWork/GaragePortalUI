@@ -104,7 +104,7 @@ export class DamageDetailsComponent {
   this.getDamageDeatilsListByclaimid();
   this.getDamageDirection();
   this.getRepairReplaceType();
-  this.getPartType();
+  //this.getPartType();
   // if(this.DamageDeatilsList.length!=0){
   //   this.grandTotal1 = this.addTotalsToData(this.DamageDeatilsList);
   // }
@@ -378,8 +378,9 @@ addTotalsToData(dataList){
 saveDamageStaus(){
 
 }
-getPartType(){
-  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}`;
+getPartType(rowData){
+  let val = this.DamageDirectionList.find(ele=>ele.Code==rowData || ele.CodeDesc==rowData)?.Code
+  let urlLink = `${this.CommonApiUrl}dropdown/vehiclebodyparts/${this.CompanyId}/${val}`;
   this.sharedService.onGetMethodSync(urlLink).subscribe(
     (data: any) => {
       console.log(data);

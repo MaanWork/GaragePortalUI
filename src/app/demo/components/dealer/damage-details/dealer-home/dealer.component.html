@@ -44,7 +44,7 @@
                   <td>{{ vehicle.VehicleRegno }}</td>
                   <td>
                     <span class="p-buttonset">
-                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" [disabled]="item.Code=='DDE'" (click)="editQuote(vehicle.ClaimNo,vehicle,'enable')"></button>
+                      <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" *ngIf="item.Code!='GPC'" [disabled]="item.Code=='DDE'" (click)="editQuote(vehicle.ClaimNo,vehicle,'enable')"></button>
                       <button pButton pRipple icon="pi pi-eye" class="p-button-outlined" (click)="detailview(vehicle)"></button>
 
                       <!-- <button pButton pRipple icon="pi pi-times" class="p-button-outlined" (click)="rejectQuote(vehicle.ClaimNo)"></button> -->

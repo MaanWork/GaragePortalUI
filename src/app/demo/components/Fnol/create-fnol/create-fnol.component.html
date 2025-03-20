@@ -4,19 +4,27 @@
             <!-- <h4 class="ml-3">{{ 'HOME.WorkOrder' | translate }}</h4> -->
              <div class="flex flex-warp justify-content-between"> 
                  <h4 class="ml-3">Create FNOL</h4>
-                 <!-- <div class="lg:col-2 md:col-2 col-3" *ngIf="userType=='Surveyor'">
-                    <label for="username">{{'HOME.Dealer' | translate}} *</label>
-                    <p-dropdown inputId="sourceType" class="w-full" styleClass="w-full" optionLabel="CodeDesc"
-                        [options]="DealerDropList" [(ngModel)]="DealerDrop" optionValue="Code" [placeholder]="'HOME.SelectDealer' | translate">
-                    </p-dropdown>
+                 
+                 <!-- <div class="lg:col-4 md:col-4 col-4" >
+                  
+                    
                 </div> -->
              </div>
+             <div class="flex flex-warp justify-content-between">
+              <div class="clo-5">
+              <label for="username">PolicyNo *</label>
+              <input  pInputText  type="text"  (input)="getInsuredName(productItem.policyNo) "  [(ngModel)]="productItem.policyNo" 
+                       placeholder="Search PolicyNo" /></div>
+              <h6 class="ml-3">Policy Period : {{PolicySDate}} - {{PolicyEDate}}</h6>
+             </div>
             <div class="m-2 p-2">
+              
                 <form [formGroup]="form">
                     <formly-form [form]="form" [fields]="Fields" [model]="productItem"></formly-form>
                 </form>
             </div>
         </div>
+      
     </div>
     <div class="flex flex-warp justify-content-start" >
         <div class="col-12 md:col-5 lg:col-4 sm:col-4 lx:col-4 px-5"></div>

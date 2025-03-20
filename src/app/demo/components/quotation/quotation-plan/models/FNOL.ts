@@ -28,42 +28,49 @@ export class FNOL {
               {
                 fieldGroupClassName: 'grid',
                 fieldGroup: [
+                  // {
+                  //   className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
+                  //   type: 'input',
+                  //   id: 'policyNo',
+                  //   key: 'policyNo',
+                  //   hide: false,
+                  //   hideExpression:false,
+                  //   templateOptions: {
+                  //     label: `Policy No`,
+                  //     id: 'policyNo',
+                  //     name:'policyNo',
+                  //     // addonRight: {
+                  //     //   class: 'fa fa-search',
+                  //     // },
+                  //     //placeholder: '-Select-',
+                  //     required: true,
+                  //     disabled: this.checkDisable('policyNo'),
+                  //     maxLength: 30,
+                  //     options:[],
+                  //     // suffix: {
+                  //     //   class: 'pi pi-search', // PrimeNG search icon
+                  //     //  // onClick: () => this.onSearchClick(), // Function to handle search action
+                  //     // },
+                  //   },
+                  //   validators: {
+                  //   },
+                  //   hooks: {
+                  //   },
+                  //   expressions: {
+                  //   },
+                  // },
                   {
                     className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
                     type: 'input',
-                    id: 'policyNo',
-                    key: 'policyNo',
+                    id: 'insuredName',
+                    key: 'insuredName',
                     hide: false,
                     hideExpression:false,
                     templateOptions: {
-                      label: `Policy No`,
-                      id: 'policyNo',
-                      name:'policyNo',
-                      //placeholder: '-Select-',
-                      required: true,
-                      disabled: this.checkDisable('policyNo'),
-                      maxLength: 30,
-                      options:[]
-                    },
-                    validators: {
-                    },
-                    hooks: {
-                    },
-                    expressions: {
-                    },
-                  },
-                  {
-                    className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
-                    type: 'input',
-                    id: 'insuredId',
-                    key: 'insuredId',
-                    hide: false,
-                    hideExpression:false,
-                    templateOptions: {
-                      label: `Insured Id`,
+                      label: `Insured Name`,
                       // placeholder: 'Enter Client Name',
                       required: true,
-                      disabled: this.checkDisable('insuredId'),
+                      disabled: this.checkDisable('insuredName'),
                       maxLength: 100
                     },
                     
@@ -75,7 +82,7 @@ export class FNOL {
                     },
                   },
                   {
-                    className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2',
+                    className: 'col-12 md:col-1 lg:col-1 xl:col-1 pl-2 pr-2',
                     type: 'datepicker',
                     id: 'lossDate',
                     key: 'lossDate',
@@ -86,10 +93,43 @@ export class FNOL {
                       type:'date',
                       label: `Loss Date`,
                       required: true,
+                      // showTime: true, // Enables date + time selection
+                      dateFormat: 'dd/mm/yy HH:mm:ss', // Display format
+                      // hourFormat: '12', 
                       disabled: this.checkDisable('lossDate'),
+                      datepickerOptions: {
+                        //  hourFormat: '12',
+                        //  timeOnly: true
+                      },
+                      
+                    },
+                   
+                    validators: {
+                    },
+                    hooks: {
+                    },
+                    expressions: {
+                    },
+                  },
+                  {
+                    className: 'col-12 md:col-1 lg:col-1 xl:col-1 mt-3-5',
+                    type: 'timepicker',
+                    //1label: 'lossTime',
+                    key: 'lossTime',
+                    hide: false,
+                    hideExpression:false,
+                    //defaultValue: this.minDate,
+                    templateOptions: {
+                      type:'time',
+                      label: `Loss Time`,
+                      required: true,
+                      disabled: this.checkDisable('lossTime'),
                       datepickerOptions: {
                         // Additional options for the datepicker if necessary
                        // max:this.minDate,
+                       hourFormat: '12',
+                        showTime: true,
+                        timeOnly: true
                       },
                       
                     },
@@ -198,54 +238,54 @@ export class FNOL {
                     expressions: {
                     },
                   },
-                  {
-                    className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
-                    type: 'ngselect',
-                    id: 'policeStation',
-                    key: 'policeStation',
-                    // hide: true,
-                    // hideExpression:true,
-                    props: {
-                      label: `Police Station`,
-                      id: 'policeStation',
-                      name:'policeStation',
-                      // placeholder: '-Select Activities-',
-                      required: true,
-                      disabled: this.checkDisable('policeStation'),
-                      maxLength: 50,
-                      options:[]
-                    },
-                    validators: {
-                    },
-                    hooks: {
-                    },
-                    expressions: {
-                    },
-                  },
-                  {
-                    className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
-                    type: 'input',
-                    id: 'policeReportNo',
-                    key: 'policeReportNo',
-                    hide: false,
-                    hideExpression:false,
-                    props: {
-                      label: `Police Report No`,
-                      id: 'policeReportNo',
-                      name:'policeReportNo',
-                      // placeholder: '-Select Occupation-',
-                      required: false,
-                      disabled: this.checkDisable('policeReportNo'),
-                      maxLength: 50,
-                      options:[]
-                    },
-                    validators: {
-                    },
-                    hooks: {
-                    },
-                    expressions: {
-                    },
-                  },
+                  // {
+                  //   className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
+                  //   type: 'ngselect',
+                  //   id: 'policeStation',
+                  //   key: 'policeStation',
+                  //   // hide: true,
+                  //   // hideExpression:true,
+                  //   props: {
+                  //     label: `Police Station`,
+                  //     id: 'policeStation',
+                  //     name:'policeStation',
+                  //     // placeholder: '-Select Activities-',
+                  //     required: true,
+                  //     disabled: this.checkDisable('policeStation'),
+                  //     maxLength: 50,
+                  //     options:[]
+                  //   },
+                  //   validators: {
+                  //   },
+                  //   hooks: {
+                  //   },
+                  //   expressions: {
+                  //   },
+                  // },
+                  // {
+                  //   className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
+                  //   type: 'input',
+                  //   id: 'policeReportNo',
+                  //   key: 'policeReportNo',
+                  //   hide: false,
+                  //   hideExpression:false,
+                  //   props: {
+                  //     label: `Police Report No`,
+                  //     id: 'policeReportNo',
+                  //     name:'policeReportNo',
+                  //     // placeholder: '-Select Occupation-',
+                  //     required: false,
+                  //     disabled: this.checkDisable('policeReportNo'),
+                  //     maxLength: 50,
+                  //     options:[]
+                  //   },
+                  //   validators: {
+                  //   },
+                  //   hooks: {
+                  //   },
+                  //   expressions: {
+                  //   },
+                  // },
                   {
                     className: 'col-12 md:col-3 lg:col-3 xl:col-3 pl-2 pr-2 pt-1',
                     type: 'input',
