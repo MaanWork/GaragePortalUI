@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { AppComponent } from 'src/app/app.component';
@@ -93,7 +93,9 @@ export class DamageDetailsComponent {
   DepreciationReplaceper:any='0';
   GrandTotal:any='0'
   SparePartDepreciation: any;
-  constructor(private cdr: ChangeDetectorRef,private messageService: MessageService,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
+  viewType: boolean = false;
+  GarageLoginId:any
+  constructor(private cdr: ChangeDetectorRef,private messageService: MessageService, private route: ActivatedRoute,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
     this.agencyCode = this.userDetails.Response.OaCode;
@@ -158,10 +160,10 @@ export class DamageDetailsComponent {
   this.FieldsRecivedAmount[0] = fireData?.fields?.fieldGroup[9];
   this.FieldsVatRate[0] = fireData?.fields?.fieldGroup[10];
   
-  this.getDamageDeatilsListByclaimid();
-  this.getDamageDirection();
-  this.getRepairReplaceType();
-  this.getPartType();
+  // this.getDamageDeatilsListByclaimid();
+  // this.getDamageDirection();
+  // this.getRepairReplaceType();
+  // this.getPartType();
   if(this.DamageDeatilsList.length==0){
     this.DamageDeatilsList=[{
       "DamageSno":this.DamageDeatilsList.length+1,
@@ -178,8 +180,32 @@ export class DamageDetailsComponent {
   setInterval(() => {
     this.GrandTotal = Number(this.RepairLabourTotalAmount)+Number(this.tolalSpare)
   }, 200);
+
+  this.route.queryParams.subscribe(params => {
+  let type = params['type'];
+  if(type =='1'){
+    this.viewType = true;
+    this.FieldsAccident[0].fieldGroup[0].props.disabled = true;
+    this.FieldsRecivedAmount[0].fieldGroup[0].props.disabled = true;
+    this.FieldsVatRate[0].fieldGroup[0].props.disabled = true;
+     this.CliamNo= params['ClaimNo'];
+     this.QuotationNo =params['QuotationNo'];
+     this.GarageLoginId =params['GarageLoginId'];
+   
+  }
+  if(type =='2'){
+    this.CliamNo= params['ClaimNo'];
+     this.QuotationNo =params['QuotationNo'];
+     this.GarageLoginId =params['GarageLoginId'];
+  }
+  });
+  this.getDamageDeatilsListByclaimid();
+  this.getDamageDirection();
+  this.getRepairReplaceType();
+  this.getPartType();
  }
  getDamageDeatilsListByclaimid(){
+
   let ReqObj,urlLink;
   if(this.userType=='Dealer'){
     ReqObj = {
@@ -315,17 +341,22 @@ addNewDamageDeatils(){
 }
 getBack(){
   let type =sessionStorage.getItem('Type');
-  if(type=='In-Progress' ){
-    this.router.navigate(['/surveyor'])
-  }
-  else if(type=='surveyor'){
-    this.router.navigate(['/surveyor'])
-  }
-  else if(this.userType=='Dealer'){
-    this.router.navigate(['/dealer'])
+  if(this.viewType){
+    this.router.navigate(['/spareparts'])
   }
   else{
-    this.router.navigate(['/surveyor/workorder'])
+    if(type=='In-Progress' ){
+      this.router.navigate(['/surveyor'])
+    }
+    else if(type=='surveyor'){
+      this.router.navigate(['/surveyor'])
+    }
+    else if(this.userType=='Dealer'){
+      this.router.navigate(['/dealer'])
+    }
+    else{
+      this.router.navigate(['/surveyor/workorder'])
+    }
   }
 }
 onSubmit(){
@@ -746,11 +777,12 @@ saveToalAmount(){
 }
 
 getTotalAmount(){
+  alert(this.CliamNo)
   this.getTotalAmount1();
   let ReqObj = {
     "ClaimNo": this.CliamNo,
     "QuotationNo":this.QuotationNo,
-    "GarageLoginId":sessionStorage.getItem("GarageLoginId")
+    "GarageLoginId":sessionStorage.getItem("GarageLoginId")? sessionStorage.getItem("GarageLoginId"):this.GarageLoginId
   }
   let urlLink = `${this.CommonApiUrl}damage/surveyor/view/spareparts`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
@@ -769,15 +801,19 @@ getTotalAmount1(){
   let ReqObj = {
     "ClaimNo": this.CliamNo,
     "QuotationNo":this.QuotationNo,
-    "GarageLoginId":sessionStorage.getItem("GarageLoginId")
+    "GarageLoginId":sessionStorage.getItem("GarageLoginId")? sessionStorage.getItem("GarageLoginId"):this.GarageLoginId
   }
+
   let urlLink = `${this.CommonApiUrl}damage/surveyor/view/totalamount`;
   this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
     (data: any) => {
       console.log(data);
       if(data.IsError==false){
-        this.setValues(data?.Response[0]);
+        // setTimeout(() => {
+          this.setValues(data?.Response[0]);
         this.netAmount();
+        // }, 200);
+        
       //  this.addTotals(data?.Response);
       }
     },
@@ -899,7 +935,7 @@ getRowData(rowData){
 let ReqObj = {
   "ClaimNo": this.CliamNo,
   "QuotationNo":this.QuotationNo,
-  "GarageLoginId": sessionStorage.getItem("GarageLoginId"),
+  "GarageLoginId":sessionStorage.getItem("GarageLoginId")? sessionStorage.getItem("GarageLoginId"):this.GarageLoginId,
   "DamageSno": rowData.DamageSno
 }
 let urlLink = `${this.CommonApiUrl}damage/surveyor/view/spareparts/damageid`;
@@ -909,7 +945,10 @@ this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
     
    if(data.Response.length==1){
     let amounts =data.Response[0];
-    this.sparePartType = amounts.SparePartType
+    // setTimeout(() => {
+      this.sparePartType = amounts.SparePartType
+    // }, 200);
+    // this.sparePartType = amounts.SparePartType
     this.SpareDiscount = amounts.DiscountPercentage
     this.SpareDiscountAmount = amounts.DiscountAmount
     this.ReplacementCostDeductible = amounts.ReplacementCostDeductible

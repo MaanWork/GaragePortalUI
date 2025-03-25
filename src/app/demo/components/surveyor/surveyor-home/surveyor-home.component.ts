@@ -14,46 +14,46 @@ import * as Mydatas from '../../../../app-config.json';
 })
 export class SurveyorHomeComponent {
   items: MenuItem[] | undefined;
-  tableActions:MenuItem[] | undefined;
-  columns:string[] = []; 
+  tableActions: MenuItem[] | undefined;
+  columns: any[] = [];
   tableView = 'table';
-  userDetails:any=null;loginId:any=null;
-  agencyCode:any=null;branchCode:any=null;
-  productId:any=null;insuranceId:any=null;
-  userType:any=null;brokerbranchCode:any=null;
+  userDetails: any = null; loginId: any = null;
+  agencyCode: any = null; branchCode: any = null;
+  productId: any = null; insuranceId: any = null;
+  userType: any = null; brokerbranchCode: any = null;
   public AppConfig: any = (Mydatas as any).default;
   public ApiUrl1: any = this.AppConfig.ApiUrl1;
   public CommonApiUrl: any = this.AppConfig.CommonApiUrl;
-  searchValue: any=null;clearSearchSection: boolean=false;lang:any=null;
-  vehicleList: any[]=[];
+  searchValue: any = null; clearSearchSection: boolean = false; lang: any = null;
+  vehicleList: any[] = [];
   CompanyId: any;
-  culumnHeader: any[]=[];
-  WorkOrderInformationList: any[]=[];
+  culumnHeader: any[] = [];
+  WorkOrderInformationList: any[] = [];
   CliamNo: string;
-  DealerWorkOrderInformationList: any[]=[];
-  GarageDropList:any[]=[];
-  GarageDrop:any;
-  tabIndex:any;
-  pendingVehicleList:any[]=[];
-  inprogressVehicleList: any[]=[];
-  compeletedVehicleList: any[]=[];
-  rejectedVehicleList: any[]=[];
-  columnsR: any[]=[];
-  columnsP: any[]=[];
-  columnsC: any[]=[];
-  assignWorkList: any[]=[];
-  DealerLowestList: any[]=[];
-  GarageLowestList: any[]=[];
-  columnsDealer: string[];
-  columnsGarage: string[];
+  DealerWorkOrderInformationList: any[] = [];
+  GarageDropList: any[] = [];
+  GarageDrop: any;
+  tabIndex: any;
+  pendingVehicleList: any[] = [];
+  inprogressVehicleList: any[] = [];
+  compeletedVehicleList: any[] = [];
+  rejectedVehicleList: any[] = [];
+  columnsR: any[] = [];
+  columnsP: any[] = [];
+  columnsC: any[] = [];
+  assignWorkList: any[] = [];
+  DealerLowestList: any[] = [];
+  GarageLowestList: any[] = [];
+  columnsDealer: any[] = [];
+  columnsGarage: any[] = [];
   selectedRows: any;
-  WorkAssigned: any[]=[];
-  QuoteStatusList: any[]=[];
-  displayDialog: boolean=false;
-  GarageDropError: boolean=false;
-  responseData: any[]=[];
-  
-  constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
+  WorkAssigned: any[] = [];
+  QuoteStatusList: any[] = [];
+  displayDialog: boolean = false;
+  GarageDropError: boolean = false;
+  responseData: any[] = [];
+
+  constructor(private router: Router, private sharedService: SharedService, private appComp: AppComponent, private translate: TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
     this.agencyCode = this.userDetails.Response.OaCode;
@@ -65,112 +65,194 @@ export class SurveyorHomeComponent {
     this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
     sessionStorage.removeItem('endorsePolicyNo');
     sessionStorage.removeItem('endorseTypeId');
-    this.appComp.getLanguage().subscribe((res:any)=>{  
-			if(res) this.lang=res;
-			else this.lang='en';
-			this.translate.setDefaultLang(this.lang);
-        this.setHeaders()
-		  });
-		if(!this.lang){if(sessionStorage.getItem('language'))this.lang=sessionStorage.getItem('language');
-		else this.lang='en';
-		sessionStorage.setItem('language',this.lang)
-		this.translate.setDefaultLang(sessionStorage.getItem('language'));
+    this.appComp.getLanguage().subscribe((res: any) => {
+      if (res) this.lang = res;
+      else this.lang = 'en';
+      this.translate.setDefaultLang(this.lang);
+      this.setHeaders()
+    });
+    if (!this.lang) {
+      if (sessionStorage.getItem('language')) this.lang = sessionStorage.getItem('language');
+      else this.lang = 'en';
+      sessionStorage.setItem('language', this.lang)
+      this.translate.setDefaultLang(sessionStorage.getItem('language'));
       this.setHeaders();
     }
     // this.getCustomersList();
   }
-  setHeaders(){
-    if(this.lang=='en'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.',  'Type', 'Vehicle Reg #','Purchased by Where','Compare Quote /View'];
-      this.columnsP = [ 'S.#','Claim No', 'Quotation No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.columnsC = [ 'S.#','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Garage Price', 'Dealer Price','Garage Id','Dealer Id', 'Vehicle Reg #' ,'Entry Date'];
-      this.columnsDealer = ['Claim No','Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Dealer Price','Garage Price','Vehicle Reg #' ,'Entry Date'];
-      this.columnsGarage = ['Claim No', 'Vehicle Make' , 'Vehicle Model',  'Damage Part','No Of Unit', 'Garage Price', 'Dealer Price', 'Vehicle Reg #' ,'Entry Date'];
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Home', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+  setHeaders() {
+    if (this.lang == 'en') {
+
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'AssignedTo', header: 'Purchased by Where' },
+        { field: 'Actions', header: 'Compare Quote / View' }
+      ];
+
+      this.columns = [
+        { field: 'index', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMake', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' }
+      ];
+      this.columnsGarage = [
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMake', header: 'Vehicle Make' },
+        { field: 'VehicleModel', header: 'Vehicle Model' },
+        { field: 'DamagePart', header: 'Damage Part' },
+        { field: 'NoOfParts', header: 'No Of Unit' },
+        { field: 'GaragePrice', header: 'Garage Price' },
+        { field: 'DealerPrice', header: 'Dealer Price' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'EntryDate', header: 'Entry Date' }
+      ];
+      this.columnsDealer = [
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMake', header: 'Vehicle Make' },
+        { field: 'VehicleModel', header: 'Vehicle Model' },
+        { field: 'DamagePart', header: 'Damage Part' },
+        { field: 'NoOfParts', header: 'No Of Unit' },
+        { field: 'DealerPrice', header: 'Dealer Price' },
+        { field: 'GaragePrice', header: 'Garage Price' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'EntryDate', header: 'Entry Date' }
+      ];
+
     }
-    else if(this.lang=='po'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Lar', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    else if (this.lang == 'po') {
+      // this.columnsR = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+      // this.columns = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #', 'Action'];
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' }
+      ];
+
+      this.columns = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' }
+      ];
+
     }
-    else if(this.lang=='fr'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Accueil', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    else if (this.lang == 'fr') {
+      // this.columnsR = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+      // this.columns = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #', 'Action'];
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' }
+      ];
+
+      this.columns = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' } // Added Action for columns
+      ];
+
     }
   }
- 
-ngOnInit(){
-    this.getallVehicleList("GPC","0",'direct');
- // else if(this.userType=='Dealer'){
+
+  ngOnInit() {
+    this.getallVehicleList("GPC", "0", 'direct');
+    // else if(this.userType=='Dealer'){
     // this.GarageDropList = [{"Code":"","CodeDesc":"--Select--"},{"Code":"garage_test","CodeDesc":"garage_test"},{"Code":"garage_test1","CodeDesc":"garage_test1"}]
     this.getQuoteStatus()
     this.getallgarageLoginId();
-   
- // }
-}
-getQuoteStatus(){
-  let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}/${this.CompanyId}`;
-  this.sharedService.onGetMethodSync(urlLink).subscribe(
-    (data: any) => {
-      console.log(data);
-      if(data.Result){
-        this.QuoteStatusList = data.Result;
-      }
-    },
-    (err) => { },
-  );
-}
-getallVehicleList(status,event,type){
-  this.GarageDropError=false;
-  if(this.GarageDrop=='' || this.GarageDrop==null || this.GarageDrop=='--Select--'){
-    this.GarageDropError=true;
+
+    // }
   }
-  else{
-   
-    let ReqObj = {
-      "CompanyId": this.CompanyId,
-      "GarageId": this.GarageDrop,
-      "SurveyorId":this.loginId
-    }
-    
-    let urlLink = `${this.CommonApiUrl}vehicle/surveyor/view`;
-    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+  getQuoteStatus() {
+    let urlLink = `${this.CommonApiUrl}claim/grid/status/${this.userType}/${this.CompanyId}`;
+    this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
-        if(data.Response){
-          this.vehicleList = data.Response;
-          
-          if(type=='change'){
-            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== status[event.index].Code);
-          }
-          else{
-            this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus== "GPC");
-          }
-          console.log(this.pendingVehicleList,event,"this.pendingVehicleList");
-          this.assignedWork();
-          this.getCompVehicleList();
+        if (data.Result) {
+          this.QuoteStatusList = data.Result;
         }
       },
       (err) => { },
     );
   }
- 
-}
-getCompVehicleList(){
-  let ReqObj = {
-    "CompanyId": this.CompanyId,
-    "GarageId": this.GarageDrop,
+  getallVehicleList(status, event, type) {
+    this.GarageDropError = false;
+    if (this.GarageDrop == '' || this.GarageDrop == null || this.GarageDrop == '--Select--') {
+      this.GarageDropError = true;
+    }
+    else {
+
+      let ReqObj = {
+        "CompanyId": this.CompanyId,
+        "GarageId": this.GarageDrop,
+        "SurveyorId": this.loginId
+      }
+
+      let urlLink = `${this.CommonApiUrl}vehicle/surveyor/view`;
+      this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+        (data: any) => {
+          console.log(data);
+          if (data.Response) {
+            this.vehicleList = data.Response;
+
+            if (type == 'change') {
+              this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus == status[event.index].Code);
+            }
+            else {
+              this.pendingVehicleList = this.vehicleList.filter(ele => ele.QuoteStatus == "GPC");
+            }
+            console.log(this.pendingVehicleList, event, "this.pendingVehicleList");
+            this.assignedWork();
+            this.getCompVehicleList();
+          }
+        },
+        (err) => { },
+      );
+    }
+
+  }
+  getCompVehicleList() {
+    let ReqObj = {
+      "CompanyId": this.CompanyId,
+      "GarageId": this.GarageDrop,
     }
     let urlLink = `${this.CommonApiUrl}vehicle/surveyor/view/completed`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
         console.log(data);
-        if(data.Response){
+        if (data.Response) {
           this.compeletedVehicleList = data.Response;
           //let DealerLow = this.vehicleList.filter(ele => parseFloat(ele.DealerPrice) < parseFloat(ele.GaragePrice));
           // let inprogress = this.vehicleList.filter(ele => ele.Status == "I");
@@ -181,18 +263,18 @@ getCompVehicleList(){
             const garagePrice = parseFloat(ele.GaragePrice);
             console.log(`Comparing Dealer Price: ${dealerPrice} with Garage Price: ${garagePrice}`);
             return dealerPrice < garagePrice;
-        });
-        let GarageLow = this.compeletedVehicleList.filter(ele => {
-          const dealerPrice = parseFloat(ele.DealerPrice);
-          const garagePrice = parseFloat(ele.GaragePrice);
-          console.log(`Comparing Dealer Price: ${dealerPrice} with Garage Price: ${garagePrice}`);
-          return garagePrice <= dealerPrice && garagePrice!=0;
-      });
+          });
+          let GarageLow = this.compeletedVehicleList.filter(ele => {
+            const dealerPrice = parseFloat(ele.DealerPrice);
+            const garagePrice = parseFloat(ele.GaragePrice);
+            console.log(`Comparing Dealer Price: ${dealerPrice} with Garage Price: ${garagePrice}`);
+            return garagePrice <= dealerPrice && garagePrice != 0;
+          });
           this.DealerLowestList = DealerLow;
-         // this.DealerLowestList['SelectedYn']='N';
-          console.log(this.DealerLowestList,"this.DealerLowestList");
+          // this.DealerLowestList['SelectedYn']='N';
+          console.log(this.DealerLowestList, "this.DealerLowestList");
           this.GarageLowestList = GarageLow;
-          console.log(this.GarageLowestList,"this.DealerLowestList");
+          console.log(this.GarageLowestList, "this.DealerLowestList");
           // this.inprogressVehicleList = inprogress;
           // this.compeletedVehicleList = compeleted; 
           //  [
@@ -224,142 +306,141 @@ getCompVehicleList(){
           //   }
           // ]
           // this.rejectedVehicleList = rejected;
-          
+
         }
       },
       (err) => { },
     );
-}
-getallgarageLoginId(){
+  }
+  getallgarageLoginId() {
     let urlLink = `${this.CommonApiUrl}dropdown/garageLoginId/${this.CompanyId}`;
     this.sharedService.onGetMethodSync(urlLink).subscribe(
       (data: any) => {
         console.log(data);
-        if(data.Result){
-          let obj =[{"Code":null,"CodeDesc":"--Select--"}]
-            this.GarageDropList = obj.concat(data.Result);
+        if (data.Result) {
+          let obj = [{ "Code": null, "CodeDesc": "--Select--" }]
+          this.GarageDropList = obj.concat(data.Result);
         }
       },
       (err) => { },
     );
-}
-editQuote(rowData){
-    if(rowData){
-      sessionStorage.setItem('CliamNo',rowData.ClaimNo);
-      sessionStorage.setItem('GarageLoginId',rowData.GarageLoginId);
-      sessionStorage.setItem('QuoteStatus',rowData.QuoteStatus);
-      if(rowData.InsuredName)sessionStorage.setItem('InsuredName',rowData.InsuredName);
-      if(this.userType=="Surveyor")
-        {
-          sessionStorage.setItem('Completed','SurveyorPending')
-      this.router.navigate(['/surveyor/workorder'])
+  }
+  editQuote(rowData) {
+    if (rowData) {
+      sessionStorage.setItem('CliamNo', rowData.ClaimNo);
+      sessionStorage.setItem('GarageLoginId', rowData.GarageLoginId);
+      sessionStorage.setItem('QuoteStatus', rowData.QuoteStatus);
+      if (rowData.InsuredName) sessionStorage.setItem('InsuredName', rowData.InsuredName);
+      if (this.userType == "Surveyor") {
+        sessionStorage.setItem('Completed', 'SurveyorPending')
+        this.router.navigate(['/surveyor/workorder'])
       }
-      else if(this.userType=="Dealer"){
+      else if (this.userType == "Dealer") {
         this.router.navigate(['/surveyor/damagedetail'])
       }
+    }
   }
-}
-editQuote1(CliamNo,rowData,type){
-  if(rowData){
-    sessionStorage.setItem('CliamNo',CliamNo)
-    sessionStorage.setItem('QuotationNo',rowData.QuotationNo)
-    sessionStorage.setItem('Type',type)
+  editQuote1(CliamNo, rowData, type) {
+    if (rowData) {
+      sessionStorage.setItem('CliamNo', CliamNo)
+      sessionStorage.setItem('QuotationNo', rowData.QuotationNo)
+      sessionStorage.setItem('Type', type)
       this.router.navigate(['/surveyor/damagedetail'])
-    
+
+    }
   }
-}
-rejectQuote(rowData){
-  let ReqObj = {
-    "ClaimNo": rowData,
+  rejectQuote(rowData) {
+    let ReqObj = {
+      "ClaimNo": rowData,
+    }
+
+    let urlLink = `${this.CommonApiUrl}api/vehicleinfo/rejectClaim`;
+    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data.Response) {
+          this.getallVehicleList("GPC", "0", 'direct')
+        }
+      },
+      (err) => { },
+    );
+  }
+  Completed(rowData, type) {
+    if (rowData) {
+      // sessionStorage.setItem('CliamNo',rowData)
+      // sessionStorage.setItem("Completed",type)
+      this.tabIndex += 1
+      // this.getallVehicleList()
+      //this.router.navigate(['/surveyor/workorder'])
+    }
   }
 
-  let urlLink = `${this.CommonApiUrl}api/vehicleinfo/rejectClaim`;
-  this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
-    (data: any) => {
-      console.log(data);
-      if(data.Response){
-        this.getallVehicleList("GPC","0",'direct')
-      }
-    },
-    (err) => { },
-  );
-}
-Completed(rowData,type){
-if(rowData){
-  // sessionStorage.setItem('CliamNo',rowData)
-  // sessionStorage.setItem("Completed",type)
-  this.tabIndex+=1
- // this.getallVehicleList()
-  //this.router.navigate(['/surveyor/workorder'])
-}
-}
+  onCheckEndorseSelect(rowData) {
+    return rowData.SelectedYn == 'Y';
+  }
 
-onCheckEndorseSelect(rowData){
-  return rowData.SelectedYn=='Y';
-}
-
- onSelectProduct(rowData,event,i){
-  if(event){
+  onSelectProduct(rowData, event, i) {
+    if (event) {
       rowData.SelectedYn = 'Y';
-      rowData['GarageDealer']='Dealer'
+      rowData['GarageDealer'] = 'Dealer'
       rowData.Checked = true;
-  }
-  else{
+    }
+    else {
       rowData.SelectedYn = 'N';
+    }
   }
-}
-onCheckCoverAll(){
-  //this.DealerLowestList['SelectedYn']='N';
-  return this.DealerLowestList.some(ele=>ele.SelectedYn=='N');
- }
- onSelectCoverAll(event){
+  onCheckCoverAll() {
+    //this.DealerLowestList['SelectedYn']='N';
+    return this.DealerLowestList.some(ele => ele.SelectedYn == 'N');
+  }
+  onSelectCoverAll(event) {
     let value = null;
-    if(event){value='Y'}
-    else{value='N'}
-    for(let cover of this.DealerLowestList){
-      cover['SelectedYn']=value;
-      cover['GarageDealer']='Dealer'
-    }      
- }
+    if (event) { value = 'Y' }
+    else { value = 'N' }
+    for (let cover of this.DealerLowestList) {
+      cover['SelectedYn'] = value;
+      cover['GarageDealer'] = 'Dealer'
+    }
+  }
 
- onCheckGarageSelect(rowData){
-  return rowData.SelectedYn=='Y';
-}
+  onCheckGarageSelect(rowData) {
+    return rowData.SelectedYn == 'Y';
+  }
 
- onSelectGarageProduct(rowData,event,i){
-  if(event){
+  onSelectGarageProduct(rowData, event, i) {
+    if (event) {
       rowData.SelectedYn = 'Y';
-      rowData['GarageDealer']='Garage'
+      rowData['GarageDealer'] = 'Garage'
       rowData.Checked = true;
-  }
-  else{
+    }
+    else {
       rowData.SelectedYn = 'N';
+    }
   }
-}
-onCheckGarageCoverAll(){
-  //this.DealerLowestList['SelectedYn']='N';
-  return this.GarageLowestList.some(ele=>ele.SelectedYn=='N');
- }
- onSelectGarageCoverAll(event){
+  onCheckGarageCoverAll() {
+    //this.DealerLowestList['SelectedYn']='N';
+    return this.GarageLowestList.some(ele => ele.SelectedYn == 'N');
+  }
+  onSelectGarageCoverAll(event) {
     let value = null;
-    if(event){value='Y'}
-    else{value='N'}
-    for(let cover of this.GarageLowestList){
-      cover['SelectedYn']=value
-      cover['GarageDealer']='Garage'
-    }      
- }
+    if (event) { value = 'Y' }
+    else { value = 'N' }
+    for (let cover of this.GarageLowestList) {
+      cover['SelectedYn'] = value
+      cover['GarageDealer'] = 'Garage'
+    }
+  }
 
- save(event){
-  console.log(this.DealerLowestList,"event");
-  
- 
-  let i=0; let req:any=[];
-    let selectedList = this.DealerLowestList.filter(ele=>ele.SelectedYn=='Y');
-    
-    for(let s of selectedList){
-      
-      i+=1;
+  save(event) {
+    console.log(this.DealerLowestList, "event");
+
+
+    let i = 0; let req: any = [];
+    let selectedList = this.DealerLowestList.filter(ele => ele.SelectedYn == 'Y');
+
+    for (let s of selectedList) {
+
+      i += 1;
       let ReqObj = {
         "ClaimNo": s.ClaimNo,
         "QuotationNo": s.QuotationNo,
@@ -375,29 +456,29 @@ onCheckGarageCoverAll(){
       }
       req.push(ReqObj);
     }
-    console.log(req,"selectedList");
+    console.log(req, "selectedList");
     let urlLink = `${this.CommonApiUrl}damage/save`;
     this.sharedService.onPostMethodSync(urlLink, req).subscribe(
-        (data: any) => {
-            console.log(data);
-            let res:any=data;
-            if(res){
-              this.assignedWork();
-              this.getallVehicleList(null,null,null);
-             // window.location.reload();
+      (data: any) => {
+        console.log(data);
+        let res: any = data;
+        if (res) {
+          this.assignedWork();
+          this.getallVehicleList(null, null, null);
+          // window.location.reload();
 
-            }
-          },
-          (err) => { },
-        );
- }
+        }
+      },
+      (err) => { },
+    );
+  }
 
- save1(event){
-  console.log(this.DealerLowestList,"event");
-  let i=0; let req:any=[];
-    let selectedList = this.GarageLowestList.filter(ele=>ele.SelectedYn=='Y');
-    for(let s of selectedList){
-      i+=1;
+  save1(event) {
+    console.log(this.DealerLowestList, "event");
+    let i = 0; let req: any = [];
+    let selectedList = this.GarageLowestList.filter(ele => ele.SelectedYn == 'Y');
+    for (let s of selectedList) {
+      i += 1;
       let ReqObj = {
         "ClaimNo": s.ClaimNo,
         "QuotationNo": s.QuotationNo,
@@ -413,47 +494,82 @@ onCheckGarageCoverAll(){
       }
       req.push(ReqObj);
     }
-    console.log(req,"selectedList");
+    console.log(req, "selectedList");
     let urlLink = `${this.CommonApiUrl}damage/save`;
     this.sharedService.onPostMethodSync(urlLink, req).subscribe(
-        (data: any) => {
-            console.log(data);
-            let res:any=data;
-            if(res){
-              sessionStorage.setItem('CliamNo',selectedList['ClaimNo']);
-              this.assignedWork();
-              this.getallVehicleList(null,null,null);
-             // window.location.reload();
+      (data: any) => {
+        console.log(data);
+        let res: any = data;
+        if (res) {
+          sessionStorage.setItem('CliamNo', selectedList['ClaimNo']);
+          this.assignedWork();
+          this.getallVehicleList(null, null, null);
+          // window.location.reload();
 
-            }
-          },
-          (err) => { },
-        );
- }
- assignedWork(){
-  //let CliamNo = sessionStorage.getItem('CliamNo');
-  let ReqObj = {
-    "GarageId": this.GarageDrop,
-    "SurveyorId":this.loginId
+        }
+      },
+      (err) => { },
+    );
   }
+  assignedWork() {
+    //let CliamNo = sessionStorage.getItem('CliamNo');
+    let ReqObj = {
+      "GarageId": this.GarageDrop,
+      "SurveyorId": this.loginId
+    }
 
-  let urlLink = `${this.CommonApiUrl}vehicle/surveyor/asigned/completed`;
-  this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
-    (data: any) => {
-      console.log(data);
-      if(data.Response){
-        this.WorkAssigned= data.Response;
+    let urlLink = `${this.CommonApiUrl}vehicle/surveyor/asigned/completed`;
+    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data.Response) {
+          this.WorkAssigned = data.Response;
+          // const groupedData: { [key: string]: any[] } = {};
+          // data.Response.forEach(item => {
+          //   const claimNo = item.ClaimNo;
+          //   if (!groupedData[claimNo]) {
+          //     groupedData[claimNo] = [];
+          //   }
+
+          //   groupedData[claimNo].push({ ...item });
+          // });
+
+          // let d = Object.keys(groupedData).map(claimNo => ({
+          //   ClaimNo: groupedData[claimNo][0].ClaimNo,
+          //   PolicyNo: groupedData[claimNo][0].PolicyNo,
+          //   VehicleMake: groupedData[claimNo][0].VehicleMake,
+          //   VehicleModel: groupedData[claimNo][0].VehicleModel,
+          //   MakeYear: groupedData[claimNo][0].MakeYear,
+          //   ChassisNo: groupedData[claimNo][0].ChassisNo,
+          //   InsuredName: groupedData[claimNo][0].InsuredName,
+          //   VehicleRegno: groupedData[claimNo][0].VehicleRegno,
+          //   EntryDate: groupedData[claimNo][0].EntryDate,
+          //   Status: groupedData[claimNo][0].Status,
+          //   QuoteStatus: groupedData[claimNo][0].QuoteStatus,
+          //   QuotationNo: groupedData[claimNo][0].QuotationNo,
+          //   children: groupedData[claimNo]
+          // }));
+          // this.WorkAssigned = d;
+        }
+      },
+      (err) => { },
+    );
+  }
+  detailview(data) {
+    console.log(data, "detailview");
+    this.displayDialog = true;
+    if (data) {
+      this.responseData = [data];
+    }
+    console.log(this.responseData, "detailview");
+  }
+  goToVehicleDamageDetails(data, type) {
+    console.log(data, "ddddd");
+    this.router.navigate(['/surveyor/damagedetail'], {
+      queryParams: {
+        type: type, ClaimNo: data.ClaimNo, QuotationNo: data.QuotationNo, GarageLoginId: data.GarageLoginId
+
       }
-    },
-    (err) => { },
-  );
-}
-detailview(data){
-  console.log(data,"detailview");
-  this.displayDialog = true;
-  if(data){
-    this.responseData = [data];
+    });
   }
-  console.log(this.responseData,"detailview");
-}
 }

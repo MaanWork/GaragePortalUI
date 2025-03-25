@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export class GarageComponent {
   items: MenuItem[] | undefined;
   tableActions:MenuItem[] | undefined;
-  columns:string[] = []; 
+  columns:any[] = []; 
   tableView = 'table';
   userDetails:any=null;loginId:any=null;
   agencyCode:any=null;branchCode:any=null;
@@ -71,26 +71,131 @@ export class GarageComponent {
     // this.getCustomersList();
   }
   setHeaders(){
-    if(this.lang=='en'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
-      this.columnsP = [ 'S.#','Claim No', 'Quotation No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
+    // if(this.lang=='en'){ 
+    //   this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+    //   this.columnsP = [ 'S.#','Claim No', 'Quotation No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
 
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Home', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    //   this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
+    //   this.items = [{ label: 'Home', routerLink:'/' }, {label:'Vehicle Details'}];
+    //   this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    // }
+    // else if(this.lang=='po'){ 
+    //   this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+    //   this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
+    //   this.items = [{ label: 'Lar', routerLink:'/' }, {label:'Vehicle Details'}];
+    //   this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    // }
+    // else if(this.lang=='fr'){ 
+    //   this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+    //   this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
+    //   this.items = [{ label: 'Accueil', routerLink:'/' }, {label:'Vehicle Details'}];
+    //   this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    // }
+
+    if (this.lang == 'en') {
+
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' }, 
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'AssignedTo', header: 'Purchased by Where' },
+        { field: 'Actions', header: 'Compare Quote / View' }
+      ];
+      
+      this.columns = [
+        { field: 'index', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMake', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' }
+      ];
+      // this.columnsGarage = [
+      //   { field: 'ClaimNo', header: 'Claim No' },
+      //   { field: 'VehicleMake', header: 'Vehicle Make' },
+      //   { field: 'VehicleModel', header: 'Vehicle Model' },
+      //   { field: 'DamagePart', header: 'Damage Part' },
+      //   { field: 'NoOfParts', header: 'No Of Unit' },
+      //   { field: 'GaragePrice', header: 'Garage Price' },
+      //   { field: 'DealerPrice', header: 'Dealer Price' },
+      //   { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+      //   { field: 'EntryDate', header: 'Entry Date' }
+      // ];
+      // this.columnsDealer = [
+      //   { field: 'ClaimNo', header: 'Claim No' },
+      //   { field: 'VehicleMake', header: 'Vehicle Make' },
+      //   { field: 'VehicleModel', header: 'Vehicle Model' },
+      //   { field: 'DamagePart', header: 'Damage Part' },
+      //   { field: 'NoOfParts', header: 'No Of Unit' },
+      //   { field: 'DealerPrice', header: 'Dealer Price' },
+      //   { field: 'GaragePrice', header: 'Garage Price' },
+      //   { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+      //   { field: 'EntryDate', header: 'Entry Date' }
+      // ];
+      
     }
-    else if(this.lang=='po'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Lar', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    else if (this.lang == 'po') {
+      // this.columnsR = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+      // this.columns = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #', 'Action'];
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' }
+      ];
+      
+      this.columns = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' }
+      ];
+      
     }
-    else if(this.lang=='fr'){ 
-      this.columnsR = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
-      this.columns = [ 'S.#','Claim No','Vehicle Make and Model',  'Make Year','Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #','Action'];
-      this.items = [{ label: 'Accueil', routerLink:'/' }, {label:'Vehicle Details'}];
-      this.culumnHeader =[ 'S.#','Work Order Type',  'Work Order Number','Work Order Date', 'Settlement Type', 'Settlement To', 'Action'];
+    else if (this.lang == 'fr') {
+      // this.columnsR = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #'];
+      // this.columns = ['S.#', 'Claim No', 'Vehicle Make and Model', 'Make Year', 'Chassis No.', 'Insured / Customer Name', 'Type', 'Vehicle Reg #', 'Action'];
+      this.columnsR = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' }
+      ];
+      
+      this.columns = [
+        { field: 'SNo', header: 'S.#' },
+        { field: 'ClaimNo', header: 'Claim No' },
+        { field: 'VehicleMakeModel', header: 'Vehicle Make and Model' },
+        { field: 'MakeYear', header: 'Make Year' },
+        { field: 'ChassisNo', header: 'Chassis No.' },
+        { field: 'InsuredName', header: 'Insured / Customer Name' },
+        { field: 'Type', header: 'Type' },
+        { field: 'VehicleRegno', header: 'Vehicle Reg #' },
+        { field: 'Action', header: 'Action' } // Added Action for columns
+      ];
+      
     }
+
   }
  
 ngOnInit(){

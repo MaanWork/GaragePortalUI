@@ -483,7 +483,7 @@
     <div class="flex  justify-content-center">
         <p-button label="Back"  (click)="getBack()" class="p-3 mr-0" styleClass="p-button-outlined" icon="pi pi-chevron-left"></p-button>
         <!-- <p-button class="p-3 text-l pi-button mr-0" [label]="'LOGIN.Save & Next' | translate" (click)="onSubmit()"></p-button> -->
-        <p-button class="p-3 text-l pi-button mr-0" label="Next" *ngIf="DamageDeatilsList.length!=0 && DamageIndex!=0"  (click)="next()"></p-button>
+        <p-button class="p-3 text-l pi-button mr-0" label="Next" *ngIf="DamageDeatilsList.length!=0 && DamageIndex!=0"  [disabled]="viewType" (click)="next()"></p-button>
     </div>
     <p-toast [showTransformOptions]="'translateY(100%)'" 
     [showTransitionOptions]="'500ms'" 
@@ -501,6 +501,7 @@
                     class="w-full" 
                     styleClass="w-full" 
                     [options]="SpareList" 
+                    [disabled]="viewType"
                     [(ngModel)]="sparePartType" 
                     optionLabel="CodeDesc" 
                     optionValue="Code"
@@ -509,7 +510,7 @@
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Discount %</label>
-                <input pInputText id="chasis-no" placeholder="Enter Discount" [(ngModel)]="SpareDiscount" (keydown)="calcRowDiscount();spareTotalAmount()" (keyup)="calcRowDiscount();spareTotalAmount()" />
+                <input pInputText id="chasis-no" placeholder="Enter Discount" [disabled]="viewType" [(ngModel)]="SpareDiscount" (keydown)="calcRowDiscount();spareTotalAmount()" (keyup)="calcRowDiscount();spareTotalAmount()" />
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Discount Amount</label>
@@ -517,7 +518,7 @@
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Replacement Cost Deductible</label>
-                <input pInputText id="chasis-no" [(ngModel)]="ReplacementCostDeductible" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" placeholder="Enter Deductible"/>
+                <input pInputText id="chasis-no" [disabled]="viewType" [(ngModel)]="ReplacementCostDeductible" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" placeholder="Enter Deductible"/>
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="make">Damage Type</label>
@@ -525,6 +526,7 @@
                     class="w-full" 
                     styleClass="w-full" 
                     [options]="DamageList" 
+                    [disabled]="viewType"
                     [(ngModel)]="DamageType" 
                     optionLabel="CodeDesc" 
                     optionValue="Code"
@@ -537,6 +539,7 @@
                     class="w-full" 
                     styleClass="w-full" 
                     [options]="DepreciationList" 
+                    [disabled]="viewType"
                     [(ngModel)]="DepreciationType" 
                     optionLabel="CodeDesc" 
                     optionValue="Code"
@@ -546,11 +549,11 @@
             </div>
             <div class="col-12 lg:col-3 md:col-3 " *ngIf="DepreciationType!='2'">
                 <label for="chasis-no">Depreciation</label>
-                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplace" />
+                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" [disabled]="viewType" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplace" />
             </div>
             <div class="col-12 lg:col-3 md:col-3 " *ngIf="DepreciationType=='2'">
                 <label for="chasis-no">Depreciation</label>
-                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplaceper" />
+                <input pInputText id="chasis-no" (keydown)="spareTotalAmount()" [disabled]="viewType" (keyup)="spareTotalAmount()" [(ngModel)]="DepreciationReplaceper" />
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Total Amount</label>
@@ -566,27 +569,27 @@
         <div class="grid">
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="make">Repair / Labour</label>
-                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourCost" placeholder="Enter Repair / Labour"/>
+                <input pInputText id="chasis-no" [disabled]="viewType" [(ngModel)]="RepairLabourCost" placeholder="Enter Repair / Labour"/>
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no"> Discount %</label>
-                <input pInputText id="chasis-no" (keydown)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()" (keyup)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()"  [(ngModel)]="RepairLabourDiscountPer" placeholder="Enter Discount %" />
+                <input pInputText id="chasis-no" [disabled]="viewType" (keydown)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()" (keyup)="repairDiscCalc(RepairLabourDiscountPer);repairTotalAmount()"  [(ngModel)]="RepairLabourDiscountPer" placeholder="Enter Discount %" />
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no"> Discount Amount</label>
-                <input pInputText id="chasis-no"  [(ngModel)]="RepairLabourDiscountAmount" disabled placeholder="Enter Discount Amount"/>
+                <input pInputText id="chasis-no" [disabled]="viewType"  [(ngModel)]="RepairLabourDiscountAmount" disabled placeholder="Enter Discount Amount"/>
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no"> Deductible</label>
-                <input pInputText id="chasis-no" (keydown)="repairTotalAmount()" (keyup)="repairTotalAmount()" [(ngModel)]="RepairLabourDeductible"  placeholder="Enter Deductible"/>
+                <input pInputText id="chasis-no" [disabled]="viewType" (keydown)="repairTotalAmount()" (keyup)="repairTotalAmount()" [(ngModel)]="RepairLabourDeductible"  placeholder="Enter Deductible"/>
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Total Amount </label>
-                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourTotalAmount" disabled placeholder="Enter Total Amount"/>
+                <input pInputText id="chasis-no" [disabled]="viewType" [(ngModel)]="RepairLabourTotalAmount" disabled placeholder="Enter Total Amount"/>
             </div>
             <div class="col-12 lg:col-3 md:col-3 ">
                 <label for="chasis-no">Remarks</label>
-                <input pInputText id="chasis-no" [(ngModel)]="RepairLabourRemarks" placeholder="Enter Remarks"/>
+                <input pInputText id="chasis-no" [disabled]="viewType" [(ngModel)]="RepairLabourRemarks" placeholder="Enter Remarks"/>
             </div>
           
             
@@ -601,7 +604,7 @@
         </div>
         <!-- <p-button label="Cancel" severity="secondary" (click)="DamageVisible = false" /> -->
         <div class="col-12 lg:col-1 md:col-1 mt-4">
-        <p-button label="Save" (click)="saveRowData()" />
+        <p-button label="Save" [disabled]="viewType" (click)="saveRowData()" />
         </div>
     </div>
 </p-dialog>

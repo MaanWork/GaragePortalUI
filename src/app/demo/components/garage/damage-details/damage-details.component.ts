@@ -112,7 +112,9 @@ export class DamageDetailsComponent {
     let i = 0;
     // Parse the JSON string from local storage
    // const draftData = JSON.parse(this.draftData);
-   const draftData = JSON.parse(this.draftData[i]);
+  //  const draftData = JSON.parse(this.draftData[i]);
+   const draftData = typeof this.draftData[i] === 'string' ? JSON.parse(this.draftData[i]) : this.draftData[i];
+
 
    // Optional: If you want to assign to a specific list
   // this.DamageDeatilsList = []; // Clear the existing list if needed
@@ -220,6 +222,7 @@ autoSaveDraft() {
     );
 }
 saveDamageDeatils(rowData,index){
+  alert(rowData.RepairReplace)
   let ReqObj,urlLink
   //for(let entry of this.DamageDeatilsList){
     if(this.userType=='Dealer'){
@@ -234,13 +237,14 @@ saveDamageDeatils(rowData,index){
       ]
       urlLink = `${this.CommonApiUrl}api/damagedetails/dealersave`;
     }
+    
     else{
       let i=0,DamageDirection;
       if(rowData.DamageDirection==null || rowData.DamageDirection==0 || rowData.DamageDirection==undefined || rowData.DamageDirection=='' || rowData.DamageDirection=='-Select-'){rowData['DamageDirectionError']=true;i+=1;}
       else rowData['DamageDirectionError']=false;
       if(rowData.DamagePart==null || rowData.DamagePart==0 || rowData.DamagePart==undefined || rowData.DamagePart=='' || rowData.DamagePart=='-Select-'){rowData['DamagePartError']=true;i+=1;}
       else rowData['DamagePartError']=false;
-      if((rowData.NoOfUnits==null || rowData.NoOfUnits==0 || rowData.NoOfUnits==undefined || rowData.NoOfUnits=='') ){rowData['NoOfUnitsError']=true;i+=1;}
+      if((rowData.NoOfUnits==null || rowData.NoOfUnits==0 || rowData.NoOfUnits==undefined || rowData.NoOfUnits=='') && rowData.RepairReplace!='REPAIR' ){rowData['NoOfUnitsError']=true;i+=1;}
       else rowData['NoOfUnitsError']=false;
       if((rowData.UnitPrice==null || rowData.UnitPrice==0 || rowData.UnitPrice==undefined || rowData.UnitPrice=='') && rowData.RepairReplace!='REPAIR'){rowData['UnitPriceError']=true;i+=1;}
       else rowData['UnitPriceError']=false;

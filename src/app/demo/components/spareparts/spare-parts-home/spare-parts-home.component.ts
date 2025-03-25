@@ -27,12 +27,12 @@ export class SparePartsHomeComponent {
   CliamNo: string;
   brokerbranchCode: any;
   lang: any;
-  tabIndex:any='0';
-  columns: any[]=[];
-  public form = new FormGroup({}); 
+  tabIndex: any = '0';
+  columns: any[] = [];
+  public form = new FormGroup({});
   fnolEditData: any;
-  SparePartsList: any[]=[];
-  constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
+  SparePartsList: any[] = [];
+  constructor(private router: Router, private sharedService: SharedService, private appComp: AppComponent, private translate: TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
     this.agencyCode = this.userDetails.Response.OaCode;
@@ -44,65 +44,76 @@ export class SparePartsHomeComponent {
     this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
     sessionStorage.removeItem('endorsePolicyNo');
     sessionStorage.removeItem('endorseTypeId');
-    this.appComp.getLanguage().subscribe((res:any)=>{  
-			if(res) this.lang=res;
-			else this.lang='en';
-			this.translate.setDefaultLang(this.lang);
-        //this.setHeaders()
-		  });
-		if(!this.lang){if(sessionStorage.getItem('language'))this.lang=sessionStorage.getItem('language');
-		else this.lang='en';
-		sessionStorage.setItem('language',this.lang)
-		this.translate.setDefaultLang(sessionStorage.getItem('language'));
+    this.appComp.getLanguage().subscribe((res: any) => {
+      if (res) this.lang = res;
+      else this.lang = 'en';
+      this.translate.setDefaultLang(this.lang);
+      //this.setHeaders()
+    });
+    if (!this.lang) {
+      if (sessionStorage.getItem('language')) this.lang = sessionStorage.getItem('language');
+      else this.lang = 'en';
+      sessionStorage.setItem('language', this.lang)
+      this.translate.setDefaultLang(sessionStorage.getItem('language'));
       //this.setHeaders();
     }
     this.getallSparePartsList()
-    this.columns=['ClaimNo','QuotationNo','GarageId','WorkOrder Date','WorkOrder No','Settlement To','Delivery Date','Total After Deductions','Action'];
+    this.columns = ['ClaimNo', 'QuotationNo', 'GarageName', 'WorkOrder Date', 'WorkOrder No', 'Settlement To', 'Delivery Date', 'Total After Deductions', 'Action'];
   }
-  getallSparePartsList(){
-        let ReqObj = {
-          "SurveyorLoginId":this.loginId,
-          "CompanyId":this.CompanyId
-      }
-      let urlLink = `${this.CommonApiUrl}fnol/getSpareParts`;
-      this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
-        (data: any) => {
-          if(data.Response){
-            this.SparePartsList = data.Response;
-          }
-        },
-        (err) => { },
-      );
+  getallSparePartsList() {
+    let ReqObj = {
+      "SurveyorLoginId": this.loginId,
+      "CompanyId": this.CompanyId
+    }
+    let urlLink = `${this.CommonApiUrl}fnol/getSpareParts`;
+    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+      (data: any) => {
+        if (data.Response) {
+          this.SparePartsList = data.Response;
+        }
+      },
+      (err) => { },
+    );
   }
-  saveSpare(rowData){
+  saveSpare(rowData) {
     let ReqObj = {
       "ClaimNo": rowData.ClaimNo,
       "WorkOrderNo": rowData.QuotationNo,
       "QuotationNo": rowData.QuotationNo
     }
-      let urlLink = `${this.CommonApiUrl}fnol/saveSpareParts`;
-      this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
-        (data: any) => {
-          if(data.Response){
-            Swal.fire({
-              title: `<strong> &nbsp;Success</strong>`,
-              iconHtml: '<i class="fa-solid fa-check-circle fa-fade"></i>',
-              icon: 'info',
-              html:
-                `<ul class="list-group errorlist">
+    let urlLink = `${this.CommonApiUrl}fnol/saveSpareParts`;
+    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+      (data: any) => {
+        if (data.Response) {
+          Swal.fire({
+            title: `<strong> &nbsp;Success</strong>`,
+            iconHtml: '<i class="fa-solid fa-check-circle fa-fade"></i>',
+            icon: 'info',
+            html:
+              `<ul class="list-group errorlist">
                ${data.Response.message}
               </ul>`,
-              showCloseButton: true,
-             // focusConfirm: false,
-             // showCancelButton: true,
+            showCloseButton: true,
+            // focusConfirm: false,
+            // showCancelButton: true,
             // closeButtonColor: '#3085d6',
-              //cancelButtonColor: '#d33',
-              //cancelButtonText: `No`,
-              confirmButtonText: `Close`,
-            })
-          }
-        },
-        (err) => { },
-      );
-    }
+            //cancelButtonColor: '#d33',
+            //cancelButtonText: `No`,
+            confirmButtonText: `Close`,
+          })
+        }
+      },
+      (err) => { },
+    );
+  }
+
+  verifyDate(type, rowData) {
+
+    console.log(rowData);
+
+    this.router.navigate(['/surveyor/damagedetail'], { queryParams: { type: type, ClaimNo: rowData.ClaimNo, QuotationNo: rowData.QuotationNo, GarageLoginId: rowData.GarageLoginId
+
+    } });
+
+  }
 }
