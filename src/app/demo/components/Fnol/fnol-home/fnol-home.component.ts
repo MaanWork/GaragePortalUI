@@ -25,12 +25,13 @@ export class FnolHomeComponent {
   CliamNo: string;
   brokerbranchCode: any;
   lang: any;
-  tabIndex:any='0';
-  columns: any[]=[];
-  public form = new FormGroup({}); 
-  fnolList:any[]=[];
+  tabIndex: any = '0';
+  columns: any[] = [];
+  public form = new FormGroup({});
+  fnolList: any[] = [];
   fnolEditData: any;
-  constructor(private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
+  losslocationList: any;
+  constructor(private router: Router, private sharedService: SharedService, private appComp: AppComponent, private translate: TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
     this.agencyCode = this.userDetails.Response.OaCode;
@@ -42,50 +43,78 @@ export class FnolHomeComponent {
     this.brokerbranchCode = this.userDetails.Response.BrokerBranchCode;
     sessionStorage.removeItem('endorsePolicyNo');
     sessionStorage.removeItem('endorseTypeId');
-    this.appComp.getLanguage().subscribe((res:any)=>{  
-			if(res) this.lang=res;
-			else this.lang='en';
-			this.translate.setDefaultLang(this.lang);
-        //this.setHeaders()
-		  });
-		if(!this.lang){if(sessionStorage.getItem('language'))this.lang=sessionStorage.getItem('language');
-		else this.lang='en';
-		sessionStorage.setItem('language',this.lang)
-		this.translate.setDefaultLang(sessionStorage.getItem('language'));
+    this.appComp.getLanguage().subscribe((res: any) => {
+      if (res) this.lang = res;
+      else this.lang = 'en';
+      this.translate.setDefaultLang(this.lang);
+      //this.setHeaders()
+    });
+    if (!this.lang) {
+      if (sessionStorage.getItem('language')) this.lang = sessionStorage.getItem('language');
+      else this.lang = 'en';
+      sessionStorage.setItem('language', this.lang)
+      this.translate.setDefaultLang(sessionStorage.getItem('language'));
       //this.setHeaders();
     }
-    this.getallfnolList()
-    this.columns=[ 'S.#','Fnol No','Policy No',  'Loss Date','Intimated Date', 'Loss Location', 'Police Station', 'Edit'];
+    this.getlosslocation()
+    // this.columns = ['S.#', 'Fnol No', 'Policy No', 'Loss Date', 'Intimated Date', 'Loss Location', 'Police Station', 'Edit'];
+    this.columns = ['S.#', 'Fnol No', 'Policy No', 'Loss Date', 'Intimated Date', 'Loss Location', 'Edit'];
   }
-  getallfnolList(){
+  getallfnolList() {
     let ReqObj = {
       "CompanyId": this.CompanyId,
-   }
-      let urlLink = `${this.CommonApiUrl}fnol/getAllClaims`;
-      this.sharedService.onPostMethodSync(urlLink,ReqObj).subscribe(
-        (data: any) => {
-          if(data.Response){
-            this.fnolList = data.Response;
-          }
-        },
-        (err) => { },
-      );
+    }
+    let urlLink = `${this.CommonApiUrl}fnol/getAllClaims`;
+    this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
+      (data: any) => {
+        if (data.Response) {
+          this.fnolList = data.Response.map((row) => {
+            if (row && row.LossLocation) {
+              let match = this.losslocationList.find((item) => item.Code == row?.LossLocation);
+              if (match) {
+                return  { ...row, LossLocationDesc: match.CodeDesc };
+              }
+            }
+            return row;
+          });
+        }
+      },
+      (err) => { },
+    );
   }
-  getfnolEdit(rowData){
-    if(rowData.FnolNo)sessionStorage.setItem('FnolNo',rowData.FnolNo);
-    if(rowData.PoliceReportNo)sessionStorage.setItem('PoliceReportNo',rowData.PoliceReportNo);
-    if(rowData.PolicyNo){
-      sessionStorage.setItem('PolicyNo',rowData.PolicyNo);
+  getfnolEdit(rowData) {
+    if (rowData.FnolNo) sessionStorage.setItem('FnolNo', rowData.FnolNo);
+    if (rowData.PoliceReportNo) sessionStorage.setItem('PoliceReportNo', rowData.PoliceReportNo);
+    if (rowData.PolicyNo) {
+      sessionStorage.setItem('PolicyNo', rowData.PolicyNo);
       this.router.navigate(['/fnol/createfnol']);
     }
   }
-  getfnolEditView(rowData){
+  getfnolEditView(rowData) {
 
-    if(rowData.FnolNo)sessionStorage.setItem('FnolNo',rowData.FnolNo);sessionStorage.setItem('FnolDisable','Disable');
-    if(rowData.PoliceReportNo)sessionStorage.setItem('PoliceReportNo',rowData.PoliceReportNo);
-    if(rowData.PolicyNo){
-      sessionStorage.setItem('PolicyNo',rowData.PolicyNo);
+    if (rowData.FnolNo) sessionStorage.setItem('FnolNo', rowData.FnolNo); sessionStorage.setItem('FnolDisable', 'Disable');
+    if (rowData.PoliceReportNo) sessionStorage.setItem('PoliceReportNo', rowData.PoliceReportNo);
+    if (rowData.PoliceStation) sessionStorage.setItem('PoliceStation', rowData.PoliceStation);
+    if (rowData.LossTime) sessionStorage.setItem('LossTime', rowData.LossTime);
+    if (rowData.PolicyNo) {
+      sessionStorage.setItem('PolicyNo', rowData.PolicyNo);
       this.router.navigate(['/fnol/createfnol']);
     }
   }
+
+  getlosslocation() {
+    let urlLink = `${this.CommonApiUrl}dropdown/losslocation/${this.CompanyId}`;
+    this.sharedService.onGetMethodSync(urlLink).subscribe(
+      (data: any) => {
+        console.log(data);
+        if (data.Result) {
+          this.losslocationList = data.Result;
+          this.getallfnolList()
+
+        }
+      },
+      (err) => { },
+    );
+  }
+
 }

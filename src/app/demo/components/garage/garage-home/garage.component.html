@@ -40,7 +40,7 @@
                 <td>{{ vehicle.Type }}</td>
                 <td>{{ vehicle.VehicleRegno }}</td>
                 <td >
-                  <span class="p-buttonset">
+                  <span class="p-buttonset" style="white-space: nowrap;">
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined" *ngIf="vehicle.QuoteStatus !='GPC'" [disabled]="item.Code =='CRBG'" (click)="editQuote(vehicle,item.Code)"></button>
                     <button pButton pRipple icon="pi pi-cog" *ngIf="vehicle.QuoteStatus !='GPC'" class="p-button-outlined" [disabled]="vehicle.QuotationNo==''" (click)="editQuote1(vehicle.ClaimNo,vehicle,'In-Progress')"></button>
                     <button pButton pRipple icon="pi pi-eye" class="p-button-outlined" (click)="detailview(vehicle)"></button>

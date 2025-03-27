@@ -13,8 +13,9 @@
              <div class="flex flex-warp justify-content-between">
               <div class="clo-5">
               <label for="username">PolicyNo *</label>
-              <input  pInputText  type="text"  (input)="getInsuredName(productItem.policyNo) "  [(ngModel)]="productItem.policyNo" 
-                       placeholder="Search PolicyNo" /></div>
+              <input  pInputText  type="text" [disabled]="PolicyNoDisabled" [(ngModel)]="productItem.policyNo" 
+                       placeholder="Search PolicyNo" /> &nbsp;
+                       <p-button class="p-3 text-l pi-button mr-0" [disabled]="PolicyNoDisabled" label="Search"  (click)="getInsuredName(productItem.policyNo)"></p-button></div>
               <h6 class="ml-3">Policy Period : {{PolicySDate}} - {{PolicyEDate}}</h6>
              </div>
             <div class="m-2 p-2">

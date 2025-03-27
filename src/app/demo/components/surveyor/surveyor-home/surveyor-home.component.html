@@ -98,7 +98,8 @@
                     [checked]="!onCheckCoverAll()">
                   </mat-checkbox> </th>
                 <th [pSortableColumn]="column.field" *ngFor="let column of columnsDealer">{{ column.header }}
-                  <p-sortIcon [field]="column.field"></p-sortIcon></th>
+                  <p-sortIcon [field]="column.field"></p-sortIcon>
+                </th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-vehicle let-i="rowIndex">
@@ -181,7 +182,7 @@
           </div>
         </ng-container>
         <ng-container *ngIf="item.Code=='WA'">
-           <p-table #dtEmployeeExist2 [value]="WorkAssigned" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          <p-table #dtEmployeeExist2 [value]="WorkAssigned" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
             [globalFilterFields]="['ClaimNo','VehicleMake','VehicleModel','ChassisNo','VehicleRegno','InsuredName','Type']"
             [rows]="5">
             <ng-template pTemplate="caption">
@@ -199,7 +200,7 @@
             </ng-template>
             <ng-template pTemplate="header">
               <tr>
-                <th *ngFor="let column of columnsR" [pSortableColumn]="column.field" >{{column.header}} <p-sortIcon
+                <th *ngFor="let column of columnsR" [pSortableColumn]="column.field">{{column.header}} <p-sortIcon
                     [field]="column.field"></p-sortIcon></th>
               </tr>
             </ng-template>
@@ -212,14 +213,16 @@
                 <td>{{ vehicle.ChassisNo }}</td>
                 <td>{{ vehicle.Type }}</td>
                 <td>{{ vehicle.VehicleRegno }}</td>
-                <td>{{ vehicle.AssignedTo }}</td>
-                <td class="p-buttonset">
-                  <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined"
-                    [routerLink]="['compareQuote',vehicle.ClaimNo]" routerLinkActive="router-link-active"></button>
+                <td>{{ vehicle.GarageLoginId }}</td>
+                <td>
+                  <span class="p-buttonset"  style="white-space: nowrap;">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined"
+                      [routerLink]="['compareQuote',vehicle.ClaimNo]" routerLinkActive="router-link-active"></button>
                     <button pButton pRipple icon="pi pi-cog" class="p-button-outlined"
-                    (click)="goToVehicleDamageDetails(vehicle,'2')"></button>
-                  <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"
-                    (click)="detailview(vehicle)"></button>
+                      (click)="goToVehicleDamageDetails(vehicle,'2')"></button>
+                    <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"
+                      (click)="detailview(vehicle)"></button>
+                  </span>
 
                 </td>
               </tr>
@@ -229,7 +232,60 @@
                 No Vehicles Available
               </div>
             </ng-container>
-          </p-table> 
+          </p-table>
+
+          <!-- <p-treeTable #dtEmployeeExist2 [value]="WorkAssigned" [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
+          [globalFilterFields]="['data.ClaimNo','data.VehicleMake','data.VehicleModel','data.ChassisNo','data.VehicleRegno','data.InsuredName','data.Type']"
+          [rows]="5">
+          <ng-template pTemplate="caption">
+            <div class="flex flex-wrap justify-content-end">
+              <div class="table-header">
+                <span class="p-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text"
+                    (input)="dtEmployeeExist2.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Global Search" />
+                </span>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let column of columnsR" [pSortableColumn]="'data.' + column.field">
+                {{ column.header }}
+                <p-sortIcon [field]="'data.' + column.field"></p-sortIcon>
+              </th>
+              <th>Actions</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-vehicle="rowNode?.data">
+            <tr *ngIf="vehicle">
+              <td>{{ vehicle?.ClaimNo }}</td>
+              <td>{{ vehicle?.VehicleMake }} & {{ vehicle?.VehicleModel }}</td>
+              <td>{{ vehicle?.MakeYear }}</td>
+              <td>{{ vehicle?.ChassisNo }}</td>
+              <td>{{ vehicle?.Type }}</td>
+              <td>{{ vehicle?.VehicleRegno }}</td>
+              <td>{{ vehicle?.AssignedTo }}</td>
+              <td class="p-buttonset">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-outlined"
+                  [routerLink]="['compareQuote', vehicle?.ClaimNo]" routerLinkActive="router-link-active"></button>
+                <button pButton pRipple icon="pi pi-cog" class="p-button-outlined"
+                  (click)="goToVehicleDamageDetails(vehicle, '2')"></button>
+                <button pButton pRipple icon="pi pi-eye" class="p-button-outlined"
+                  (click)="detailview(vehicle)"></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-container>
+            <div class="text-center" *ngIf="WorkAssigned?.length === 0">
+              No Vehicles Available
+            </div>
+          </ng-container>
+        
+        </p-treeTable> -->
+
+
 
         </ng-container>
 

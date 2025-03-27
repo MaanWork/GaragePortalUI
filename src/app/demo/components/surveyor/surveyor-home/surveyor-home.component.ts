@@ -5,6 +5,8 @@ import { MenuItem } from 'primeng/api';
 import { AppComponent } from 'src/app/app.component';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as Mydatas from '../../../../app-config.json';
+import { TreeNode } from 'primeng/api';
+import { TreeTableModule } from 'primeng/treetable';
 
 
 @Component({
@@ -47,7 +49,7 @@ export class SurveyorHomeComponent {
   columnsDealer: any[] = [];
   columnsGarage: any[] = [];
   selectedRows: any;
-  WorkAssigned: any[] = [];
+  WorkAssigned: TreeNode[] = [];
   QuoteStatusList: any[] = [];
   displayDialog: boolean = false;
   GarageDropError: boolean = false;
@@ -91,7 +93,8 @@ export class SurveyorHomeComponent {
         { field: 'ChassisNo', header: 'Chassis No.' },
         { field: 'Type', header: 'Type' },
         { field: 'VehicleRegno', header: 'Vehicle Reg #' },
-        { field: 'AssignedTo', header: 'Purchased by Where' },
+        // { field: 'AssignedTo', header: 'Purchased by Where' },
+        { field: 'GarageLoginId', header: 'Garage Id' },
         { field: 'Actions', header: 'Compare Quote / View' }
       ];
 
@@ -521,35 +524,39 @@ export class SurveyorHomeComponent {
     let urlLink = `${this.CommonApiUrl}vehicle/surveyor/asigned/completed`;
     this.sharedService.onPostMethodSync(urlLink, ReqObj).subscribe(
       (data: any) => {
-        console.log(data);
         if (data.Response) {
-          this.WorkAssigned = data.Response;
+          const uniqueData = Array.from(new Map(data.Response.map(item => [item.ClaimNo, item])).values());
+          this.WorkAssigned = uniqueData;
+
           // const groupedData: { [key: string]: any[] } = {};
           // data.Response.forEach(item => {
           //   const claimNo = item.ClaimNo;
           //   if (!groupedData[claimNo]) {
           //     groupedData[claimNo] = [];
           //   }
-
-          //   groupedData[claimNo].push({ ...item });
+          //   groupedData[claimNo].push({ data: { ...item } }); // Ensure each child has `data`
           // });
 
-          // let d = Object.keys(groupedData).map(claimNo => ({
-          //   ClaimNo: groupedData[claimNo][0].ClaimNo,
-          //   PolicyNo: groupedData[claimNo][0].PolicyNo,
-          //   VehicleMake: groupedData[claimNo][0].VehicleMake,
-          //   VehicleModel: groupedData[claimNo][0].VehicleModel,
-          //   MakeYear: groupedData[claimNo][0].MakeYear,
-          //   ChassisNo: groupedData[claimNo][0].ChassisNo,
-          //   InsuredName: groupedData[claimNo][0].InsuredName,
-          //   VehicleRegno: groupedData[claimNo][0].VehicleRegno,
-          //   EntryDate: groupedData[claimNo][0].EntryDate,
-          //   Status: groupedData[claimNo][0].Status,
-          //   QuoteStatus: groupedData[claimNo][0].QuoteStatus,
-          //   QuotationNo: groupedData[claimNo][0].QuotationNo,
-          //   children: groupedData[claimNo]
+          // let d: any = Object.keys(groupedData).map(claimNo => ({
+          //   data: {
+          //     ClaimNo: claimNo,
+          //     PolicyNo: groupedData[claimNo][0].data.PolicyNo,
+          //     VehicleMake: groupedData[claimNo][0].data.VehicleMake,
+          //     VehicleModel: groupedData[claimNo][0].data.VehicleModel,
+          //     MakeYear: groupedData[claimNo][0].data.MakeYear,
+          //     ChassisNo: groupedData[claimNo][0].data.ChassisNo,
+          //     InsuredName: groupedData[claimNo][0].data.InsuredName,
+          //     VehicleRegno: groupedData[claimNo][0].data.VehicleRegno,
+          //     EntryDate: groupedData[claimNo][0].data.EntryDate,
+          //     Status: groupedData[claimNo][0].data.Status,
+          //     QuoteStatus: groupedData[claimNo][0].data.QuoteStatus,
+          //     QuotationNo: groupedData[claimNo][0].data.QuotationNo
+          //   },
+          //   children: groupedData[claimNo] 
           // }));
-          // this.WorkAssigned = d;
+         
+          // this.WorkAssigned = this.transformData(d);
+         
         }
       },
       (err) => { },
@@ -572,4 +579,15 @@ export class SurveyorHomeComponent {
       }
     });
   }
+
+  transformData(data: any[]): TreeNode[] {
+    return data.map((item) => {
+      const node: TreeNode = {
+        data: item.data,
+        children: item.children ? this.transformData(item.children) : [],
+      };
+      return node;
+    });
+  }
+
 }

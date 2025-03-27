@@ -18,7 +18,7 @@
               <p-button icon="pi pi-list" class="mr-3" [styleClass]="tableView =='list' ? '':'p-button-outlined'" (click)="tableView='list'" severity="success "></p-button>
               <p-button icon="pi pi-table" [styleClass]="tableView =='table'? '':'p-button-outlined'" (click)="tableView='table'"  severity="success "></p-button>
             </div> -->
-            <p-table #dtEmployeeExist [value]="fnolList" 
+            <p-table #dtEmployeeExist [value]="fnolList || []" 
             [tableStyle]="{'min-width':'50rem'}" [paginator]="true"
             [globalFilterFields]="['FnolNo','PolicyNo','LossDate','IntimatedDate','LossLocation','PoliceStation']" [rows]="5">
               <ng-template pTemplate="caption">
@@ -44,8 +44,8 @@
                   <td>{{ fnol.PolicyNo }}</td>
                   <td>{{ fnol.LossDate }}</td>
                   <td>{{ fnol.IntimatedDate }}</td>
-                  <td>{{ fnol.LossLocation }}</td>
-                  <td>{{ fnol.PoliceStation }}</td>
+                  <td>{{ fnol.LossLocationDesc }}</td>
+                  <!-- <td>{{ fnol.PoliceStation }}</td> -->
                   <td>
                       <button pButton pRipple icon="pi pi-pencil" *ngIf="!fnol.FnolNo" class="p-button-outlined" (click)="getfnolEdit(fnol)" ></button>
                       <button pButton pRipple icon="pi pi-eye" *ngIf="fnol.FnolNo" class="p-button-outlined" (click)="getfnolEditView(fnol)" ></button>

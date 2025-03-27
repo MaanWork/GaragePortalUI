@@ -55,6 +55,8 @@ import { SurveyorHomeComponent } from './surveyor-home/surveyor-home.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { TotalAmountComponent } from './total-amount/total-amount.component';
 import { CompareQuoteComponent } from './compare-quote/compare-quote.component';
+import { TreeTableModule } from 'primeng/treetable';
+import { ButtonModule } from 'primeng/button';  
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
 }
@@ -85,6 +87,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     surveyorRoutingModule,
     DialogModule ,
     MaterialModule,
+    TreeTableModule,
+    ButtonModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

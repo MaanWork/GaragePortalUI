@@ -222,7 +222,6 @@ autoSaveDraft() {
     );
 }
 saveDamageDeatils(rowData,index){
-  alert(rowData.RepairReplace)
   let ReqObj,urlLink
   //for(let entry of this.DamageDeatilsList){
     if(this.userType=='Dealer'){

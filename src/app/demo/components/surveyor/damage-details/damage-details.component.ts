@@ -95,6 +95,7 @@ export class DamageDetailsComponent {
   SparePartDepreciation: any;
   viewType: boolean = false;
   GarageLoginId:any
+  WorkAssignedViewtype: any;
   constructor(private cdr: ChangeDetectorRef,private messageService: MessageService, private route: ActivatedRoute,private router:Router,private sharedService: SharedService,private appComp:AppComponent,private translate:TranslateService) {
     this.userDetails = JSON.parse(sessionStorage.getItem('Userdetails'));
     this.loginId = this.userDetails.Response.LoginId;
@@ -182,8 +183,8 @@ export class DamageDetailsComponent {
   }, 200);
 
   this.route.queryParams.subscribe(params => {
-  let type = params['type'];
-  if(type =='1'){
+this.WorkAssignedViewtype = params['type'];
+  if(this.WorkAssignedViewtype =='1'){
     this.viewType = true;
     this.FieldsAccident[0].fieldGroup[0].props.disabled = true;
     this.FieldsRecivedAmount[0].fieldGroup[0].props.disabled = true;
@@ -193,7 +194,7 @@ export class DamageDetailsComponent {
      this.GarageLoginId =params['GarageLoginId'];
    
   }
-  if(type =='2'){
+  if(this.WorkAssignedViewtype =='2'){
     this.CliamNo= params['ClaimNo'];
      this.QuotationNo =params['QuotationNo'];
      this.GarageLoginId =params['GarageLoginId'];
@@ -340,7 +341,11 @@ addNewDamageDeatils(){
   // this.DamageVisible=true;
 }
 getBack(){
-  let type =sessionStorage.getItem('Type');
+  if(this.WorkAssignedViewtype =='2'){
+    this.router.navigate(['/surveyor'])
+  }
+  else{
+    let type =sessionStorage.getItem('Type');
   if(this.viewType){
     this.router.navigate(['/spareparts'])
   }
@@ -358,6 +363,8 @@ getBack(){
       this.router.navigate(['/surveyor/workorder'])
     }
   }
+  }
+  
 }
 onSubmit(){
   let entry;
@@ -777,7 +784,6 @@ saveToalAmount(){
 }
 
 getTotalAmount(){
-  alert(this.CliamNo)
   this.getTotalAmount1();
   let ReqObj = {
     "ClaimNo": this.CliamNo,
